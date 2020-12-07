@@ -18,12 +18,12 @@ mongoose.connect(
 app.use(express.static(path.join(__dirname, '..', 'build')))
 app.use(cors());
 
-// Routers:
+// Routers (Set before application's wildcard route so that http requests will pattern match for the API first!):
 const route = require('./routes/route');
 app.use('/api/route', route);
 
 // Wildcard routing needed for seamless React-Router integration.
-app.get('/*', function (req, res) {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
 });
 
