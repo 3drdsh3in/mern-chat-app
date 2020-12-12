@@ -1,10 +1,26 @@
+// TODO:
+// 1. Change the path used by 'login.js' to '/authenticate' (Since logout will likely be used for it as well!)
+// 2. Remember Me Feature on HTML
+// 3. Create Account Form.
+
+
 const express = require('express');
 const app = express();
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+// Generate random hexadecimal token: 
+// node
+// require('crypto').randomBytes(64).toString('hex')
 
-const PORT = process.env.PORT || 4000;
+// Configuration Middleware
+app.use(express.static(path.join(__dirname, '..', 'build')))
+app.use(cors());
+app.use(express.json());
+
+const PORT = process.env.PORT || 3000;
 
 const uri = 'mongodb+srv://admin:pass@cluster0.o2kzm.mongodb.net/<dbname>?retryWrites=true&w=majority';
 
@@ -15,12 +31,9 @@ mongoose.connect(
   }
 )
 
-app.use(express.static(path.join(__dirname, '..', 'build')))
-app.use(cors());
-
 // Routers (Set before application's wildcard route so that http requests will pattern match for the API first!):
-const route = require('./routes/route');
-app.use('/api/route', route);
+const loginRoute = require('./routes/login');
+app.use('/api/authenticate', loginRoute);
 
 // Wildcard routing needed for seamless React-Router integration.
 app.get('/*', (req, res) => {
