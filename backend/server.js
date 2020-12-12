@@ -32,7 +32,7 @@ mongoose.connect(
 )
 
 // Routers (Set before application's wildcard route so that http requests will pattern match for the API first!):
-const loginRoute = require('./routes/login');
+const loginRoute = require('./routes/authenticate');
 app.use('/api/authenticate', loginRoute);
 
 // Wildcard routing needed for seamless React-Router integration.

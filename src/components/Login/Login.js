@@ -8,23 +8,31 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // Login
       userName: "",
       password: "",
+
+      // New Account
+      nafname: "",
+      nalname: "",
+      nausername: "",
+      naemailaddr: "",
+      napassword1: "",
+      napassword2: "",
+      nadobday: 1,
+      nadobmonth: 1,
+      nadobyear: (new Date()).getFullYear(),
+      nagender: "N",
       modal: false
     };
-    this.setLoginUserName = this.setLoginUserName.bind(this);
-    this.setLoginPassword = this.setLoginPassword.bind(this);
+    // Login Request Handler
     this.handleLogin = this.handleLogin.bind(this);
+    // Modal Trigger
     this.toggleModal = this.toggleModal.bind(this);
+    // SetOnChange (State Managing Callback)
+    this.setOnChange = this.setOnChange.bind(this);
   }
 
-  // Login Field Handlers
-  setLoginUserName(event) {
-    this.setState({ userName: event.target.value });
-  }
-  setLoginPassword(event) {
-    this.setState({ password: event.target.value });
-  }
   handleLogin(event) {
     event.preventDefault();
     fetch(`${window.location.protocol}//${window.location.host}/api/authenticate/login`, {
@@ -44,6 +52,15 @@ class Login extends React.Component {
       })
   }
 
+  // Create Account Handlers
+  setOnChange(event) {
+    let fieldID = event.target.id;
+    let obj = {};
+    obj[`${fieldID}`] = event.target.value;
+    console.log(obj);
+    this.setState(obj);
+  }
+
   // Handles Modal Triggering
   toggleModal() {
     console.log(!this.state.modal);
@@ -56,15 +73,9 @@ class Login extends React.Component {
     let days = [];
     let months = [];
     let years = [];
-    for (let i = 1; i <= 31; i++) {
-      days.push(i);
-    }
-    for (let i = 0; i <= 11; i++) {
-      months.push(i);
-    }
-    for (let i = 1900; i <= (new Date()).getFullYear(); i++) {
-      years.push(i);
-    }
+    for (let i = 1; i <= 31; i++) { days.push(i); }
+    for (let i = 0; i <= 11; i++) { months.push(i); }
+    for (let i = 1900; i <= (new Date()).getFullYear(); i++) { years.push(i); }
     return (
       <div className="wrapper fadeInDown" onSubmit={this.handleLogin}>
         <div id="formContent">
@@ -73,8 +84,8 @@ class Login extends React.Component {
           </div>
 
           <form>
-            <input type="text" id="login" className="fadeIn second" name="login" placeholder="Username" onChange={this.setLoginUserName} />
-            <input type="password" id="password" className="fadeIn third" name="login" placeholder="Password" onChange={this.setLoginPassword} />
+            <input type="text" id="userName" className="fadeIn second" name="userName" placeholder="Username" onChange={this.setOnChange} />
+            <input type="password" id="password" className="fadeIn third" name="password" placeholder="Password" onChange={this.setOnChange} />
             <input type="submit" className="fadeIn fourth" value="Log In" />
           </form>
 
@@ -85,47 +96,57 @@ class Login extends React.Component {
             <button className="createAccount fadeIn fifth" onClick={this.toggleModal}>Create Account</button>
             {/* newAccount Modal */}
             <Modal isOpen={this.state.modal} toggle={this.toggleModal}>
-              <ModalHeader toggle={this.toggleModal}><h3>Sign Up </h3></ModalHeader>
+              <ModalHeader toggle={this.toggleModal}><h3>Sign Up</h3></ModalHeader>
               <ModalBody>
                 <form className="createAccount-form container">
                   <div className="createAccount-form-name">
-                    <input type="text" id="firstName" name="firstName" placeholder="First Name" onChange={this.setFirstName} />
-                    <input type="text" id="lastName" name="lastName" placeholder="Last Name" onChange={this.setLastName} />
+                    {/* Name Fields */}
+                    <input type="text" id="nafname" name="nafname" placeholder="First Name" onChange={this.setOnChange} />
+                    <input type="text" id="nalname" name="nalname" placeholder="Last Name" onChange={this.setOnChange} />
                   </div>
+                  {/* Email Field */}
                   <div className="createAccount-form-email">
-                    <input type="text" id="emailAddr" name="emailAddr" placeholder="Email Address" onChange={this.setEmailAddr} />
+                    <input type="text" id="naemailaddr" name="naemailaddr" placeholder="Email Address" onChange={this.setOnChange} />
                   </div>
+                  {/* Username Field */}
+                  <div className="createAccount-form-username">
+                    <input type="text" id="nausername" name="nausername" placeholder="User Name" onChange={this.setOnChange} />
+                  </div>
+                  {/* Password Fields */}
                   <div className="createAccount-form-password">
-                    <input type="password" id="password1" name="password1" placeholder="Password" onChange={this.setEmailAddr} />
-                    <input type="password" id="password2" name="password2" placeholder="Confirm" onChange={this.setEmailAddr} />
+                    <input type="password" id="napassword1" name="napassword1" placeholder="Password" onChange={this.setOnChange} />
+                    <input type="password" id="napassword2" name="napassword2" placeholder="Confirm" onChange={this.setOnChange} />
                   </div>
                   <div className="createAccount-form-dob-label">
                     <h6>Date Of Birth:</h6>
                   </div>
+                  {/* Date Of Birth Selectors: */}
                   <div className="createAccount-form-dob">
-                    <select name="dob-day" id="dob-day" className="dob-day">
+                    <select onChange={this.setOnChange} name="nadobday" id="nadobday" className="dob-day" value={this.state.nadobday}>
                       {days.map((val, idx) => (
                         <option value={val}>{val}</option>
                       ))
                       }
                     </select>
-                    <select name="dob-month" id="dob-month" className="dob-month">
+                    <select onChange={this.setOnChange} name="nadobmonth" id="nadobmonth" className="dob-month" value={this.state.nadobmonth}>
                       {months.map((val, idx) => (
                         <option value={val}>{val}</option>
                       ))
                       }
                     </select>
-                    <select name="dob-year" id="dob-year" className="dob-year">
+                    <select onChange={this.setOnChange} name="nadobyear" id="nadobyear" className="dob-year" value={this.state.nadobyear}>
                       {years.map((val, idx) => (
                         <option value={val}>{val}</option>
                       ))
                       }
                     </select>
                   </div>
+                  {/* Gender Selector: */}
                   <div className="createAccount-form-gender-label">
                     <h6>Gender:</h6>
                   </div>
-                  <select name="gender" id="gender" className="createAccount-form-gender">
+                  <select onChange={this.setOnChange} name="nagender" id="nagender" className="createAccount-form-gender">
+                    <option value="N">---Choose A Gender Option---</option>
                     <option value="M">Male</option>
                     <option value="F">Female</option>
                   </select>
