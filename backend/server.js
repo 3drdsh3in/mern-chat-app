@@ -22,7 +22,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-const uri = 'mongodb+srv://admin:pass@cluster0.o2kzm.mongodb.net/<dbname>?retryWrites=true&w=majority';
+const uri = process.env.MONGO_URI;
 
 mongoose.connect(
   uri, { useNewUrlParser: true, useUnifiedTopology: true },
