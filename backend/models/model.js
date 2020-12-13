@@ -1,10 +1,41 @@
 const mongoose = require('mongoose');
 
-const modelSchema = new mongoose.Schema({
+const accountSchema = new mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  name: {
+  acc_usrname: {
     type: String,
     required: true,
+  },
+  acc_email: {
+    type: String,
+    required: true,
+  },
+  acc_password: {
+    type: String,
+    required: true,
+  },
+  acc_dob: {
+    type: Date,
+    required: true,
+  },
+  acc_gender: {
+    type: Date,
+    required: true,
+  },
+  acc_fname: {
+    type: String,
+    required: true,
+  },
+  acc_lname: {
+    type: String,
+    required: true,
+  },
+  acc_img: {
+    type: String,
+    required: true,
+  },
+  acc_bio: {
+    type: String
   },
   // tasks: [{
   //   type: mongoose.Schema.ObjectId,
@@ -20,4 +51,4 @@ const modelSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('ModelName', modelSchema);
+module.exports = mongoose.model('Account', accountSchema);

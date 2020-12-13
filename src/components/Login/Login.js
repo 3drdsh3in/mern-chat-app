@@ -31,6 +31,8 @@ class Login extends React.Component {
     this.toggleModal = this.toggleModal.bind(this);
     // SetOnChange (State Managing Callback)
     this.setOnChange = this.setOnChange.bind(this);
+    // Create Account Request Handler
+    this.handleNewAccount = this.handleNewAccount.bind(this);
   }
 
   handleLogin(event) {
@@ -65,6 +67,37 @@ class Login extends React.Component {
   toggleModal() {
     console.log(!this.state.modal);
     this.setState({ modal: !this.state.modal })
+  }
+
+  handleNewAccount(event) {
+
+    // Check #1: Check if passwords match:
+
+    // Check #2 Check if username is being used already:
+
+    // Check #3 Check if email is being used already:
+    fetch(`${window.location.protocol}//${window.location.host}/api/authenticate/newaccount`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        nafname: this.state.nafname,
+        nalname: this.state.nalname,
+        nausername: this.state.username,
+        napassword1: this.state.napassword1,
+        napassword2: this.state.napassword2,
+        nadobday: this.state.nadobday,
+        nadobmonth: this.state.nadobmonth,
+        nadobyear: this.state.nadobyear,
+        nagender: this.state.nagender
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      })
   }
 
 
@@ -153,7 +186,7 @@ class Login extends React.Component {
                 </form>
               </ModalBody>
               <ModalFooter>
-                <button className="signUp" onClick={this.toggleModal}>Create Account</button>
+                <button className="signUp" onClick={this.handleNewAccount}>Create Account</button>
                 {/* Adds Space: {' '} */}
                 {/* <button onClick={this.toggleModal}>Cancel</button> */}
               </ModalFooter>
