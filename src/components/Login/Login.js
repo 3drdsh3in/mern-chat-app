@@ -85,7 +85,8 @@ class Login extends React.Component {
       body: JSON.stringify({
         nafname: this.state.nafname,
         nalname: this.state.nalname,
-        nausername: this.state.username,
+        nausername: this.state.nausername,
+        naemailaddr: this.state.naemailaddr,
         napassword1: this.state.napassword1,
         napassword2: this.state.napassword2,
         nadobday: this.state.nadobday,
@@ -107,7 +108,7 @@ class Login extends React.Component {
     let months = [];
     let years = [];
     for (let i = 1; i <= 31; i++) { days.push(i); }
-    for (let i = 0; i <= 11; i++) { months.push(i); }
+    for (let i = 1; i <= 12; i++) { months.push(i); }
     for (let i = 1900; i <= (new Date()).getFullYear(); i++) { years.push(i); }
     return (
       <div className="wrapper fadeInDown" onSubmit={this.handleLogin}>

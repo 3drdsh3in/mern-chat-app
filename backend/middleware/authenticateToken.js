@@ -12,3 +12,5 @@ function authenticateToken(req, res, next) {
     next()
   })
 }
+
+model.exports = authenticateToken;

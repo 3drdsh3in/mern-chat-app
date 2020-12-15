@@ -5,10 +5,12 @@ const accountSchema = new mongoose.Schema({
   acc_usrname: {
     type: String,
     required: true,
+    unique: true
   },
   acc_email: {
     type: String,
     required: true,
+    unique: true
   },
   acc_password: {
     type: String,
@@ -19,7 +21,7 @@ const accountSchema = new mongoose.Schema({
     required: true,
   },
   acc_gender: {
-    type: Date,
+    type: String,
     required: true,
   },
   acc_fname: {
@@ -30,12 +32,9 @@ const accountSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  acc_img: {
-    type: String,
-    required: true,
-  },
   acc_bio: {
-    type: String
+    type: String,
+    required: true
   },
   // tasks: [{
   //   type: mongoose.Schema.ObjectId,
@@ -45,10 +44,10 @@ const accountSchema = new mongoose.Schema({
   //   type: mongoose.Schema.ObjectId,
   //   ref: 'Student'
   // }],
-  totalTime: {
-    type: Number,
-    default: 0
-  }
+  // totalTime: {
+  //   type: Number,
+  //   default: 0
+  // }
 });
 
 module.exports = mongoose.model('Account', accountSchema);
