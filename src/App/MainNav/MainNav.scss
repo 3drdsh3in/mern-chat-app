@@ -1,0 +1,51 @@
+
+.nav-link {
+  margin: 0px 5px;
+  // padding: 7px 10px 6px 11px;
+  padding: 7px 10px;
+  width: 37.5px;
+  text-align: center;
+  border-radius: 2rem;
+  background: #E4E6EB;
+  transition: background 0.8s 0s;
+  svg[id=new-user], svg[id=notifications] {
+    transition: color 0.8s 0s;
+  }
+  svg[id=notifications] {
+    color: #56baed;
+    
+  }
+  svg[id=new-user] {
+    color: #93DD9A;
+  }
+}
+.nav-link:hover {
+  transition: all 0.8s 0s;
+  background: #dcdee6;
+  svg[id=notifications] {
+    color: #39ace7;
+  }
+  svg[id=new-user] {
+    color: #88cd8f;
+  }
+}
+.dropdown {
+  .nav-link{
+    svg {
+      color: #56baed;
+    }
+  }
+  .nav-link:hover {
+    svg {
+      color: #39ace7;
+    }
+  }
+  .dropdown-item {
+    padding-left: 0.8rem;
+    span {
+      svg {
+        width: 0.9rem !important;
+      }
+    }
+  }
+}

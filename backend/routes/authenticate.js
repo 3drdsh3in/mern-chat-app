@@ -11,12 +11,36 @@ const accountValidation = require('../middleware/accountValidation');
 
 router.post('/login', (req, res) => {
   console.log(req.body);
-  
+
+  Account.find({
+    acc_usrname: req.body.username,
+    acc_password: md5(req.body.password + process.env.PASSWORD_SALT)
+  },
+    (err, acc) => {
+      console.log(acc);
+      if (err) {
+        res.json(err);
+      }
+      else if (acc.length > 1) {
+        res.json({
+          code: "TOO_MANY_ACCOUNTS",
+          msg: "ACCOUNT NOT FOUND"
+        })
+      }
+      else if (acc.length > 0) {
+        res.json(acc);
+      }
+      else {
+        res.json({
+          code: "NOT_FOUND",
+          msg: "ACCOUNT NOT FOUND"
+        })
+      }
+    })
+
   // Find Account Info On DB exists and validate enterred info correlates.
   //    - If yes, redirect page to messaging component. (Return Account Information to client.)
   //    - If no, return json data to prompt a login error.
-
-  res.json({ fuck: 'you' });
 })
 
 router.post('/newaccount', accountValidation, (req, res) => {

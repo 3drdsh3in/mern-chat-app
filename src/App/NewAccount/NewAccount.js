@@ -24,6 +24,8 @@ class NewAccount extends React.Component {
     this.setOnChange = this.setOnChange.bind(this);
     // Create Account Request Handler
     this.handleNewAccount = this.handleNewAccount.bind(this);
+    // Modal Trigger
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   // Create Account Handlers
@@ -104,6 +106,13 @@ class NewAccount extends React.Component {
         }
       })
   }
+  
+  // Handles Modal Triggering
+  toggleModal() {
+    console.log(!this.state.modal);
+    this.setState({ modal: !this.state.modal })
+  }
+
 
   render() {
     let days = [];
