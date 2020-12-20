@@ -1,0 +1,23 @@
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 25px 25px;
+  border-bottom: 0.1rem solid #E4E6EB;
+  align-items: center;
+  text-align: center;
+  h5 {
+    margin: 0;
+  }
+  button {
+    border-radius: 2rem;
+    height: 37.5px;
+    padding: 0px 20px;
+    border: none;
+    box-sizing: border-box;
+    transition: all 0.8s 0s;
+  }
+  button:hover {
+    background: #d7d9de;
+  }
+}

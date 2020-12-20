@@ -1,4 +1,6 @@
-
+.mainnav {
+  z-index: 5;
+}
 .nav-link {
   margin: 0px 5px;
   // padding: 7px 10px 6px 11px;
@@ -16,7 +18,7 @@
     
   }
   svg[id=new-user] {
-    color: #93DD9A;
+    color: #56baed;
   }
 }
 .nav-link:hover {

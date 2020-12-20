@@ -1,0 +1,31 @@
+.chatbody {
+  height: calc(100% - 205px);
+  &-messages{
+    height: 100%;
+  }
+  &-form {
+    position: relative;
+    bottom: 0px;
+  &-textbox {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 10px;
+    input {
+      width: 100%;
+    }
+    button {
+      border-radius: 5px;
+      width: 50px;
+      border: 2px solid #f6f6f6;
+      height: 57.5px;
+      transition: all 0.8s 0s;
+    }
+    button:hover {
+      background: white;
+      border-bottom: 2px solid #5fbae9;
+    }
+  }
+  }
+}

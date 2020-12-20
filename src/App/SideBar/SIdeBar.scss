@@ -1,0 +1,32 @@
+.sidebar {
+  // position: absolute;
+  // height: 100vh;
+  // padding: 75px 1rem 0px 1rem;
+  // top: 5px;
+  box-sizing: border-box;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-right: 0.1rem solid #b1b1b1;
+  z-index: 4;
+  padding: 15px 1rem 0px 1rem;
+  margin: 0px;
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h3 {
+      margin: 0px;
+    }
+    &-newgroup-button {
+      padding: 7px 10px;
+      border-radius: 2rem;
+      background: #E4E6EB;
+      transition: all 0.8s 0s;
+      cursor: pointer;
+    }
+    &-newgroup-button:hover {
+      background: #dcdee6;
+    }
+  }
+}

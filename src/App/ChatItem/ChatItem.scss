@@ -1,0 +1,21 @@
+.chatitem {
+  // border-top: 2px solid black;
+  word-wrap: break-word;
+  background: #E4E6EB;
+  // background: #E9F3FF;
+  border-radius: 5px;
+  padding: 10px 50px;
+  margin: 5px 0px;
+  h6 {
+    // margin: 2px;
+  }
+  p {
+    margin: 0px;
+  }
+}
+.chatitem:hover {
+  background: #dcdee6;
+}
+.chatitem.selected {
+  background: #E9F3FF;
+}

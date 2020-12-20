@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 // Component:
 import SideBar from './SideBar';
 
-const mapStateToProps = (state) => ({
+// import { connect } from 'react-redux'; => Dont need to import as it is a child of 'connect' imported in MainContainer.js
 
+const mapStateToProps = (state) => ({
+  AccountDetails: state.AccountDetails
 })
 
 const mapDispatchToProps = (dispatch) => ({

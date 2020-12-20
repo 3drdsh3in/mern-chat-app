@@ -32,10 +32,10 @@ class MainNav extends React.Component {
     return (
       <>
         <div>
-          <Navbar color="light" light expand="md">
+          <Navbar className="mainnav" color="light" light expand="md">
             <NavbarBrand href="/"><img src="https://img.icons8.com/cute-clipart/64/000000/chat.png" id="icon" /></NavbarBrand>
             <Nav className="mr-auto"></Nav>
-            <NavLink href="#"><i id="new-user" class="fas fa-user-plus"></i></NavLink>
+            <NavLink href="#"><i id="new-user" class="fas fa-plus-square"></i></NavLink>
             <NavLink href="#"><i id="notifications" class="fas fa-bell"></i></NavLink>
             <UncontrolledDropdown>
               <DropdownToggle nav>

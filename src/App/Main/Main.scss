@@ -1,0 +1,11 @@
+.main {
+  height: calc(100vh - 64.4px);
+  &-body {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    &-content {
+      width: 100%;
+    }
+  }
+}
