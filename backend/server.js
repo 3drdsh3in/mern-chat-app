@@ -3,13 +3,38 @@
 // 2. Remember Me Feature on HTML
 // 3. Create Account Form.
 
-
+// Server Configuration
 const express = require('express');
 const app = express();
-const cors = require('cors');
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+
+// Test Socket Listener:
+io.on('connection', (client) => {
+  client.on('data_sent', (data) => {
+    console.log(data);
+  })
+})
+
+process
+.on('unhandledRejection', (reason, p) => {
+    console.error(reason, 'Unhandled Rejection at Promise', p);
+    process.exit(1);
+  })
+.on('uncaughtException', (err) => {
+    // handle the error safely
+    console.error(err, 'Uncaught Exception thrown');
+    process.exit(1);
+})
+
+// Node Modules
 const path = require('path');
+
+// Dependencies
+const cors = require('cors');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+
 require('dotenv').config();
 // Generate random hexadecimal token: 
 // node
@@ -40,6 +65,6 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)
 });

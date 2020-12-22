@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 // Component:
 import SideBar from './SideBar';
 
-// import { connect } from 'react-redux'; => Dont need to import as it is a child of 'connect' imported in MainContainer.js
+import {getChatData} from './SideBarActions';
 
 const mapStateToProps = (state) => ({
-  AccountDetails: state.AccountDetails
+  AccountDetails: state.AccountDetails,
+  chat_messages: state.chat_messages
 })
 
 const mapDispatchToProps = (dispatch) => ({
-
+  getChatData: (url) => dispatch(getChatData(url))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

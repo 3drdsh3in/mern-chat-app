@@ -1,7 +1,7 @@
 import React from 'react';
 
 //Components:
-import ChatItem from '../ChatItem/ChatItem';
+import ChatItem from '../ChatItem/ChatItemContainer';
 
 import './SideBar.scss';
 

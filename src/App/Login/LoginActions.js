@@ -1,5 +1,3 @@
-const INCREMENT = 'counter/increment'
-
 function LoginActions(data) {
   return {
     type: 'LOGIN',

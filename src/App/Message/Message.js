@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import './Message.scss';
 
 function Message({msgString, isSender}) {
+
   return(
     isSender
     ?

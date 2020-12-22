@@ -5,10 +5,20 @@ import './ChatBody.scss';
 // Containers:
 import Message from '../Message/MessageContainer';
 
+import io from 'socket.io-client';
+
 class ChatBody extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  componentWillMount() {
+    const socket = io();
+    socket.emit('data_sent', {
+      'data': 'data'
+    })
+  }
+
   render() {
     return (
       <div className="chatbody">
