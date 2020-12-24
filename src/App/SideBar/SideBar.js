@@ -1,7 +1,7 @@
 import React from 'react';
 
 //Components:
-import ChatItem from '../ChatItem/ChatItemContainer';
+import ChatItem from '../ChatItem/ChatItem';
 
 import './SideBar.scss';
 
@@ -26,7 +26,7 @@ class SideBar extends React.Component {
           <div className="sidebar-header">
             <h3>Chats</h3>
             <div className="sidebar-header-newgroup-button">
-              <i class="fas fa-user-plus"></i>
+              <i className="fas fa-user-plus"></i>
             </div>
           </div>
           <hr />

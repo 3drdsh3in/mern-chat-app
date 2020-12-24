@@ -56,7 +56,8 @@ class Login extends React.Component {
         // Redirect to Messaging Page.
         else {
           // Should be a single account stored onto Redux Store.
-          this.props.storeAccountDetails(data[0]);
+          this.props.storeAccountDetails(data['account'][0]);
+          console.log(data['accessToken']);
           // Redirect Page To Other Main Page Component.
           this.setState({ redirect: true })
         }

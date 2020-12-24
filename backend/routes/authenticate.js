@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongo = require('mongodb');
 const md5 = require('md5');
+const jwt = require('jsonwebtoken');
 
 // Schemas:
 const Account = require('../models/Account');
@@ -12,6 +13,7 @@ const accountValidation = require('../middleware/accountValidation');
 router.post('/login', (req, res) => {
   console.log(req.body);
 
+  // Authentication:
   Account.find({
     acc_usrname: req.body.username,
     acc_password: md5(req.body.password + process.env.PASSWORD_SALT)
@@ -27,14 +29,39 @@ router.post('/login', (req, res) => {
           msg: "ACCOUNT NOT FOUND"
         })
       }
-      else if (acc.length > 0) {
-        res.json(acc);
-      }
-      else {
+      else if (acc.length == 0) {
         res.json({
           code: "NOT_FOUND",
           msg: "ACCOUNT NOT FOUND"
         })
+      }
+      else {
+
+        data = {
+          acc_usrname: req.body.username,
+          acc_password: md5(req.body.password + process.env.PASSWORD_SALT)
+        }
+
+        // New accessToken
+        let accessToken = jwt.sign(
+          data,
+          process.env.SECRET_ACCESS_TOKEN,
+          {
+            algorithm: 'HS256',
+            expiresIn: '15s',
+            // expiresIn: '1h'
+          });
+        // Save Refresh Token Onto DB
+        let refreshToken = jwt.sign(
+          data,
+          process.env.SECRET_REFRESH_TOKEN,
+          { algorithm: 'HS256' });
+
+        res.json({
+          account: acc,
+          accessToken: accessToken,
+          refreshToken: refreshToken
+        });
       }
     })
 

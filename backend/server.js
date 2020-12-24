@@ -7,25 +7,18 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-
-// Test Socket Listener:
-io.on('connection', (client) => {
-  client.on('data_sent', (data) => {
-    console.log(data);
-  })
-})
+const io = require('./sockets/socket-server').attach(server);
 
 process
-.on('unhandledRejection', (reason, p) => {
+  .on('unhandledRejection', (reason, p) => {
     console.error(reason, 'Unhandled Rejection at Promise', p);
     process.exit(1);
   })
-.on('uncaughtException', (err) => {
+  .on('uncaughtException', (err) => {
     // handle the error safely
     console.error(err, 'Uncaught Exception thrown');
     process.exit(1);
-})
+  })
 
 // Node Modules
 const path = require('path');
@@ -33,7 +26,6 @@ const path = require('path');
 // Dependencies
 const cors = require('cors');
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 // Generate random hexadecimal token: 
@@ -44,7 +36,11 @@ require('dotenv').config();
 app.use(express.static(path.join(__dirname, '..', 'build')))
 app.use(cors());
 app.use(express.json());
-
+// Apply Socket.io as express custom middleware:
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+})
 const PORT = process.env.PORT || 8080;
 
 const uri = process.env.MONGO_URI;

@@ -19,13 +19,19 @@ class MainNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
+      optionsIsOpen: false,
+      notificationsIsOpen: false
     }
     this.toggleOptions = this.toggleOptions.bind(this);
+    this.toggleNotifications = this.toggleNotifications.bind(this);
   }
 
   toggleOptions() {
-    this.setState({ isOpen: !this.state.isOpen })
+    this.setState({ optionsIsOpen: !this.state.optionsIsOpen });
+  }
+
+  toggleNotifications() {
+    this.setState({ notificationsIsOpen: !this.state.notificationsIsOpen });
   }
 
   render() {
@@ -35,22 +41,31 @@ class MainNav extends React.Component {
           <Navbar className="mainnav" color="light" light expand="md">
             <NavbarBrand href="/"><img src="https://img.icons8.com/cute-clipart/64/000000/chat.png" id="icon" /></NavbarBrand>
             <Nav className="mr-auto"></Nav>
-            <NavLink href="#"><i id="new-user" class="fas fa-plus-square"></i></NavLink>
-            <NavLink href="#"><i id="notifications" class="fas fa-bell"></i></NavLink>
+            <NavLink href="#"><i id="new-user" className="fas fa-plus-square"></i></NavLink>
             <UncontrolledDropdown>
               <DropdownToggle nav>
-                <i class="fas fa-caret-down"></i>
+                <i id="notifications" className="fas fa-bell"></i>
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem id="notifications-fr">
+                  <span><i className="fas fa-user"></i>{" "}Profile</span>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            <UncontrolledDropdown>
+              <DropdownToggle nav>
+                <i className="fas fa-caret-down"></i>
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                  <span><i class="fas fa-user"></i>{" "}Profile</span>
+                  <span><i className="fas fa-user"></i>{" "}Profile</span>
                 </DropdownItem>
                 <DropdownItem>
-                  <span><i class="fas fa-cog"></i>{" "}Settings</span>
+                  <span><i className="fas fa-cog"></i>{" "}Settings</span>
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem>
-                  <span><i class="fas fa-power-off"></i>{" "}Logout</span>
+                  <span><i className="fas fa-power-off"></i>{" "}Logout</span>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

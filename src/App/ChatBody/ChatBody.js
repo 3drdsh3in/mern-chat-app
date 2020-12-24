@@ -5,18 +5,12 @@ import './ChatBody.scss';
 // Containers:
 import Message from '../Message/MessageContainer';
 
-import io from 'socket.io-client';
-
 class ChatBody extends React.Component {
   constructor(props) {
     super(props);
   }
 
   componentWillMount() {
-    const socket = io();
-    socket.emit('data_sent', {
-      'data': 'data'
-    })
   }
 
   render() {
@@ -29,9 +23,9 @@ class ChatBody extends React.Component {
       <div className="chatbody-form">
         <hr />
         <div className="chatbody-form-textbox">
-          <input type="text" />
+          <input type="text" placeholder="Say something..." />
           <button>
-          <i class="fas fa-caret-right fa-3x"></i>
+          <i className="fas fa-caret-right fa-3x"></i>
           </button>
         </div>
       </div>

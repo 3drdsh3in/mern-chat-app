@@ -11,11 +11,11 @@ function ChatHeader({chatName, chatType}) {
           {
           chatType == 'F' 
           ?
-          <button>Friends <i class="fas fa-check"></i></button>
+          <button>Friends <i className="fas fa-check"></i></button>
           :
           (chatType == 'G' 
           ?
-          <button>In Group <i class="fas fa-check"></i></button>
+          <button>In Group <i className="fas fa-check"></i></button>
           :
           null)
           }
