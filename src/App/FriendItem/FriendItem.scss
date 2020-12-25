@@ -1,0 +1,46 @@
+.frienditem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // border-top: 2px solid black;
+  word-wrap: break-word;
+  // background: #f5f5f5;
+  // background: #E9F3FF;
+  // border-radius: 5px;
+  border-bottom: 0.1px solid #E4E6EB;
+  padding: 10px 50px;
+  margin: 5px 0px;
+
+  &-header {
+    h6 {
+      margin: 0px;
+    }
+    p {
+      margin: 0px;
+    }
+  }
+  &-icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 2rem;
+    padding: 10px 10px;
+    background: #E4E6EB;
+    // width: 130px;
+    // padding: 7px 15px;
+    box-sizing: border-box;
+    cursor: pointer;
+    p {
+      margin: 0px;
+    }
+  }
+  &-icon:hover {
+    background: #d1d3d8;
+  }
+  }
+// .frienditem:hover {
+//   background: #dcdee6;
+// }
+// .frienditem.selected {
+//   background: #E9F3FF;
+// }

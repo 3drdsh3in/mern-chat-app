@@ -15,6 +15,7 @@ const createSocketMiddleware = () => {
                 console.log(storeAPI.getState());
 
                 socket.on("message", (message) => {
+                    // May need a Socket Reducer.
                     storeAPI.dispatch({
                         // May need to check whether it is a new:
                         // 1. Message
@@ -30,7 +31,11 @@ const createSocketMiddleware = () => {
             // This endpoint can only be reached once LOGIN action is dispatched
             // to initialise the socket endpoint on the redux client.
             case "SEND_WEBSOCKET_MESSAGE": {
-                socket.send(action.payload);
+                console.log('SEND_WEBSOCKET_MESSAGE', action)
+                socket.emit(action.eventName, action.payload, (data) => {
+                    // arg: data - The data returned by the corresponding scoket endpoint
+                    console.log('Server Returned:', data);
+                });
                 return;
             }
         }

@@ -5,6 +5,9 @@ const io = socket();
 
 let clientStore = {};
 
+/*
+Console Actions
+*/
 function printConnectedClients() {
   console.log('Clients Currently Conencted: ')
   for (var key in clientStore) {
@@ -14,6 +17,10 @@ function printConnectedClients() {
   }
 }
 
+/*
+Socket Endpoints!
+*/
+
 // Connect Event:
 io.on('connection', (client) => {
   console.log('Connection Established On', client.id);
@@ -22,18 +29,17 @@ io.on('connection', (client) => {
   let hashString;
 
   client.on('connection_update', (data) => {
-
-    hashString = data.acc_id;
+    hashString = data.acc_data._id;
     if (!(`${hashString}` in clientStore)) {
       clientStore[`${hashString}`] = [client];
     }
     else if (clientStore[`${hashString}`].length == 0) {
       clientStore[`${hashString}`].push(client);
     }
+    printConnectedClients();
   })
 
 
-  printConnectedClients();
 
   // Custom Events:
   client.on('data_sent', (data) => {

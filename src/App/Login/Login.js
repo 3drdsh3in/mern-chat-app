@@ -28,6 +28,10 @@ class Login extends React.Component {
     this.toggleModal = this.toggleModal.bind(this);
   }
 
+  /*
+  Future Refactors: handleLogin(event) should be done through TCP socket conenction
+  as opposed to a HTTP Post handler to reduce incoming server traffic.
+  */
   handleLogin(event) {
     // 1. Verify the account username exists (/w the corresponding password).
     event.preventDefault();

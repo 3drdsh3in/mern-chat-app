@@ -36,11 +36,6 @@ require('dotenv').config();
 app.use(express.static(path.join(__dirname, '..', 'build')))
 app.use(cors());
 app.use(express.json());
-// Apply Socket.io as express custom middleware:
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-})
 const PORT = process.env.PORT || 8080;
 
 const uri = process.env.MONGO_URI;
@@ -53,8 +48,11 @@ mongoose.connect(
 )
 
 // Routers (Set before application's wildcard route so that http requests will pattern match for the API first!):
-const loginRoute = require('./routes/authenticate');
-app.use('/api/authenticate', loginRoute);
+const authenticateRoute = require('./routes/authenticate');
+const searchAccountRoute = require('./routes/searchAccount');
+app.use('/api/authenticate', authenticateRoute);
+app.use('/api/search', searchAccountRoute);
+
 
 // Wildcard routing needed for seamless React-Router integration.
 app.get('/*', (req, res) => {

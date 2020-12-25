@@ -13,17 +13,25 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Modal,
+  ModalHeader,
 } from 'reactstrap';
+
+// Containers:
+import FriendSearch from '../FriendSearch/FriendSearchContainer';
+
 
 class MainNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       optionsIsOpen: false,
-      notificationsIsOpen: false
+      notificationsIsOpen: false,
+      newFriendModalState: false
     }
     this.toggleOptions = this.toggleOptions.bind(this);
     this.toggleNotifications = this.toggleNotifications.bind(this);
+    this.toggleNewFriend = this.toggleNewFriend.bind(this);
   }
 
   toggleOptions() {
@@ -34,6 +42,10 @@ class MainNav extends React.Component {
     this.setState({ notificationsIsOpen: !this.state.notificationsIsOpen });
   }
 
+  toggleNewFriend() {
+    this.setState({ newFriendModalState: !this.state.newFriendModalState });
+  }
+
   render() {
     return (
       <>
@@ -41,7 +53,15 @@ class MainNav extends React.Component {
           <Navbar className="mainnav" color="light" light expand="md">
             <NavbarBrand href="/"><img src="https://img.icons8.com/cute-clipart/64/000000/chat.png" id="icon" /></NavbarBrand>
             <Nav className="mr-auto"></Nav>
-            <NavLink href="#"><i id="new-user" className="fas fa-plus-square"></i></NavLink>
+            {/* Add New User Feature */}
+            <NavLink onClick={this.toggleNewFriend} href="#"><i id="new-user" className="fas fa-plus-square"></i></NavLink>
+            <Modal isOpen={this.state.newFriendModalState} toggle={this.toggleNewFriend} className="">
+              <ModalHeader toggle={this.toggleNewFriend}>Add Friend</ModalHeader>
+
+              <FriendSearch />
+
+            </Modal>
+            {/* Notifications Feature */}
             <UncontrolledDropdown>
               <DropdownToggle nav>
                 <i id="notifications" className="fas fa-bell"></i>
@@ -52,6 +72,7 @@ class MainNav extends React.Component {
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
+            {/* Caret Dropwon Feature */}
             <UncontrolledDropdown>
               <DropdownToggle nav>
                 <i className="fas fa-caret-down"></i>

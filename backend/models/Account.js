@@ -33,21 +33,8 @@ const accountSchema = new mongoose.Schema({
     required: true,
   },
   acc_bio: {
-    type: String,
-    required: true
-  },
-  // tasks: [{
-  //   type: mongoose.Schema.ObjectId,
-  //   ref: 'Task'
-  // }],
-  // students: [{
-  //   type: mongoose.Schema.ObjectId,
-  //   ref: 'Student'
-  // }],
-  // totalTime: {
-  //   type: Number,
-  //   default: 0
-  // }
+    type: String
+  }
 });
 
 module.exports = mongoose.model('Account', accountSchema);
