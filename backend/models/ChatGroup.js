@@ -10,7 +10,11 @@ const chatGroupSchema = new mongoose.Schema({
     type: String,
     enum: ['FRIEND', 'GROUP'],
     default: 'FRIEND'
-  }
+  },
+  g_members: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Account'
+  }]
 });
 
 module.exports = mongoose.model('ChatGroup', chatGroupSchema);

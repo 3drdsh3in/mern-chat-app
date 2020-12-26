@@ -38,11 +38,12 @@ class FriendSearch extends React.Component {
           "Accept": "application/json"
         },
         body: JSON.stringify({
+          userNameQuery: event.target.value
         })
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
+          console.log(data[0]['frStatus']);
         })
     }, 3000)
   }

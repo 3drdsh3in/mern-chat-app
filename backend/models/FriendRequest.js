@@ -10,11 +10,6 @@ const friendRequestSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'Account'
   },
-  fr_state: {
-    type: String,
-    enum: ['PENDING', 'ACCEPTED'],
-    default: 'PENDING'
-  },
   fr_msg: {
     type: String,
     max: 20

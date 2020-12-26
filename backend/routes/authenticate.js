@@ -80,7 +80,9 @@ router.post('/newaccount', accountValidation, (req, res) => {
     acc_gender: req.body.nagender,
     acc_fname: req.body.nafname,
     acc_lname: req.body.nalname,
-    acc_bio: "Hello!"
+    acc_bio: "Hello!",
+    acc_friends: [],
+    acc_grps: []
   });
   newAcc.save((err) => {
     if (err) {

@@ -34,7 +34,19 @@ const accountSchema = new mongoose.Schema({
   },
   acc_bio: {
     type: String
-  }
+  },
+  acc_friends: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Account'
+  }],
+  acc_freqs: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'FriendRequest'
+  }],
+  acc_grps: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'ChatGroup'
+  }]
 });
 
 module.exports = mongoose.model('Account', accountSchema);
