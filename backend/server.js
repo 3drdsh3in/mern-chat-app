@@ -38,12 +38,13 @@ app.use(cors());
 app.use(express.json());
 const PORT = process.env.PORT || 8080;
 
-const uri = process.env.MONGO_URI;
+const environment = process.env.NODE_ENV || 'development';
+const uri = (environment == 'production') ? process.env.MONGO_URI : process.env.LOCALHOST_URI;
 
 mongoose.connect(
   uri, { useNewUrlParser: true, useUnifiedTopology: true },
   () => {
-    console.log('Connected to DB!');
+    console.log(`Connected to mongoDB in ${environment} mode.`);
   }
 )
 

@@ -1,6 +1,7 @@
 import './FriendItem.scss';
 
 function FriendItem({ userName, fname, lname, friendStatus }) {
+  
   return (
     <>
       <div className="frienditem">
@@ -8,7 +9,7 @@ function FriendItem({ userName, fname, lname, friendStatus }) {
           <h6>{userName}</h6>
           <p>{fname}{" "}{lname}</p>
         </div>
-        <div className="frienditem-icon">
+        <button className="frienditem-icon">
           {
             <>
               {friendStatus == 'UNSENT'
@@ -16,12 +17,12 @@ function FriendItem({ userName, fname, lname, friendStatus }) {
                 <i className="fas fa-user-plus"></i>
                 :
                 (
-                  friendStatus == 'PENDING'
+                  friendStatus == 'SENT'
                     ?
                     <i className="fas fa-check"></i>
                     :
                     (
-                      friendStatus == 'ACCEPTED'
+                      friendStatus == 'FRIENDS'
                         ?
                         <i class="fas fa-user-minus"></i>
                         :
@@ -33,7 +34,7 @@ function FriendItem({ userName, fname, lname, friendStatus }) {
 
             </>
           }
-        </div>
+        </button>
       </div>
     </>
   )

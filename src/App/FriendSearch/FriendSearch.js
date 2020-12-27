@@ -20,7 +20,8 @@ class FriendSearch extends React.Component {
     super(props);
     this.state = {
       searchString: '',
-      emitSearch: false
+      emitSearch: false,
+      searchData: []
     }
     this.searchTimeout = null;
     this.handleSearchAccount = this.handleSearchAccount.bind(this);
@@ -43,18 +44,27 @@ class FriendSearch extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
+          console.log(data[0]);
           console.log(data[0]['frStatus']);
+          this.setState({ searchData: data });
         })
     }, 3000)
   }
 
+
+
   render() {
+    console.log(this.state.searchData);
     return (
       <>
         <ModalBody>
-          <FriendItem friendStatus={"UNSENT"} userName="Dudebro" fname="Edward" lname="Shen" />
-          <FriendItem friendStatus={"PENDING"} userName="Friendbro" fname="Al" lname="Stein" />
-          <FriendItem friendStatus={"ACCEPTED"} userName="Requestbro" fname="Jeff" lname="Thew" />
+          {this.state.searchData.map((accountItem) => (
+            <FriendItem friendStatus={accountItem.frStatus} userName={accountItem.acc_usrname} fname={accountItem.acc_fname} lname={accountItem.acc_lname} />
+          )
+          )}
+          {/* <FriendItem friendStatus={"PENDING"} userName="Friendbro" fname="Al" lname="Stein" />
+          <FriendItem friendStatus={"ACCEPTED"} userName="Requestbro" fname="Jeff" lname="Thew" /> */}
+
         </ModalBody>
         <ModalFooter>
           <Input onChange={this.handleSearchAccount} type="text" placeholder="Search Users..." />

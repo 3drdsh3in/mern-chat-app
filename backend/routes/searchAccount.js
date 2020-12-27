@@ -17,9 +17,7 @@ router.post('/getFriends/:id', async (req, res) => {
     // Get all other account data
     let accountDocs = await Account.find({ $and: [{ '_id': { $ne: acc_id } }, { 'acc_usrname': { $regex: req.body.userNameQuery } }] }).lean();
     // let frDocs = await FriendRequest.find({ $or: [{ 'fr_sender_id': acc_id }, { 'fr_reciever_id': acc_id }] });
-
     // console.log('Friend Request Docs:', frDocs.length);
-
     let userFriends = userAccount.acc_friends
     let userFriendReqs = userAccount.acc_freqs;
 
