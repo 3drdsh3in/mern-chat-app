@@ -10,7 +10,7 @@ import {
 import './FriendSearch.scss';
 
 // Components:
-import FriendItem from '../FriendItem/FriendItem';
+import FriendItem from '../FriendItem/FriendItemContainer';
 
 /*
 Form Body That Controls How The New Friend Feature Adds New Friends.
@@ -44,8 +44,7 @@ class FriendSearch extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data[0]);
-          console.log(data[0]['frStatus']);
+          // console.log(data[0]['frStatus']);
           this.setState({ searchData: data });
         })
     }, 3000)
@@ -54,12 +53,18 @@ class FriendSearch extends React.Component {
 
 
   render() {
-    console.log(this.state.searchData);
     return (
       <>
         <ModalBody>
           {this.state.searchData.map((accountItem) => (
-            <FriendItem friendStatus={accountItem.frStatus} userName={accountItem.acc_usrname} fname={accountItem.acc_fname} lname={accountItem.acc_lname} />
+            <FriendItem
+              key={accountItem._id}
+              acc_id={accountItem._id}
+              friendStatus={accountItem.frStatus}
+              userName={accountItem.acc_usrname}
+              fname={accountItem.acc_fname}
+              lname={accountItem.acc_lname}
+            />
           )
           )}
           {/* <FriendItem friendStatus={"PENDING"} userName="Friendbro" fname="Al" lname="Stein" />
