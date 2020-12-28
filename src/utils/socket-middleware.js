@@ -12,8 +12,6 @@ const createSocketMiddleware = () => {
             case "LOGIN": {
                 socket = io();
 
-                console.log(storeAPI.getState());
-
                 socket.on("message", (message) => {
                     // May need a Socket Reducer.
                     storeAPI.dispatch({
@@ -24,6 +22,18 @@ const createSocketMiddleware = () => {
                         // (So I'm suspecting an extra field may be required)
                         type: "SOCKET_MESSAGE_RECEIVED",
                         payload: message
+                    });
+                });
+                socket.on("ERROR_MESSAGE", (err_message) => {
+                    // May need a Socket Reducer.
+                    storeAPI.dispatch({
+                        // May need to check whether it is a new:
+                        // 1. Message
+                        // 2. Group
+                        // 3. Friend
+                        // (So I'm suspecting an extra field may be required)
+                        type: "SOCKET_ERROR_RECEIVED",
+                        payload: err_message
                     });
                 });
                 break;

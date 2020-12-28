@@ -8,14 +8,14 @@ function FriendItem(props) {
   // FOR SOME REASON THE SEARCH ICON DOES NOT 
   // RERENDER UPON CHANGE THE SEARCH BAR'S REGEX SEARCH EXPRESSION
 
-  useEffect(() => {
-    console.log(props.friendStatus);
-    console.log(interactionState);
-    if (props.friendStatus !== interactionState) {
-      console.log('--SET!--');
-      setInteractionState(props.friendStatus);
-    }
-  })
+  // useEffect(() => {
+  //   console.log(props.friendStatus);
+  //   console.log(interactionState);
+  //   if (props.friendStatus !== interactionState) {
+  //     console.log('--SET!--');
+  //     setInteractionState(props.friendStatus);
+  //   }
+  // })
 
   const sendFriendReq = () => {
     props.sendFriendReq({
@@ -31,7 +31,7 @@ function FriendItem(props) {
     });
     setInteractionState('UNSENT');
   }
-  const removeFriend = () => {
+  const removeFriend = async () => {
     props.removeFriend({
       sender_id: props.AccountDetails.acc_data._id,
       reciever_id: props.acc_id
@@ -40,6 +40,7 @@ function FriendItem(props) {
   }
 
   console.log(props.friendStatus);
+  console.log(interactionState);
 
   return (
     <>
@@ -53,7 +54,7 @@ function FriendItem(props) {
           <>
             {interactionState == 'UNSENT'
               ?
-              <button onClick={sendFriendReq} className="frienditem-icon">
+              <button key={props.AccountDetails.acc_data._id + '_1'} onClick={sendFriendReq} className="frienditem-icon">
                 <i className="fas fa-user-plus"></i>
               </button>
 
@@ -61,14 +62,14 @@ function FriendItem(props) {
               (
                 interactionState == 'SENT'
                   ?
-                  <button onClick={deleteFriendReq} className="frienditem-icon">
+                  <button key={props.AccountDetails.acc_data._id + '_2'} onClick={deleteFriendReq} className="frienditem-icon">
                     <i className="fas fa-check"></i>
                   </button>
                   :
                   (
                     interactionState == 'FRIENDS'
                       ?
-                      <button onClick={removeFriend} className="frienditem-icon">
+                      <button key={props.AccountDetails.acc_data._id + '_3'} onClick={removeFriend} className="frienditem-icon">
                         <i class="fas fa-user-minus"></i>
                       </button>
                       :
@@ -76,8 +77,6 @@ function FriendItem(props) {
                   )
               )
             }
-
-
           </>
         }
       </div>

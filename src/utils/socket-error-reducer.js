@@ -1,16 +1,16 @@
-
 const initialState = {
-  messageType: '',
-  message: ''
+  errorType: '',
+  errorMessage: ''
 }
 
 function socket_reducer(state = initialState, action) {
   switch (action.type) {
-    case 'SOCKET_MESSAGE_RECEIVED':
+    case 'SOCKET_ERROR_RECEIVED':
+      console.log(action);
       return {
         ...state,
-        messageType: action.payload.messageType,
-        message: action.payload.message
+        errorType: action.payload.messageType,
+        errorMessage: action.payload.message
       }
     default:
       return state

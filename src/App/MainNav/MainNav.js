@@ -57,21 +57,15 @@ class MainNav extends React.Component {
             <NavLink onClick={this.toggleNewFriend} href="#"><i id="new-user" className="fas fa-plus-square"></i></NavLink>
             <Modal isOpen={this.state.newFriendModalState} toggle={this.toggleNewFriend} className="">
               <ModalHeader toggle={this.toggleNewFriend}>Add Friend</ModalHeader>
-
               <FriendSearch />
-
             </Modal>
             {/* Notifications Feature */}
-            <UncontrolledDropdown>
-              <DropdownToggle nav>
-                <i id="notifications" className="fas fa-bell"></i>
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem id="notifications-fr">
-                  <span><i className="fas fa-user"></i>{" "}Profile</span>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            <NavLink onClick={this.toggleNotifications} href="#"><i id="notifications" className="fas fa-bell"></i></NavLink>
+            <Modal isOpen={this.state.notificationsIsOpen} toggle={this.toggleNotifications} className="">
+              <ModalHeader toggle={this.toggleNotifications}>Notifications</ModalHeader>
+              
+            </Modal>
+
             {/* Caret Dropwon Feature */}
             <UncontrolledDropdown>
               <DropdownToggle nav>

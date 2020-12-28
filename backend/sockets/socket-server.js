@@ -60,45 +60,45 @@ io.on('connection', (client) => {
     try {
       await new_fr.save();
     } catch (err) {
-      client.emit('message', {
-        socketMessageType: 'SAVE_ERROR',
-        message: 'Failed to create new Friend Request and save to the database'
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
       })
     }
     try {
       await Account.findByIdAndUpdate(reciever_mongo_id, { $push: { acc_freqs: fr_id } });
     } catch (err) {
-      client.emit('message', {
-        socketMessageType: 'INVALID_UPDATE_ERROR',
-        message: 'Failed to update reciever friend request attribute'
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
       })
     }
   })
 
   // DELETE FRIEND REQUEST HANDLER
-  client.on('DELETE_FRIEND_REQEUST', async (data) => {
-    console.log('DELETE_FRIEND_REQUEST', data);
-
+  client.on('DELETE_FRIEND_REQUEST', async (data) => {
     let sender_mongo_id = ObjectId(data.sender_id);
     let reciever_mongo_id = ObjectId(data.reciever_id);
 
     let deleted_fr;
     // Delete Corresponding Friend Request between two people.
     try {
-      deleted_fr = await FriendRequest.findByIdAndRemove({ fr_reciever_id: reciever_mongo_id, fr_sender_id: sender_mongo_id })
+      deleted_fr = await FriendRequest.findOneAndDelete({ fr_reciever_id: reciever_mongo_id, fr_sender_id: sender_mongo_id });
     } catch (err) {
-      client.emit('message', {
-        socketMessageType: 'DELETE_ERROR',
-        message: 'Failed to delete Friend Request and save to the database'
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
       })
     }
     // Ensure relational integrity by removing the corresponding reference for the friend request.
     try {
-      await Account.findByIdAndUpdate(reciever_mongo_id, { $pullAll: { acc_freqs: deleted_fr._id } });
+      await Account.findByIdAndUpdate(reciever_mongo_id, { $pullAll: { acc_freqs: [deleted_fr._id] } }, (err) => {
+        console.log(err);
+      });
     } catch (err) {
-      client.emit('message', {
-        socketMessageType: 'INVALID_UPDATE_ERROR',
-        message: 'Failed to update reciever friend request attribute'
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: [err, 'YEET']
       })
     }
   })
