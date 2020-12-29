@@ -12,13 +12,6 @@ function rejectFriendRequest(data) {
     payload: data,
   }
 }
-// This is a really bad way of removing an FR from store to force an update!
-// function removeFriendReqFromStore(data) {
-//   return {
-//     type: 'REMOVE_FR',
-//     payload: data
-//   }
-// }
 function removeFriendReqFromStore(data) {
   return (dispatch, getState) => {
     const { AccountDetails } = getState();

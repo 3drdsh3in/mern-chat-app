@@ -108,22 +108,67 @@ io.on('connection', (client) => {
     }
     // Ensure relational integrity by removing the corresponding reference for the friend request.
     try {
-      await Account.findByIdAndUpdate(reciever_mongo_id, { $pullAll: { acc_freqs: [deleted_fr._id] } }, (err) => {
-        console.log(err);
-      });
+      await Account.findByIdAndUpdate(reciever_mongo_id, { $pullAll: { acc_freqs: [deleted_fr._id] } });
     } catch (err) {
       client.emit('ERROR_MESSAGE', {
         messageType: 'SOCKET_SERVER_ERROR',
-        message: [err, 'YEET']
+        message: err
       })
     }
 
     // Search clientStore for any potential reciever Id clients & Update I
   })
 
-  // REMOVE FRIEND FROM FRIEND LIST REQUEST HANDLER 
-  client.on('DELETE_FRIEND', (data) => {
+  // SOCKET ENDPOINT: ACCEPT FRIEND REQUEST HANDLER
+  client.on('FR_ACCEPT', async (data) => {
+    console.log('FR_ACCEPT:', data)
+    let sender_mongo_id = ObjectId(data.sender_id);
+    let reciever_mongo_id = ObjectId(data.reciever_id);
+    let deleted_fr;
+    // Delete Corresponding Friend Request between two people.
+    try {
+      deleted_fr = await FriendRequest.findOneAndDelete({ fr_reciever_id: reciever_mongo_id, fr_sender_id: sender_mongo_id });
+    } catch (err) {
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
+      })
+    }
+    // Ensure relational integrity by removing the corresponding reference for the friend request.
+    try {
+      await Account.findByIdAndUpdate(reciever_mongo_id, { $pullAll: { acc_freqs: [deleted_fr._id] } })
+    } catch (err) {
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
+      })
+    }
+    // Add the sender_id of the FREQ to acc_friends.
+    try {
+      await Account.findByIdAndUpdate(reciever_mongo_id, { $push: { acc_friends: sender_mongo_id } });
+      await Account.findByIdAndUpdate(sender_mongo_id, { $push: { acc_friends: reciever_mongo_id } });
+    } catch (err) {
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
+      })
+    }
+  })
+
+  // SOCKET ENDPOINT: REMOVE FRIEND FROM FRIEND LIST REQUEST HANDLER. 
+  client.on('DELETE_FRIEND', async (data) => {
     console.log('DELETE_FRIEND', data);
+    let sender_mongo_id = ObjectId(data.sender_id);
+    let reciever_mongo_id = ObjectId(data.reciever_id);
+    try {
+      await Account.findByIdAndUpdate(sender_mongo_id, { $pullAll: { acc_friends: [reciever_mongo_id] } });
+      await Account.findByIdAndUpdate(reciever_mongo_id, { $pullAll: { acc_friends: [sender_mongo_id] } });
+    } catch (err) {
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
+      })
+    }
   })
 
   // Disconnect Event.
@@ -134,9 +179,6 @@ io.on('connection', (client) => {
     displayConnectedClients();
   })
 
-  client.on('FR_ACCEPT', (data) => {
-    console.log('FR_ACCEPT:', data)
-  })
 })
 
 module.exports = io;

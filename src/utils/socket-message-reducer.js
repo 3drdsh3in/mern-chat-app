@@ -6,6 +6,7 @@ const initialState = {
 function socket_reducer(state = initialState, action) {
   switch (action.type) {
     case 'NEW_FRIEND_REQUEST':
+      // Update
       return {
         ...state,
         messageType: action.payload.messageType,

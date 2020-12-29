@@ -15,12 +15,11 @@ router.post('/getFriends/:id', async (req, res) => {
   try {
     // Get sender's account data
     let userAccount = await Account.findById(acc_id).populate('acc_freqs').lean();
-    // Get all other account data
+    // Get all other account data (The Search Bar Query)
     let accountDocs = await Account.find({ $and: [{ '_id': { $ne: acc_id } }, { 'acc_usrname': { $regex: req.body.userNameQuery } }] }).populate('acc_freqs').lean();
     // let frDocs = await FriendRequest.find({ $or: [{ 'fr_sender_id': acc_id }, { 'fr_reciever_id': acc_id }] });
     // console.log('Friend Request Docs:', frDocs.length);
     let userFriends = userAccount.acc_friends
-    // let userFriendReqs = userAccount.acc_freqs;
 
     // console.log(accountDocs);
 
@@ -32,7 +31,8 @@ router.post('/getFriends/:id', async (req, res) => {
       let isUnsent = true;
       // IF account in accountDoc[i] is a reciever of the friend request
       for (j = 0; j < userFriends.length; j++) {
-        if (accountDocs[i]._id == userFriends[j].fr_reciever_id) {
+        console.log('MATCHING:', accountDocs[i]._id, userFriends[j],);
+        if (accountDocs[i]._id.equals(userFriends[j])) {
           accountDocs[i]['frStatus'] = 'FRIENDS';
           isUnsent = false;
           break;

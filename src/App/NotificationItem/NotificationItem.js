@@ -13,6 +13,9 @@ function NotificationItem(props) {
       reciever_id: props.AccountDetails.acc_data._id,
       sender_id: props.senderId
     });
+    props.removeFriendReqFromStore({
+      sender_id: props.senderId
+    });
   }
   const rejectFriendRequest = () => {
     props.rejectFriendRequest({
