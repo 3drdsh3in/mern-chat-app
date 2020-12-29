@@ -20,8 +20,8 @@ const createSocketMiddleware = () => {
                         // 2. Group
                         // 3. Friend
                         // (So I'm suspecting an extra field may be required)
-                        type: "SOCKET_MESSAGE_RECEIVED",
-                        payload: message
+                        type: message.messageType,
+                        payload: message.message
                     });
                 });
                 socket.on("ERROR_MESSAGE", (err_message) => {
@@ -45,7 +45,7 @@ const createSocketMiddleware = () => {
                 socket.emit(action.eventName, action.payload);
                 return;
             }
-            
+
         }
 
         return next(action);

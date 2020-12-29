@@ -5,8 +5,7 @@ const initialState = {
 
 function socket_reducer(state = initialState, action) {
   switch (action.type) {
-    case 'SOCKET_MESSAGE_RECEIVED':
-      console.log(action);
+    case 'NEW_FRIEND_REQUEST':
       return {
         ...state,
         messageType: action.payload.messageType,
