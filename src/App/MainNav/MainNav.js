@@ -19,6 +19,7 @@ import {
 
 // Containers:
 import FriendSearch from '../FriendSearch/FriendSearchContainer';
+import NotificationItem from '../NotificationItem/NotificationItemContainer';
 
 
 class MainNav extends React.Component {
@@ -47,6 +48,7 @@ class MainNav extends React.Component {
   }
 
   render() {
+    let acc_freqs = this.props.AccountDetails.acc_data.acc_freqs
     return (
       <>
         <div>
@@ -63,7 +65,13 @@ class MainNav extends React.Component {
             <NavLink onClick={this.toggleNotifications} href="#"><i id="notifications" className="fas fa-bell"></i></NavLink>
             <Modal isOpen={this.state.notificationsIsOpen} toggle={this.toggleNotifications} className="">
               <ModalHeader toggle={this.toggleNotifications}>Notifications</ModalHeader>
-              
+              {acc_freqs.map((acc_freq) => {
+                return (
+                  <>
+                    <NotificationItem key={acc_freq.fr_sender_id._id} notificationTitle={`${acc_freq.fr_sender_id.acc_usrname}`} notificationLabel="Friend Request" notificationType={'FRIEND_REQUEST'} />
+                  </>
+                )
+              })}
             </Modal>
 
             {/* Caret Dropwon Feature */}

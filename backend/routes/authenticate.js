@@ -63,7 +63,13 @@ router.post('/login', (req, res) => {
           refreshToken: refreshToken
         });
       }
-    })
+    }).populate({
+      path: 'acc_freqs',
+      populate: {
+        path: 'fr_sender_id',
+        model: 'Account'
+      }
+    });
 
   // Find Account Info On DB exists and validate enterred info correlates.
   //    - If yes, redirect page to messaging component. (Return Account Information to client.)

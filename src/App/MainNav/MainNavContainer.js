@@ -6,7 +6,7 @@ import MainNav from './MainNav';
 // Actions:
 
 const mapStateToProps = (state) => ({
-
+  AccountDetails: state.AccountDetails
 })
 
 const mapDispatchToProps = (dispatch) => ({
