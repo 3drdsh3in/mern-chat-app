@@ -45,6 +45,7 @@ const createSocketMiddleware = () => {
                 socket.emit(action.eventName, action.payload);
                 return;
             }
+            
         }
 
         return next(action);

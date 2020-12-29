@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   AccountDetails: LoginReducer,
   ChatBodyDetails: ChatBodyReducer,
   SocketMessageDetails: socket_message_reducer,
-  SocketErrorDetails: socket_error_reducer
+  SocketErrorDetails: socket_error_reducer,
 })
 
 export default rootReducer;

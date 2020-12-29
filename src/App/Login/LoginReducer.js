@@ -7,9 +7,17 @@ function LoginReducer(state = initialState, action) {
   switch (action.type) {
     case 'LOGIN':
       return { ...state, acc_data: action.payload }
+    case 'REMOVE_FR':
+      return { ...state, acc_data: action.payload }
     default:
       return state
   }
 }
 
 export default LoginReducer;
+
+// acc_data: {
+// state.acc_data
+// }
+
+// acc_freqs.filter()

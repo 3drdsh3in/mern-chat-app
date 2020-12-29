@@ -9,10 +9,21 @@ function NotificationItem(props) {
   const [notificationType, setNotificationType] = useState(props.notificationType);
 
   const acceptFriendRequest = () => {
-
+    props.acceptFriendRequest({
+      reciever_id: props.AccountDetails.acc_data._id,
+      sender_id: props.senderId
+    });
   }
   const rejectFriendRequest = () => {
-
+    props.rejectFriendRequest({
+      reciever_id: props.AccountDetails.acc_data._id,
+      sender_id: props.senderId
+    });
+    props.removeFriendReqFromStore({
+      sender_id: props.senderId
+    });
+    // setNotificationType(null);
+    // This is a really bad way of removing an FR from store to force an update!
   }
 
   return (

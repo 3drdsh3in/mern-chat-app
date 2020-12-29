@@ -2,18 +2,25 @@ const socket = require('socket.io');
 const io = socket();
 const ObjectId = require('mongoose').Types.ObjectId;
 
-// Models:
+/*
+Models:
+*/
 const Account = require('../models/Account');
 const FriendRequest = require('../models/FriendRequest');
 
-// Socket Middleware:
+/*
+Socket Middleware:
+*/
 
+/*
+Hashmap to access corresponding clients
+*/
 let clientStore = {};
 
 /*
 Console Actions
 */
-function printConnectedClients() {
+function displayConnectedClients() {
   console.log('Clients Currently Conencted: ')
   for (var key in clientStore) {
     for (i = 0; i < clientStore[key].length; i++) {
@@ -42,14 +49,23 @@ io.on('connection', (client) => {
     else if (clientStore[`${hashString}`].length == 0) {
       clientStore[`${hashString}`].push(client);
     }
-    printConnectedClients();
+    displayConnectedClients();
   })
 
   // SEND FRIEND REQUEST HANDLER
   client.on('SEND_FRIEND_REQUEST', async (data) => {
-    console.log('SEND_FRIEND_REQUEST', data);
     let sender_mongo_id = ObjectId(data.sender_id);
     let reciever_mongo_id = ObjectId(data.reciever_id);
+
+    // Check if there are any clients with corresponding reciever_id. If there are, emit the new notification to it, dynamically.
+    if (Array.isArray(clientStore[`${data.sender_id}`])) {
+      for (recievingClient in clientStore[`${data.sender_id}`]) {
+        recievingClient.emit('message', {
+          messageType: 'NEW_FRIEND_REQUEST',
+          message: data
+        })
+      }
+    }
     let fr_id = new ObjectId();
     // Go onto both data.sender_id and data.reciever_id and add a reference of one another.
     let new_fr = new FriendRequest({
@@ -101,6 +117,8 @@ io.on('connection', (client) => {
         message: [err, 'YEET']
       })
     }
+
+    // Search clientStore for any potential reciever Id clients & Update I
   })
 
   // REMOVE FRIEND FROM FRIEND LIST REQUEST HANDLER 
@@ -109,11 +127,15 @@ io.on('connection', (client) => {
   })
 
   // Disconnect Event.
-  client.on('disconnect', (reason, var2) => {
+  client.on('disconnect', (reason) => {
     // Remove the connected client from key/value pair on server.
     clientStore[`${hashString}`].splice(clientStore[`${hashString}`].indexOf(client));
     console.log('Disconnected From', client.id, 'Due To:', reason);
-    printConnectedClients();
+    displayConnectedClients();
+  })
+
+  client.on('FR_ACCEPT', (data) => {
+    console.log('FR_ACCEPT:', data)
   })
 })
 
