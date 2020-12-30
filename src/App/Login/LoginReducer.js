@@ -11,6 +11,9 @@ function LoginReducer(state = initialState, action) {
     //   return { ...state, acc_data: action.payload }
     case 'UPDATE_ACCOUNT_DETAILS':
       return { ...state, acc_data: action.payload }
+    case 'REINITIALIZE_CLIENT':
+      console.log('LOGINREDUCER');
+      return { ...state, acc_data: {} }
     default:
       return state
   }

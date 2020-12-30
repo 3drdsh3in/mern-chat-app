@@ -17,6 +17,11 @@ import {
   ModalHeader,
 } from 'reactstrap';
 
+// React Router Dependencies:
+import {
+  Redirect
+} from 'react-router';
+
 // Containers:
 import FriendSearch from '../FriendSearch/FriendSearchContainer';
 import NotificationItem from '../NotificationItem/NotificationItemContainer';
@@ -28,11 +33,13 @@ class MainNav extends React.Component {
     this.state = {
       optionsIsOpen: false,
       notificationsIsOpen: false,
-      newFriendModalState: false
+      newFriendModalState: false,
+      redirectToLogin: false
     }
     this.toggleOptions = this.toggleOptions.bind(this);
     this.toggleNotifications = this.toggleNotifications.bind(this);
     this.toggleNewFriend = this.toggleNewFriend.bind(this);
+    this.logoutHandler = this.logoutHandler.bind(this);
   }
 
   toggleOptions() {
@@ -45,6 +52,11 @@ class MainNav extends React.Component {
 
   toggleNewFriend() {
     this.setState({ newFriendModalState: !this.state.newFriendModalState });
+  }
+
+  logoutHandler() {
+    this.props.reInitializeStore();
+    this.setState({ redirectToLogin: true });
   }
 
   render() {
@@ -68,12 +80,12 @@ class MainNav extends React.Component {
               {acc_freqs.map((acc_freq) => {
                 return (
                   <>
-                    <NotificationItem 
-                    key={acc_freq._id} 
-                    senderId={acc_freq.fr_sender_id._id} 
-                    notificationTitle={`${acc_freq.fr_sender_id.acc_usrname}`} 
-                    notificationLabel="Friend Request"
-                    notificationType={'FRIEND_REQUEST'} />
+                    <NotificationItem
+                      key={acc_freq._id}
+                      senderId={acc_freq.fr_sender_id._id}
+                      notificationTitle={`${acc_freq.fr_sender_id.acc_usrname}`}
+                      notificationLabel="Friend Request"
+                      notificationType={'FRIEND_REQUEST'} />
                   </>
                 )
               })}
@@ -92,8 +104,15 @@ class MainNav extends React.Component {
                   <span><i className="fas fa-cog"></i>{" "}Settings</span>
                 </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem>
+                <DropdownItem onClick={this.logoutHandler}>
                   <span><i className="fas fa-power-off"></i>{" "}Logout</span>
+                  {
+                    this.state.redirectToLogin
+                      ?
+                      <Redirect to="/" />
+                      :
+                      null
+                  }
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
