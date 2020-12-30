@@ -14,33 +14,33 @@
     transition: color 0.8s 0s;
   }
   svg[id=notifications] {
-    color: #56baed;
+    color: #000000;
     
   }
   svg[id=new-user] {
-    color: #56baed;
+    color: #000000;
   }
 }
 .nav-link:hover {
   transition: all 0.8s 0s;
   background: #dcdee6;
-  svg[id=notifications] {
-    color: #39ace7;
-  }
-  svg[id=new-user] {
-    color: #39ace7;
-  }
+  // svg[id=notifications] {
+  //   color: #39ace7;
+  // }
+  // svg[id=new-user] {
+  //   color: #39ace7;
+  // }
 }
 .dropdown {
   .nav-link{
     svg {
-      color: #56baed;
+      color: #000000;
     }
   }
   .nav-link:hover {
-    svg {
-      color: #39ace7;
-    }
+    // svg {
+    //   color: #39ace7;
+    // }
   }
   .dropdown-item {
     padding-left: 0.8rem;
