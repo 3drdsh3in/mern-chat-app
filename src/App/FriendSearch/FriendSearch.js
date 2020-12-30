@@ -11,6 +11,7 @@ import './FriendSearch.scss';
 
 // Components:
 import FriendItem from '../FriendItem/FriendItemContainer';
+import NotificationItem from '../NotificationItem/NotificationItemContainer';
 
 /*
 Form Body That Controls How The New Friend Feature Adds New Friends.
@@ -50,6 +51,16 @@ class FriendSearch extends React.Component {
     }, 3000)
   }
 
+  // getNfcItemTitle() {
+  //   this.props.AccountDetails.acc_freqs.map((freq, idx) => {
+  //     if (freq.fr_sender_id._id)
+  //   })
+  // }
+
+  // getNfcItemLbl() {
+
+  // }
+
 
 
   render() {
@@ -57,14 +68,24 @@ class FriendSearch extends React.Component {
       <>
         <ModalBody>
           {this.state.searchData.map((accountItem) => (
-            <FriendItem
-              key={accountItem._id}
-              acc_id={accountItem._id}
-              friendStatus={accountItem.frStatus}
-              userName={accountItem.acc_usrname}
-              fname={accountItem.acc_fname}
-              lname={accountItem.acc_lname}
-            />
+            accountItem.frStatus == 'R_SENT'
+              ?
+              <NotificationItem
+                key={accountItem._id}
+                senderId={accountItem._id}
+                notificationTitle={accountItem.acc_usrname}
+                notificationLabel="Friend Request"
+                notificationType={'FRIEND_REQUEST'}
+              />
+              :
+              <FriendItem
+                key={accountItem._id}
+                acc_id={accountItem._id}
+                friendStatus={accountItem.frStatus}
+                userName={accountItem.acc_usrname}
+                fname={accountItem.acc_fname}
+                lname={accountItem.acc_lname}
+              />
           )
           )}
           {/* <FriendItem friendStatus={"PENDING"} userName="Friendbro" fname="Al" lname="Stein" />

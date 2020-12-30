@@ -11,7 +11,7 @@ const Account = require('../models/Account');
 const accountValidation = require('../middleware/accountValidation');
 
 router.post('/login', (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   // Authentication:
   Account.find({
@@ -19,7 +19,7 @@ router.post('/login', (req, res) => {
     acc_password: md5(req.body.password + process.env.PASSWORD_SALT)
   },
     (err, acc) => {
-      console.log(acc);
+      // console.log(acc);
       if (err) {
         res.json(err);
       }

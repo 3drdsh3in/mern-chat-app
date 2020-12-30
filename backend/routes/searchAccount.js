@@ -19,10 +19,24 @@ router.post('/getFriends/:id', async (req, res) => {
     let accountDocs = await Account.find({ $and: [{ '_id': { $ne: acc_id } }, { 'acc_usrname': { $regex: req.body.userNameQuery } }] }).populate('acc_freqs').lean();
     // let frDocs = await FriendRequest.find({ $or: [{ 'fr_sender_id': acc_id }, { 'fr_reciever_id': acc_id }] });
     // console.log('Friend Request Docs:', frDocs.length);
-    let userFriends = userAccount.acc_friends
+    let userFriends = userAccount.acc_friends;
+    let userFriendRequests = userAccount.acc_freqs;
 
-    // console.log(accountDocs);
 
+    /*
+    Algorithm:
+    function(userAccount) {
+      for each account in Account:
+        if length(account.acc_friend) == 0 && length(account.friend_requests) == 0
+          return 'UNSENT'
+        for each friend in account.acc_friend:
+          if friend.id = account.id
+            return 'FRIENDS'
+        for each friend_request in account.acc_freqs:
+          if friend_request.sender_id == userAccount.id
+            return 'SENT'
+    }
+    */
     for (i = 0; i < accountDocs.length; i++) {
       if (userFriends.length == 0 && accountDocs[i].acc_freqs.length == 0) {
         accountDocs[i]['frStatus'] = 'UNSENT';
@@ -31,7 +45,6 @@ router.post('/getFriends/:id', async (req, res) => {
       let isUnsent = true;
       // IF account in accountDoc[i] is a reciever of the friend request
       for (j = 0; j < userFriends.length; j++) {
-        console.log('MATCHING:', accountDocs[i]._id, userFriends[j],);
         if (accountDocs[i]._id.equals(userFriends[j])) {
           accountDocs[i]['frStatus'] = 'FRIENDS';
           isUnsent = false;
@@ -54,17 +67,28 @@ router.post('/getFriends/:id', async (req, res) => {
           // Somehow needs to skip further computation below
         }
       }
-      // - Mark accountDocs[i].frStatus = 'UNSENT'
+      if (!isUnsent) {
+        continue;
+      }
+      for (j = 0; j < userFriendRequests.length; j++) {
+        console.log('MATCHING', userFriendRequests[j].fr_sender_id, accountDocs[i]._id, userFriendRequests[j].fr_sender_id.equals(accountDocs[i]._id))
+        if (userFriendRequests[j].fr_sender_id.equals(accountDocs[i]._id)) {
+          accountDocs[i]['frStatus'] = 'R_SENT';
+          isUnsent = false;
+          break;
+        }
+      }
+
       if (isUnsent) {
         accountDocs[i]['frStatus'] = 'UNSENT';
       }
       // IF account in accountDoc[i] does not have a friendRequest sent to it by the userAccount in req.body.id
       // - Mark accountDocs[i].frStatus = 'UNSENT';
+      console.log(accountDocs[i].frStatus);
     }
     // console.log('Account Docs:', accountDocs.length);
     // console.log(accountDocs);
     // console.log(userFriends.length == 0 && userFriendReqs == 0);
-    console.log(accountDocs);
     res.json(accountDocs);
   } catch (err) {
     res.json(err);

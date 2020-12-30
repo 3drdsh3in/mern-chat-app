@@ -10,10 +10,17 @@ const createSocketMiddleware = () => {
         switch (action.type) {
             // Must dispatch 'LOGIN' action to instantiate socket endpoint.
             case "LOGIN": {
+                // Connect with server.
                 socket = io();
-
-                socket.on("message", (message) => {
-                    // May need a Socket Reducer.
+                /*
+                START: Server => Client Endpoints:
+                */
+                socket.on("NEW_FRIEND_REQUEST", (message) => {
+                    // Modify acc_data the way the server intends:
+                    let state = storeAPI.getState();
+                    let acc_data = state.AccountDetails.acc_data;
+                    acc_data.acc_freqs.push(message.message);
+                    // Dispatch to update Redux Store.
                     storeAPI.dispatch({
                         // May need to check whether it is a new:
                         // 1. Message
@@ -21,17 +28,34 @@ const createSocketMiddleware = () => {
                         // 3. Friend
                         // (So I'm suspecting an extra field may be required)
                         type: message.messageType,
-                        payload: message.message
+                        payload: acc_data
                     });
                 });
-                socket.on("ERROR_MESSAGE", (err_message) => {
-                    // May need a Socket Reducer.
+
+                socket.on("DELETE_FRIEND_REQUEST", (message) => {
+                    // Modify acc_data the way the server intends:
+                    let state = storeAPI.getState();
+                    let acc_data = state.AccountDetails.acc_data;
+                    acc_data.acc_freqs.splice(acc_data.acc_freqs.indexOf(message.message), 1);
+                    // Dispatch to update Redux Store.
                     storeAPI.dispatch({
                         // May need to check whether it is a new:
                         // 1. Message
                         // 2. Group
                         // 3. Friend
                         // (So I'm suspecting an extra field may be required)
+                        type: message.messageType,
+                        payload: acc_data
+                    });
+                });
+
+                /*
+                END: Server => Client Endpoints
+                */
+
+                // Server => Client Endpoint for handling server errors.
+                socket.on("ERROR_MESSAGE", (err_message) => {
+                    storeAPI.dispatch({
                         type: "SOCKET_ERROR_RECEIVED",
                         payload: err_message
                     });
@@ -45,7 +69,6 @@ const createSocketMiddleware = () => {
                 socket.emit(action.eventName, action.payload);
                 return;
             }
-
         }
 
         return next(action);

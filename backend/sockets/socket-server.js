@@ -35,8 +35,8 @@ Socket Endpoints!
 
 // Connect Event:
 io.on('connection', (client) => {
+  console.log(client);
   console.log('Connection Established On', client.id);
-  // client.emit('message');
 
   let hashString;
 
@@ -57,15 +57,6 @@ io.on('connection', (client) => {
     let sender_mongo_id = ObjectId(data.sender_id);
     let reciever_mongo_id = ObjectId(data.reciever_id);
 
-    // Check if there are any clients with corresponding reciever_id. If there are, emit the new notification to it, dynamically.
-    if (Array.isArray(clientStore[`${data.sender_id}`])) {
-      for (recievingClient in clientStore[`${data.sender_id}`]) {
-        recievingClient.emit('message', {
-          messageType: 'NEW_FRIEND_REQUEST',
-          message: data
-        })
-      }
-    }
     let fr_id = new ObjectId();
     // Go onto both data.sender_id and data.reciever_id and add a reference of one another.
     let new_fr = new FriendRequest({
@@ -88,6 +79,22 @@ io.on('connection', (client) => {
         messageType: 'SOCKET_SERVER_ERROR',
         message: err
       })
+    }
+
+    // Check if there are any clients with corresponding reciever_id. If there are, emit the new notification to it, dynamically.
+    // console.log('CLIENTS IN STORE:', clientStore[`${data.reciever_id}`]);
+    if (clientStore[`${data.reciever_id}`] != undefined && Array.isArray(clientStore[`${data.reciever_id}`]) && clientStore[`${data.reciever_id}`].length > 0) {
+      // Fetch the newly created FriendRequest JSON object from the database and populate its 'fr_sender_id' field with the corresponding sender data
+      let new_client_fr = await FriendRequest.findById(fr_id).populate('fr_sender_id').lean(); // use lean() as no modifications are needed.
+
+      // Go through the corresponding reciever_id clients and update each of the client's redux state with the new FriendRequest data.
+      for (i = 0; i < clientStore[`${data.reciever_id}`].length; i++) {
+        console.log('CLIENT:', clientStore[`${data.reciever_id}`][i]);
+        clientStore[`${data.reciever_id}`][i].emit('NEW_FRIEND_REQUEST', {
+          messageType: 'UPDATE_ACCOUNT_DETAILS',
+          message: new_client_fr
+        })
+      }
     }
   })
 
@@ -116,12 +123,21 @@ io.on('connection', (client) => {
       })
     }
 
-    // Search clientStore for any potential reciever Id clients & Update I
+    // Search clientStore for any potential reciever Id clients & Update clients
+    if (clientStore[`${data.reciever_id}`] != undefined && Array.isArray(clientStore[`${data.reciever_id}`]) && clientStore[`${data.reciever_id}`].length > 0) {
+      // Go through the corresponding reciever_id clients and update each of the client's redux state with the new FriendRequest data.
+      for (i = 0; i < clientStore[`${data.reciever_id}`].length; i++) {
+        console.log('CLIENT:', clientStore[`${data.reciever_id}`][i]);
+        clientStore[`${data.reciever_id}`][i].emit('DELETE_FRIEND_REQUEST', {
+          messageType: 'UPDATE_ACCOUNT_DETAILS',
+          message: deleted_fr
+        })
+      }
+    }
   })
 
   // SOCKET ENDPOINT: ACCEPT FRIEND REQUEST HANDLER
   client.on('FR_ACCEPT', async (data) => {
-    console.log('FR_ACCEPT:', data)
     let sender_mongo_id = ObjectId(data.sender_id);
     let reciever_mongo_id = ObjectId(data.reciever_id);
     let deleted_fr;
@@ -157,7 +173,6 @@ io.on('connection', (client) => {
 
   // SOCKET ENDPOINT: REMOVE FRIEND FROM FRIEND LIST REQUEST HANDLER. 
   client.on('DELETE_FRIEND', async (data) => {
-    console.log('DELETE_FRIEND', data);
     let sender_mongo_id = ObjectId(data.sender_id);
     let reciever_mongo_id = ObjectId(data.reciever_id);
     try {
@@ -174,8 +189,12 @@ io.on('connection', (client) => {
   // Disconnect Event.
   client.on('disconnect', (reason) => {
     // Remove the connected client from key/value pair on server.
-    clientStore[`${hashString}`].splice(clientStore[`${hashString}`].indexOf(client));
-    console.log('Disconnected From', client.id, 'Due To:', reason);
+    try {
+      clientStore[`${hashString}`].splice(clientStore[`${hashString}`].indexOf(client));
+      console.log('Disconnected From', client.id, 'Due To:', reason);
+    } catch (err) {
+      console.log(err);
+    }
     displayConnectedClients();
   })
 

@@ -10,7 +10,7 @@ function socket_reducer(state = initialState, action) {
       return {
         ...state,
         messageType: action.payload.messageType,
-        message: action.payload.message
+        message: action.payload
       }
     default:
       return state

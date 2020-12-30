@@ -7,7 +7,9 @@ function LoginReducer(state = initialState, action) {
   switch (action.type) {
     case 'LOGIN':
       return { ...state, acc_data: action.payload }
-    case 'REMOVE_FR':
+    // case 'REMOVE_FR':
+    //   return { ...state, acc_data: action.payload }
+    case 'UPDATE_ACCOUNT_DETAILS':
       return { ...state, acc_data: action.payload }
     default:
       return state

@@ -68,7 +68,12 @@ class MainNav extends React.Component {
               {acc_freqs.map((acc_freq) => {
                 return (
                   <>
-                    <NotificationItem key={acc_freq._id} senderId={acc_freq.fr_sender_id._id} notificationTitle={`${acc_freq.fr_sender_id.acc_usrname}`} notificationLabel="Friend Request" notificationType={'FRIEND_REQUEST'} />
+                    <NotificationItem 
+                    key={acc_freq._id} 
+                    senderId={acc_freq.fr_sender_id._id} 
+                    notificationTitle={`${acc_freq.fr_sender_id.acc_usrname}`} 
+                    notificationLabel="Friend Request"
+                    notificationType={'FRIEND_REQUEST'} />
                   </>
                 )
               })}

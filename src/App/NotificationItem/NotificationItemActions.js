@@ -20,7 +20,7 @@ function removeFriendReqFromStore(data) {
     AccountDetails.acc_data.acc_freqs = acc_freqs.filter((freq) => freq.fr_sender_id._id !== data.sender_id);
 
     dispatch({
-      type: 'REMOVE_FR',
+      type: 'UPDATE_ACCOUNT_DETAILS',
       payload: AccountDetails.acc_data
     });
   };
