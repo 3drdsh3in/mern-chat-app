@@ -64,14 +64,13 @@ const createSocketMiddleware = () => {
             }
             // Action to Logout:
             case 'REINITIALIZE_CLIENT': {
-                console.log('REINIT CLIENT')
                 socket.disconnect();
                 // Move onto the next middleware or reducer to update state.
                 return next(action);
             }
             // This endpoint can only be reached once LOGIN action is dispatched
             // to initialise the socket endpoint on the redux client.
-            case "SEND_WEBSOCKET_MESSAGE": {
+            case 'SEND_WEBSOCKET_MESSAGE': {
                 console.log('SEND_WEBSOCKET_MESSAGE:', action)
                 socket.emit(action.eventName, action.payload);
                 // Do not move onto any further reducer actions.
