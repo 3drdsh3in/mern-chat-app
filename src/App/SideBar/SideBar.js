@@ -11,7 +11,7 @@ import {
 
 //Components:
 import ChatItem from '../ChatItem/ChatItem';
-import NewGroupForm from '../NewGroup/NewGroup';
+import NewGroupForm from '../NewGroup/NewGroupContainer';
 
 // Style Sheets
 import './SideBar.scss';
@@ -47,7 +47,7 @@ class SideBar extends React.Component {
             </button>
             <Modal isOpen={this.state.openModal} toggle={this.toggleModal} className="">
               <ModalHeader toggle={this.toggleModal}>New Group</ModalHeader>
-              <NewGroupForm />
+              <NewGroupForm toggleModalHandler={this.toggleModal} />
             </Modal>
           </div>
           <hr />

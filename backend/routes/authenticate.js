@@ -69,7 +69,8 @@ router.post('/login', (req, res) => {
         path: 'fr_sender_id',
         model: 'Account'
       }
-    });
+    })
+    .populate('acc_friends'); // Comment out if causing bugs
 
   // Find Account Info On DB exists and validate enterred info correlates.
   //    - If yes, redirect page to messaging component. (Return Account Information to client.)

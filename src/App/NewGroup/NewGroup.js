@@ -15,8 +15,16 @@ import './NewGroup.scss';
 class NewGroupForm extends React.Component {
   constructor(props) {
     super(props);
+    this.checkBoxChangeHandler = this.checkBoxChangeHandler.bind(this);
   }
+
+  checkBoxChangeHandler(event) {
+    console.log(event.target.checked);
+    console.log(event.target.id);
+  }
+
   render() {
+    let acc_friends = this.props.AccountDetails.acc_data.acc_friends;
     return (
       <>
         <ModalBody>
@@ -30,21 +38,26 @@ class NewGroupForm extends React.Component {
             <div className="modal-body-item-friend_select_input">
               <h5>Add Friends:</h5>
               <div className="modal-body-item-friend_select_input-wrapper">
-                <div className="modal-body-item-friend_select_input-wrapper-item">
-                  <label for="exampleCheck" check><h6>Check me out</h6></label>
-                  <input type="checkbox" name="check" id="exampleCheck" />
-                </div>
-                <div className="modal-body-item-friend_select_input-wrapper-item">
-                  <label for="exampleCheck" check><h6>Check me out</h6></label>
-                  <input type="checkbox" name="check" id="exampleCheck" />
-                </div>
+
+                {
+                  acc_friends.map((friend) => {
+                    return (
+                      <>
+                        <div className="modal-body-item-friend_select_input-wrapper-item">
+                          <label for={friend._id + '_input'} check><h6>{friend.acc_usrname}</h6></label>
+                          <input onChange={this.checkBoxChangeHandler} type="checkbox" name="check" id={friend._id + '_input'} />
+                        </div>
+                      </>
+                    )
+                  })
+                }
               </div>
             </div>
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.toggleModal}>Create Group</Button>{' '}
-          <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
+          <Button color="primary" onClick={this.props.toggleModalHandler}>Create Group</Button>{' '}
+          <Button color="secondary" onClick={this.props.toggleModalHandler}>Cancel</Button>
         </ModalFooter>
       </>
     )
