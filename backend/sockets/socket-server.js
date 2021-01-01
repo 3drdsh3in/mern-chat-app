@@ -7,6 +7,7 @@ Models:
 */
 const Account = require('../models/Account');
 const FriendRequest = require('../models/FriendRequest');
+const ChatGroup = require('../models/ChatGroup');
 
 /*
 Socket Middleware:
@@ -28,6 +29,13 @@ function displayConnectedClients() {
     }
   }
 }
+/*
+Directed Emit Actions
+*/
+function relayMessage(target, message) {
+  // finds the corresponding target & sends the input message
+
+}
 
 /*
 Socket Endpoints!
@@ -35,7 +43,6 @@ Socket Endpoints!
 
 // Connect Event:
 io.on('connection', (client) => {
-  console.log(client);
   console.log('Connection Established On', client.id);
 
   let hashString;
@@ -89,7 +96,6 @@ io.on('connection', (client) => {
 
       // Go through the corresponding reciever_id clients and update each of the client's redux state with the new FriendRequest data.
       for (i = 0; i < clientStore[`${data.reciever_id}`].length; i++) {
-        console.log('CLIENT:', clientStore[`${data.reciever_id}`][i]);
         clientStore[`${data.reciever_id}`][i].emit('NEW_FRIEND_REQUEST', {
           messageType: 'UPDATE_ACCOUNT_DETAILS',
           message: new_client_fr
@@ -127,7 +133,6 @@ io.on('connection', (client) => {
     if (clientStore[`${data.reciever_id}`] != undefined && Array.isArray(clientStore[`${data.reciever_id}`]) && clientStore[`${data.reciever_id}`].length > 0) {
       // Go through the corresponding reciever_id clients and update each of the client's redux state with the new FriendRequest data.
       for (i = 0; i < clientStore[`${data.reciever_id}`].length; i++) {
-        console.log('CLIENT:', clientStore[`${data.reciever_id}`][i]);
         clientStore[`${data.reciever_id}`][i].emit('DELETE_FRIEND_REQUEST', {
           messageType: 'UPDATE_ACCOUNT_DETAILS',
           message: deleted_fr
@@ -143,7 +148,7 @@ io.on('connection', (client) => {
     let deleted_fr;
     // Delete Corresponding Friend Request between two people.
     try {
-      deleted_fr = await FriendRequest.findOneAndDelete({ fr_reciever_id: reciever_mongo_id, fr_sender_id: sender_mongo_id });
+      deleted_fr = await FriendRequest.findOneAndDelete({ fr_reciever_id: reciever_mongo_id, fr_sender_id: sender_mongo_id }).populate('fr_reciever_id');
     } catch (err) {
       client.emit('ERROR_MESSAGE', {
         messageType: 'SOCKET_SERVER_ERROR',
@@ -169,6 +174,16 @@ io.on('connection', (client) => {
         message: err
       })
     }
+    // Search clientStore for any potential reciever Id clients & Update clients
+    if (clientStore[`${data.sender_id}`] != undefined && Array.isArray(clientStore[`${data.sender_id}`]) && clientStore[`${data.sender_id}`].length > 0) {
+      // Go through the corresponding reciever_id clients and update each of the client's redux state with the new FriendRequest data.
+      for (i = 0; i < clientStore[`${data.sender_id}`].length; i++) {
+        clientStore[`${data.sender_id}`][i].emit('FR_ACCEPT', {
+          messageType: 'UPDATE_ACCOUNT_DETAILS',
+          message: deleted_fr
+        })
+      }
+    }
   })
 
   // SOCKET ENDPOINT: REMOVE FRIEND FROM FRIEND LIST REQUEST HANDLER. 
@@ -179,6 +194,60 @@ io.on('connection', (client) => {
       await Account.findByIdAndUpdate(sender_mongo_id, { $pullAll: { acc_friends: [reciever_mongo_id] } });
       await Account.findByIdAndUpdate(reciever_mongo_id, { $pullAll: { acc_friends: [sender_mongo_id] } });
     } catch (err) {
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
+      })
+    }
+
+    // Search clientStore for any potential reciever Id clients & Update clients
+    if (clientStore[`${data.sender_id}`] != undefined && Array.isArray(clientStore[`${data.sender_id}`]) && clientStore[`${data.sender_id}`].length > 0) {
+      // Go through the corresponding reciever_id clients and update each of the client's redux state with the new FriendRequest data.
+      for (i = 0; i < clientStore[`${data.sender_id}`].length; i++) {
+        clientStore[`${data.sender_id}`][i].emit('DELETE_FRIEND', {
+          messageType: 'UPDATE_ACCOUNT_DETAILS',
+          message: data.reciever_id
+        })
+      }
+    }
+    // Search clientStore for any potential reciever Id clients & Update clients
+    if (clientStore[`${data.reciever_id}`] != undefined && Array.isArray(clientStore[`${data.reciever_id}`]) && clientStore[`${data.reciever_id}`].length > 0) {
+      // Go through the corresponding reciever_id clients and update each of the client's redux state with the new FriendRequest data.
+      for (i = 0; i < clientStore[`${data.reciever_id}`].length; i++) {
+        clientStore[`${data.reciever_id}`][i].emit('DELETE_FRIEND', {
+          messageType: 'UPDATE_ACCOUNT_DETAILS',
+          message: data.sender_id
+        })
+      }
+    }
+  })
+
+  // SOCKET ENDPOINT: CREATE A NEW GROUP
+  client.on('CREATE_NEW_GROUP', async (data) => {
+    let g_id;
+    try {
+      g_id = new ObjectId();
+      let chat_grp = new ChatGroup({
+        _id: g_id,
+        g_type: data.newGroupType,
+        g_title: data.newGroupTitle,
+        g_members: data.newGroupMembers,
+        g_leaders: data.newGroupLeaders
+      })
+      await chat_grp.save();
+    } catch (err) {
+      console.log(err);
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
+      })
+    }
+    try {
+      for (i = 0; i < data.newGroupMembers.length; i++) {
+        await Account.findByIdAndUpdate(newGroupMembers[i], { $push: { acc_grps: g_id } });
+      }
+    } catch (err) {
+      console.log(err);
       client.emit('ERROR_MESSAGE', {
         messageType: 'SOCKET_SERVER_ERROR',
         message: err

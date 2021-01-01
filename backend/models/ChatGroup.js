@@ -6,12 +6,16 @@ const chatGroupSchema = new mongoose.Schema({
     type: String,
     unique: false
   },
+  g_members: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Account'
+  }],
   g_type: {
     type: String,
     enum: ['FRIEND', 'GROUP'],
     default: 'FRIEND'
   },
-  g_members: [{
+  g_leaders: [{
     type: mongoose.Types.ObjectId,
     ref: 'Account'
   }]

@@ -16,6 +16,8 @@ import {
   Modal,
   ModalHeader,
 } from 'reactstrap';
+// uuid Dependency:
+import { v4 as uuidv4 } from 'uuid';
 
 // React Router Dependencies:
 import {
@@ -81,8 +83,9 @@ class MainNav extends React.Component {
                 return (
                   <>
                     <NotificationItem
-                      key={acc_freq._id}
+                      key={uuidv4()}
                       senderId={acc_freq.fr_sender_id._id}
+                      senderData={acc_freq.fr_sender_id}
                       notificationTitle={`${acc_freq.fr_sender_id.acc_usrname}`}
                       notificationLabel="Friend Request"
                       notificationType={'FRIEND_REQUEST'} />

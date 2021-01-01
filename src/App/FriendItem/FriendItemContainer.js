@@ -13,7 +13,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   sendFriendReq: (data) => dispatch(sendFriendReq(data)),
   deleteFriendReq: (data) => dispatch(deleteFriendReq(data)),
-  removeFriend: (data) => dispatch(removeFriend(data))
+  removeFriend: (data) => dispatch(removeFriend(data)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FriendItem);

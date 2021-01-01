@@ -16,8 +16,8 @@ const createSocketMiddleware = () => {
                 START: Server => Client Endpoints:
                 */
                 socket.on("NEW_FRIEND_REQUEST", (message) => {
-                    // Modify acc_data the way the server intends:
                     let state = storeAPI.getState();
+                    // Modify acc_data the way the server intends:
                     let acc_data = state.AccountDetails.acc_data;
                     acc_data.acc_freqs.push(message.message);
                     // Dispatch to update Redux Store.
@@ -33,8 +33,8 @@ const createSocketMiddleware = () => {
                 });
 
                 socket.on("DELETE_FRIEND_REQUEST", (message) => {
-                    // Modify acc_data the way the server intends:
                     let state = storeAPI.getState();
+                    // Modify acc_data the way the server intends:
                     let acc_data = state.AccountDetails.acc_data;
                     acc_data.acc_freqs.splice(acc_data.acc_freqs.indexOf(message.message), 1);
                     // Dispatch to update Redux Store.
@@ -48,6 +48,41 @@ const createSocketMiddleware = () => {
                         payload: acc_data
                     });
                 });
+
+                socket.on("FR_ACCEPT", (message) => {
+                    let state = storeAPI.getState();
+                    let acc_data = state.AccountDetails.acc_data;
+                    acc_data.acc_friends.push(message.message.fr_reciever_id);
+                    console.log(message);
+                    console.log(acc_data);
+
+                    storeAPI.dispatch({
+                        type: message.messageType,
+                        payload: acc_data
+                    })
+                })
+
+                socket.on("DELETE_FRIEND", (message) => {
+                    console.log('SOCKET DELETE FRIEND:', message);
+                    let { AccountDetails } = storeAPI.getState();
+                    // Modify for data needs:
+                    let acc_friends = AccountDetails.acc_data.acc_friends;
+                    let removeIdx = null;
+                    acc_friends.map((friend, idx) => {
+                        if (friend._id == message.message) {
+                            removeIdx = idx;
+                        }
+                    })
+                    if (!null) {
+                        acc_friends.splice(removeIdx, 1);
+                    }
+                    AccountDetails.acc_data.acc_friends = acc_friends;
+
+                    storeAPI.dispatch({
+                        type: 'UPDATE_ACCOUNT_DETAILS',
+                        payload: AccountDetails.acc_data
+                    })
+                })
 
                 /*
                 END: Server => Client Endpoints

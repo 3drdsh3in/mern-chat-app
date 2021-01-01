@@ -4,11 +4,11 @@ import './NotificationItem.scss';
 
 function NotificationItem(props) {
 
-  console.log(props);
-
   const [notificationType, setNotificationType] = useState(props.notificationType);
 
   const acceptFriendRequest = () => {
+    // Update the accepting user's redux store to correspond with the the database.
+    props.addFriendToStore(props.senderData);
     props.acceptFriendRequest({
       reciever_id: props.AccountDetails.acc_data._id,
       sender_id: props.senderId
@@ -25,8 +25,6 @@ function NotificationItem(props) {
     props.removeFriendReqFromStore({
       sender_id: props.senderId
     });
-    // setNotificationType(null);
-    // This is a really bad way of removing an FR from store to force an update!
   }
 
   return (

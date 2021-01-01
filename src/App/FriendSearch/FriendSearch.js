@@ -85,6 +85,7 @@ class FriendSearch extends React.Component {
                 userName={accountItem.acc_usrname}
                 fname={accountItem.acc_fname}
                 lname={accountItem.acc_lname}
+                searchData={accountItem}
               />
           )
           )}

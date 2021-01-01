@@ -39,9 +39,6 @@ function FriendItem(props) {
     setInteractionState('UNSENT');
   }
 
-  console.log(props.friendStatus);
-  console.log(interactionState);
-
   return (
     <>
       <div className="frienditem">
