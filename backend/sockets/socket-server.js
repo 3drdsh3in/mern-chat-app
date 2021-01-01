@@ -224,6 +224,7 @@ io.on('connection', (client) => {
 
   // SOCKET ENDPOINT: CREATE A NEW GROUP
   client.on('CREATE_NEW_GROUP', async (data) => {
+    console.log(data);
     let g_id;
     try {
       g_id = new ObjectId();
@@ -244,7 +245,28 @@ io.on('connection', (client) => {
     }
     try {
       for (i = 0; i < data.newGroupMembers.length; i++) {
-        await Account.findByIdAndUpdate(newGroupMembers[i], { $push: { acc_grps: g_id } });
+        await Account.findByIdAndUpdate(data.newGroupMembers[i], { $push: { acc_grps: g_id } });
+      }
+    } catch (err) {
+      console.log(err);
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
+      })
+    }
+    // Go through the clients of data.newGroupMembers 
+    // & emit a message to update their redux state!
+    try {
+      for (i = 0; i < data.newGroupMembers.length; i++) {
+        for (j = 0; j < clientStore[data.newGroupMembers[i]]; j++) {
+          let currClient = clientStore[data.newGroupMembers[i]][j];
+          // Emit data for newGroup to redux state!
+          currClient.emit('NEW_GROUP', {
+            messageType: 'UPDATE_GROUP_DETAILS',
+            message: chat_grp
+          })
+          // 
+        }
       }
     } catch (err) {
       console.log(err);

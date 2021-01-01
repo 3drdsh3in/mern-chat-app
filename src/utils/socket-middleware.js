@@ -63,7 +63,6 @@ const createSocketMiddleware = () => {
                 })
 
                 socket.on("DELETE_FRIEND", (message) => {
-                    console.log('SOCKET DELETE FRIEND:', message);
                     let { AccountDetails } = storeAPI.getState();
                     // Modify for data needs:
                     let acc_friends = AccountDetails.acc_data.acc_friends;
@@ -82,6 +81,13 @@ const createSocketMiddleware = () => {
                         type: 'UPDATE_ACCOUNT_DETAILS',
                         payload: AccountDetails.acc_data
                     })
+                })
+
+                // Chat Groups:
+
+                socket.on("NEW_GROUP", (message) => {
+                    console.log('NEW GROUP:', message);
+                    
                 })
 
                 /*

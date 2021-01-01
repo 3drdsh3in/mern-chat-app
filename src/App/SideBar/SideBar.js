@@ -21,7 +21,7 @@ class SideBar extends React.Component {
     super(props);
     console.log(props);
     this.state = {
-      selectedIndex: -1,
+      selectedIndex: 0,
       openModal: false,
     }
     this.toggleModal = this.toggleModal.bind(this);
@@ -37,6 +37,7 @@ class SideBar extends React.Component {
   // Consequent Rerenders:
   // Potentially New Chat Groups (Includes Friends) being added
   render() {
+    let acc_grps = this.props.AccountDetails.acc_data.acc_grps;
     return (
       <>
         <div className="sidebar">
@@ -53,24 +54,29 @@ class SideBar extends React.Component {
           <hr />
           {/* Friends/Groups Item Entry */}
           <div className="sidebar-body">
-
-            {/* Insert Group Chat Items, Somehow pass isSelected feature to this.state.selectedIndex */}
             <ChatItem
               onClick={(event) => { this.setState({ selectedIndex: 0 }) }}
-              userId={`${'SomeNameFromReduxProps'}`}
-              userMsg={`${'SomeMsgFromReduxProps'}`}
+              userId={`Welcome ${this.props.AccountDetails.acc_data.acc_usrname}`}
+              userMsg={`Click here for more details.`}
               isSelected={true}
             />
             <ChatItem
               onClick={(event) => { this.setState({ selectedIndex: 1 }) }}
-              userId={`${'SomeNameFromReduxProps'}`}
-              userMsg={`${'SomeMsgFromReduxProps'}`}
+              userId={'World Chat'}
+              userMsg={'Click here to talk to other users.'}
+              isSelected={false}
             />
-            <ChatItem
-              onClick={(event) => { this.setState({ selectedIndex: 2 }) }}
-              userId={`${'SomeNameFromReduxProps'}`}
-              userMsg={`${'SomeMsgFromReduxProps'}`}
-            />
+            {
+              acc_grps.map((grp, idx) => (
+                <ChatItem
+                  onClick={(event) => { this.setState({ selectedIndex: idx + 2 }) }}
+                  userId={grp.g_title}
+                  userMsg={grp.g_type}
+                  isSelected={false}
+                />
+              ))
+            }
+            {/* Insert Group Chat Items, Somehow pass isSelected feature to this.state.selectedIndex */}
           </div>
         </div>
       </>
