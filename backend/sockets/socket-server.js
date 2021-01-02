@@ -233,7 +233,8 @@ io.on('connection', (client) => {
         g_type: data.newGroupType,
         g_title: data.newGroupTitle,
         g_members: data.newGroupMembers,
-        g_leaders: data.newGroupLeaders
+        g_leaders: data.newGroupLeaders,
+        g_messages: []
       })
       await chat_grp.save();
     } catch (err) {

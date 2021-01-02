@@ -20,7 +20,7 @@ class Main extends React.Component {
     // Ideally change this to a check whether sesh_id hasn't expired.
     if (Object.keys(this.props.AccountDetails.acc_data).length === 0) {
       // COMMENT OUT FOR UI DEVELOPMENT:
-      // this.setState({ authenticated: false });
+      this.setState({ authenticated: false });
     } else {
       // Emit AccountDetails to emit in the socket middleware client.
       this.props.emitAccountDetails(this.props.AccountDetails);

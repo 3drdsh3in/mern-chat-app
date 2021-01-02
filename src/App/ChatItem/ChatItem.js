@@ -21,7 +21,7 @@ class ChatItem extends React.Component {
   // console.log(props);
   render() {
     return (
-    this.state.isSelected
+      this.state.isSelected
         ?
         // Selected Render
         <div className="chatitem selected">

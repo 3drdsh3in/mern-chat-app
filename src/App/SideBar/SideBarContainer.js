@@ -3,15 +3,16 @@ import { connect } from 'react-redux';
 // Component:
 import SideBar from './SideBar';
 
-import {getChatData} from './SideBarActions';
+import { updateSelectedChatItem } from './SideBarActions';
 
 const mapStateToProps = (state) => ({
   AccountDetails: state.AccountDetails,
-  chat_messages: state.chat_messages
+  chat_messages: state.chat_messages,
+  SideBarDetails: state.SideBarDetails
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getChatData: (url) => dispatch(getChatData(url))
+  updateSelectedChatItem: (data) => dispatch(updateSelectedChatItem(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

@@ -18,6 +18,11 @@ const chatGroupSchema = new mongoose.Schema({
   g_leaders: [{
     type: mongoose.Types.ObjectId,
     ref: 'Account'
+  }],
+  g_members: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Message',
+    default: []
   }]
 });
 
