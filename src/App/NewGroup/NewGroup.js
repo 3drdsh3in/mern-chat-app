@@ -40,6 +40,7 @@ class NewGroupForm extends React.Component {
 
   submitNewGroup() {
     this.props.createNewGroup(this.state);
+    this.props.toggleModalHandler();
   }
 
 
