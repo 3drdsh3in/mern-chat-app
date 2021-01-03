@@ -8,6 +8,7 @@ Models:
 const Account = require('../models/Account');
 const FriendRequest = require('../models/FriendRequest');
 const ChatGroup = require('../models/ChatGroup');
+const Message = require('../models/Message');
 
 /*
 Socket Middleware:
@@ -25,7 +26,7 @@ function displayConnectedClients() {
   console.log('Clients Currently Conencted: ')
   for (var key in clientStore) {
     for (i = 0; i < clientStore[key].length; i++) {
-      console.log(clientStore[key][i].id);
+      console.log(key, ':', clientStore[key][i].id);
     }
   }
 }
@@ -278,6 +279,59 @@ io.on('connection', (client) => {
     }
   })
 
+  client.on('NEW_MESSAGE', async (data) => {
+    // clientStore displaying nothing?
+    // displayConnectedClients();
+    // 1. Create New Message & .save() onto db.
+    let new_msg_id = new ObjectId();
+    let msg_chat_grp, newmsg;
+    try {
+      new_msg = new Message({
+        _id: new_msg_id,
+        m_sender: data.m_sender,
+        m_dt: data.m_dt,
+        g_id: data.g_id,
+        msg_string: data.msg_string
+      })
+      console.log(new_msg.g_id);
+      await new_msg.save();
+    } catch (err) {
+      console.log(err);
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
+      })
+    }
+    // 2. Fetch ChatGroup w/ data.g_id and push the New Message Ref onto the db.
+    try {
+      msg_chat_grp = await ChatGroup.findByIdAndUpdate(data.g_id, { $push: { g_messages: new_msg_id } });
+    } catch (err) {
+      console.log(err);
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
+      })
+    }
+    // 3. Fetch all g_members id's from the corresponding ChatGroup entity & emit the New Message
+    // entity to each of them (If they exist).
+    let endpointMembers = msg_chat_grp.g_members;
+    for (i = 0; i < endpointMembers.length; i++) {
+      // Search clientStore for any potential reciever Id clients & Update clients
+      // console.log(typeof endpointMembers[i].toString(), endpointMembers[i].toString(), clientStore[endpointMembers[i].toString()]);
+      if (clientStore[`${endpointMembers[i]}`] != undefined && Array.isArray(clientStore[`${endpointMembers[i]}`]) && clientStore[`${endpointMembers[i]}`].length > 0) {
+        // Go through the corresponding reciever_id clients and update each of the client's redux state with the new FriendRequest data.
+        for (j = 0; j < clientStore[`${endpointMembers[i]}`].length; j++) {
+          clientStore[`${endpointMembers[i]}`][j].emit('NEW_MESSAGE', {
+            messageType: 'UPDATE_ACCOUNT_DETAILS',
+            message: new_msg
+          })
+        }
+      }
+
+
+    }
+  })
+
   // Disconnect Event.
   client.on('disconnect', (reason) => {
     // Remove the connected client from key/value pair on server.
@@ -291,5 +345,9 @@ io.on('connection', (client) => {
   })
 
 })
+
+// setInterval(() => {
+//   displayConnectedClients();
+// }, 10000)
 
 module.exports = io;

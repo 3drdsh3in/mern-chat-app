@@ -87,7 +87,24 @@ const createSocketMiddleware = () => {
 
                 socket.on("NEW_GROUP", (message) => {
                     console.log('NEW GROUP:', message);
-                    
+
+                })
+
+                socket.on("NEW_MESSAGE", (message) => {
+                    console.log(message, message.g_id);
+                    let { AccountDetails } = storeAPI.getState();
+                    let acc_grps = AccountDetails.acc_data.acc_grps
+                    acc_grps.map((grp, idx) => {
+                        if (grp._id == message.message.g_id) {
+                            grp.g_messages.push(message.message);
+                        }
+                    })
+                    // console.log(acc_grps);
+                    AccountDetails.acc_data.acc_grps = acc_grps;
+                    storeAPI.dispatch({
+                        type: 'UPDATE_ACCOUNT_DETAILS',
+                        payload: AccountDetails.acc_data
+                    })
                 })
 
                 /*

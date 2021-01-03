@@ -17,6 +17,11 @@ class ChatBody extends React.Component {
 
   submitMessageInput() {
     console.log(this.state.messageInput);
+    //g_id and 
+    this.props.sendNewMessage({
+      g_id: this.props.viewedGrp._id,
+      msg_string: this.state.messageInput
+    });
   }
 
   handleKeyPress(event) {
@@ -26,8 +31,6 @@ class ChatBody extends React.Component {
   }
 
   render() {
-    // console.log(this.props.AccountDetails.acc_data._id);
-    // console.log(this.props.viewedGrp);
     let clientId = this.props.AccountDetails.acc_data._id;
     let displayMessages = this.props.viewedGrp.g_messages;
     return (
@@ -35,11 +38,9 @@ class ChatBody extends React.Component {
         <div className="chatbody-messages">
           {
             displayMessages.map((msg) => (
-              <Message senderName={msg._id.acc_usrname} msgString={msg.msg_string} isSender={clientId == msg._id._id} />
+              <Message senderName={msg._id.acc_usrname} msgString={msg.msg_string} isSender={clientId == msg.m_sender} />
             ))
           }
-          {/* <Message senderName={''} msgString="Yes" isSender={false} />
-          <Message senderName={''} msgString="Yes" isSender={true} /> */}
         </div>
         <div className="chatbody-form">
           <hr />
