@@ -6,20 +6,18 @@ const jwt = require('jsonwebtoken');
 
 // Schemas:
 const Account = require('../models/Account');
+const Message = require('../models/Message');
 
 // Middleware:
 const accountValidation = require('../middleware/accountValidation');
 
 router.post('/login', (req, res) => {
-  // console.log(req.body);
-
   // Authentication:
   Account.find({
     acc_usrname: req.body.username,
     acc_password: md5(req.body.password + process.env.PASSWORD_SALT)
   },
     (err, acc) => {
-      // console.log(acc);
       if (err) {
         res.json(err);
       }
@@ -56,7 +54,6 @@ router.post('/login', (req, res) => {
           data,
           process.env.SECRET_REFRESH_TOKEN,
           { algorithm: 'HS256' });
-
         res.json({
           account: acc,
           accessToken: accessToken,
@@ -71,8 +68,19 @@ router.post('/login', (req, res) => {
         model: 'Account'
       }
     })
+    .populate({
+      path: 'acc_grps',
+      populate: {
+        path: 'g_messages',
+        model: 'Message',
+        populate: {
+          path: '_id',
+          model: 'Account'
+        }
+      }
+    })
+    // .populate('acc_grps')
     .populate('acc_friends') // Comment out if causing bugs
-    .populate('acc_grps');
 
   // Find Account Info On DB exists and validate enterred info correlates.
   //    - If yes, redirect page to messaging component. (Return Account Information to client.)

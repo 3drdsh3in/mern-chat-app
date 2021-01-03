@@ -7,8 +7,9 @@ const initialState = {
 function SideBarReducer(state = initialState, action) {
   switch (action.type) {
     case 'UPDATE_SELECTED_CHATITEM':
-      console.log('UPDATE SELECTED CHATITEM REDUCER')
       return { ...state, selectedChatItem: action.payload }
+    case 'REINITIALIZE_CLIENT':
+      return { ...state, selectedChatItem: 0 }
     default:
       return state
   }

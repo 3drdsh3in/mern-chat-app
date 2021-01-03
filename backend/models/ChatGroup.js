@@ -19,7 +19,7 @@ const chatGroupSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: 'Account'
   }],
-  g_members: [{
+  g_messages: [{
     type: mongoose.Types.ObjectId,
     ref: 'Message',
     default: []

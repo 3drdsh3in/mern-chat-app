@@ -7,6 +7,8 @@ import {
   Input
 } from 'reactstrap';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import './FriendSearch.scss';
 
 // Components:
@@ -71,7 +73,7 @@ class FriendSearch extends React.Component {
             accountItem.frStatus == 'R_SENT'
               ?
               <NotificationItem
-                key={accountItem._id}
+                key={uuidv4()}
                 senderId={accountItem._id}
                 notificationTitle={accountItem.acc_usrname}
                 notificationLabel="Friend Request"
@@ -79,7 +81,7 @@ class FriendSearch extends React.Component {
               />
               :
               <FriendItem
-                key={accountItem._id}
+                key={uuidv4()}
                 acc_id={accountItem._id}
                 friendStatus={accountItem.frStatus}
                 userName={accountItem.acc_usrname}

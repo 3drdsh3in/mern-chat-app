@@ -5,8 +5,11 @@ import MainNav from '../MainNav/MainNavContainer';
 import SideBar from '../SideBar/SideBarContainer';
 import ChatHeader from '../ChatHeader/ChatHeaderContainer';
 import ChatBody from '../ChatBody/ChatBodyContainer';
+import WelcomeBody from '../WelcomeBody/WelcomeBody';
 
 import './Main.scss';
+
+import { v4 as uuidv4 } from 'uuid';
 
 class Main extends React.Component {
   constructor(props) {
@@ -28,7 +31,10 @@ class Main extends React.Component {
   }
 
   render() {
-    console.log(this.state.authenticated)
+    let grps = this.props.AccountDetails.acc_data.acc_grps;
+    let selectedChatGrpIdx = this.props.SideBarDetails.selectedChatItem;
+    let viewedGrp = grps[selectedChatGrpIdx - 1];
+    console.log(viewedGrp);
     return (
       this.state.authenticated
         ?
@@ -41,11 +47,18 @@ class Main extends React.Component {
               <div className="main-body-side">
                 <SideBar />
               </div>
-              <div className="main-body-content">
-                {/* Pass In Actual State Props Instead of the hard coded shit here! */}
-                <ChatHeader chatName="Fuck" chatType="G" />
-                <ChatBody />
-              </div>
+
+              {this.props.SideBarDetails.selectedChatItem == 0
+                ?
+                <div key={uuidv4()} className="main-body-content">
+                  <WelcomeBody />
+                </div>
+                :
+                <div key={uuidv4()} className="main-body-content">
+                  <ChatHeader chatName={viewedGrp.g_title} chatType={viewedGrp.g_type} />
+                  <ChatBody viewedGrp={viewedGrp} />
+                </div>
+              }
             </div>
           </div>
         </>

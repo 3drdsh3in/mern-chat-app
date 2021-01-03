@@ -3,7 +3,6 @@
 
 function updateSelectedChatItem(data) {
   // data should be the index of the newly selected item.
-  console.log(data);
   return {
     type: 'UPDATE_SELECTED_CHATITEM',
     payload: data

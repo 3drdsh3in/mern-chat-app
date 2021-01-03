@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import ChatBody from './ChatBody';
 
 const mapStateToProps = (state) => ({
+  AccountDetails: state.AccountDetails
 })
 const mapDispatchToProps = (dispatch) => ({
 })

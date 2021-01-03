@@ -80,7 +80,8 @@ class SideBar extends React.Component {
                 />
               }
             </div>
-            <div onClick={() => this.handleClickEvt(1)}>
+            {/* Sample World Chat Component (Will need to create this entity in the DB later on!) */}
+            {/* <div onClick={() => this.handleClickEvt(1)}>
               {1 == this.props.SideBarDetails.selectedChatItem
                 ?
                 <ChatItem
@@ -97,12 +98,12 @@ class SideBar extends React.Component {
                   isSelected={false}
                 />
               }
-            </div>
+            </div> */}
             {/* All the ChatGroups the user/account is currently in. */}
             {
               acc_grps.map((grp, idx) => (
-                <div onClick={() => this.handleClickEvt(idx + 2)}>
-                  {idx + 2 == this.props.SideBarDetails.selectedChatItem
+                <div onClick={() => this.handleClickEvt(idx + 1)}>
+                  {idx + 1 == this.props.SideBarDetails.selectedChatItem
                     ?
                     <ChatItem
                       userId={grp.g_title}

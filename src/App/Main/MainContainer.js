@@ -8,7 +8,8 @@ import emitAccountDetails from "./MainActions";
 
 
 const mapStateToProps = (state) => ({
-  AccountDetails: state.AccountDetails
+  AccountDetails: state.AccountDetails,
+  SideBarDetails: state.SideBarDetails
 })
 
 const mapDispatchToProps = (dispatch) => ({

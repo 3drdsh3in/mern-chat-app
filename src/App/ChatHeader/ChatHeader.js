@@ -9,11 +9,11 @@ function ChatHeader({chatName, chatType}) {
       <div className="chat-header">
           <h5>{chatName}</h5>
           {
-          chatType == 'F' 
+          chatType == 'FRIENDS' 
           ?
           <button>Friends <i className="fas fa-check"></i></button>
           :
-          (chatType == 'G' 
+          (chatType == 'GROUP' 
           ?
           <button>In Group <i className="fas fa-check"></i></button>
           :
