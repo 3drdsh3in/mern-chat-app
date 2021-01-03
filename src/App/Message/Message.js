@@ -1,19 +1,44 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import './Message.scss';
 
-function Message({msgString, isSender}) {
+function Message({ senderName, msgString, isSender, marginBottom, messageSpan }) {
 
-  return(
+  console.log(senderName);
+
+  return (
     isSender
-    ?
-    <div className="message sender">
-      <p>{msgString}</p>
-    </div>
-    :
-    <div className="message reciever">
-      <p>{msgString}</p>
-    </div>
+      ?
+      // Sender:
+      (
+        marginBottom
+          ?
+          <div className="message sender margin-bottom">
+            <p>{msgString}</p>
+          </div>
+          :
+          <div className="message sender">
+            <p>{msgString}</p>
+          </div>
+      )
+      :
+      (// Others User Messages:
+        marginBottom
+          ?
+          <>
+            <span className="message-span">{senderName}</span>
+            <div className="message reciever margin-bottom">
+              <p>{msgString}</p>
+            </div>
+          </>
+          :
+          <>
+            <span className="message-span">{senderName}</span>
+            <div className="message reciever">
+              <p>{msgString}</p>
+            </div>
+          </>
+      )
   )
 }
 

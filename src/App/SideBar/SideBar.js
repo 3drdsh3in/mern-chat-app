@@ -121,7 +121,6 @@ class SideBar extends React.Component {
                 </div>
               ))
             }
-            {/* Insert Group Chat Items, Somehow pass isSelected feature to this.state.selectedIndex */}
           </div>
         </div>
       </>

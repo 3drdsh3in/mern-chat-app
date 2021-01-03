@@ -37,9 +37,36 @@ class ChatBody extends React.Component {
       <div className="chatbody">
         <div className="chatbody-messages">
           {
-            displayMessages.map((msg) => (
-              <Message senderName={msg._id.acc_usrname} msgString={msg.msg_string} isSender={clientId == msg.m_sender} />
-            ))
+            displayMessages.map((msg, idx, elements) => {
+              console.log(msg);
+              return (
+                !(idx + 1 >= elements.length)
+                  ?
+                  (msg.m_sender._id != elements[idx + 1].m_sender._id
+                    ?
+                    // Last message in a row by a specific user.
+                    <Message
+                      senderName={msg.m_sender.acc_usrname}
+                      msgString={msg.msg_string}
+                      isSender={clientId == msg.m_sender._id}
+                      marginBottom={true}
+                    />
+                    :
+                    <Message
+                      senderName={msg.m_sender.acc_usrname}
+                      msgString={msg.msg_string}
+                      isSender={clientId == msg.m_sender._id}
+                      marginBottom={false}
+                    />)
+                  :
+                  <Message
+                    senderName={msg.m_sender.acc_usrname}
+                    msgString={msg.msg_string}
+                    isSender={clientId == msg.m_sender._id}
+                    marginBottom={false}
+                  />
+              )
+            })
           }
         </div>
         <div className="chatbody-form">

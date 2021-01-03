@@ -11,6 +11,7 @@
   z-index: 4;
   padding: 15px 1rem 0px 1rem;
   margin: 0px;
+  overflow-y: scroll;
   &-header {
     display: flex;
     align-items: center;
@@ -29,5 +30,8 @@
     &-newgroup-button:hover {
       background: #dcdee6;
     }
+  }
+  &-body {
+    
   }
 }

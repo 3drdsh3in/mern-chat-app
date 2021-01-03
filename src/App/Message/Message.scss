@@ -1,29 +1,39 @@
-.message.reciever {
+.message-span {
+  margin: 0px 0px 0px 20px;
+  font-size: 0.8rem;
+}
+.message {
   display: inline-block;
-  margin: 20px auto 20px 20px;
-  background: #fff;
-  color: #000;
   border-radius: 10px;
-  padding: 0px 10px;
+  padding: 5px 10px;
   word-wrap: break-word;
-  width: auto;
   max-width: 60%;
-  box-shadow: 0px 2px 5px #8b8b8f;
+  width: auto;
   p {
     margin: 0;
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+}
+
+.message.reciever {
+  @extend .message;
+  
+  color: #000;
+  box-shadow: 0px 2px 5px #8b8b8f;
+  margin: 1.9px auto 1.9px 20px;
+  background: #fff;
+  &.margin-bottom {
+    margin-bottom: 20px;
   }
 }
 .message.sender {
-  display: inline-block;
-  margin: 20px 20px 20px auto;
-  background: #009AFF;
+  @extend .message;
+  
   color: #fff;
-  border-radius: 10px;
-  padding: 0px 10px;
-  word-wrap: break-word;
-  max-width: 60%;
-  width: auto;
-  p {
-    margin: 0;
+  margin: 1.9px 20px 1.9px auto;
+  background: #009AFF;
+  &.margin-bottom {
+    margin-bottom: 20px;
   }
 }

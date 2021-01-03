@@ -74,7 +74,7 @@ router.post('/login', (req, res) => {
         path: 'g_messages',
         model: 'Message',
         populate: {
-          path: 'g_members',
+          path: 'm_sender',
           model: 'Account'
         }
       }
