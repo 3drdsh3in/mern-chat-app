@@ -56,9 +56,9 @@ class MainNav extends React.Component {
     this.setState({ newFriendModalState: !this.state.newFriendModalState });
   }
 
-  logoutHandler() {
-    this.props.reInitializeStore();
-    this.setState({ redirectToLogin: true });
+  async logoutHandler() {
+    await this.setState({ redirectToLogin: true });
+    await this.props.reInitializeStore();
   }
 
   render() {
