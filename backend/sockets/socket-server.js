@@ -224,12 +224,12 @@ io.on('connection', (client) => {
   })
 
   // SOCKET ENDPOINT: CREATE A NEW GROUP
-  client.on('CREATE_NEW_GROUP', async (data) => {
+  client.on('NEW_GROUP', async (data) => {
     console.log(data);
-    let g_id;
+    let g_id, chat_grp;
     try {
       g_id = new ObjectId();
-      let chat_grp = new ChatGroup({
+      chat_grp = new ChatGroup({
         _id: g_id,
         g_type: data.newGroupType,
         g_title: data.newGroupTitle,
@@ -260,14 +260,13 @@ io.on('connection', (client) => {
     // & emit a message to update their redux state!
     try {
       for (i = 0; i < data.newGroupMembers.length; i++) {
-        for (j = 0; j < clientStore[data.newGroupMembers[i]]; j++) {
+        for (j = 0; j < clientStore[data.newGroupMembers[i]].length; j++) {
           let currClient = clientStore[data.newGroupMembers[i]][j];
           // Emit data for newGroup to redux state!
           currClient.emit('NEW_GROUP', {
             messageType: 'UPDATE_GROUP_DETAILS',
             message: chat_grp
           })
-          // 
         }
       }
     } catch (err) {
