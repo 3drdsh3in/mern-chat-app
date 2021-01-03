@@ -11,8 +11,16 @@ class ChatBody extends React.Component {
     this.state = {
       messageInput: ''
     }
+    this.messagesEndRef = React.createRef();
     this.submitMessageInput = this.submitMessageInput.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+  }
+
+  componentDidMount() {
+    this.scrollToBottom()
+  }
+  componentDidUpdate() {
+    this.scrollToBottom()
   }
 
   submitMessageInput() {
@@ -22,6 +30,11 @@ class ChatBody extends React.Component {
       g_id: this.props.viewedGrp._id,
       msg_string: this.state.messageInput
     });
+  }
+
+  // Scrolls page to bottom (ngl, idk what is really happening here)
+  scrollToBottom = () => {
+    this.messagesEndRef.current.scrollIntoView({ behavior: 'auto' })
   }
 
   handleKeyPress(event) {
@@ -68,6 +81,7 @@ class ChatBody extends React.Component {
               )
             })
           }
+          <div ref={this.messagesEndRef} />
         </div>
         <div className="chatbody-form">
           <hr />
