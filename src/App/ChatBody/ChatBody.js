@@ -51,7 +51,6 @@ class ChatBody extends React.Component {
         <div className="chatbody-messages">
           {
             displayMessages.map((msg, idx, elements) => {
-              console.log(msg);
               return (
                 !(idx + 1 >= elements.length)
                   ?

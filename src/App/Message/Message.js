@@ -4,8 +4,6 @@ import './Message.scss';
 
 function Message({ senderName, msgString, isSender, marginBottom, messageSpan }) {
 
-  console.log(senderName);
-
   return (
     isSender
       ?

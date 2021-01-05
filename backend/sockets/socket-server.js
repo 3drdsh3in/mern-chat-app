@@ -1,5 +1,6 @@
 const socket = require('socket.io');
 const io = socket();
+const jwt = require('jsonwebtoken');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 /*
@@ -23,7 +24,7 @@ let clientStore = {};
 Console Actions
 */
 function displayConnectedClients() {
-  console.log('Clients Currently Conencted: ')
+  console.log('Clients Currently Connected: ')
   for (var key in clientStore) {
     for (i = 0; i < clientStore[key].length; i++) {
       console.log(key, ':', clientStore[key][i].id);
@@ -46,8 +47,21 @@ Socket Endpoints!
 io.on('connection', (client) => {
   console.log('Connection Established On', client.id);
 
-  let hashString;
+  client.on('JWT_AUTH', async (data) => {
+    console.log(data);
+    try {
+      // async await forces the verification to complete before allowing success handler to run its natural course.
+      let decoded = await jwt.verify(data.accessToken, process.env.SECRET_ACCESS_TOKEN);
+      client.emit('JWT_AUTH_SUCCESS')
+    } catch (err) {
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
+      })
+    }
+  })
 
+  let hashString;
   // MUST RUN: CONNECTION_UPDATE SOCKET_ENDPOINT TO INITIALIZE REDUX CLIENT BEFORE FURTHER SOCKET ENDPOINT QUERYING.
   client.on('connection_update', (data) => {
     hashString = data.acc_data._id;
@@ -268,6 +282,32 @@ io.on('connection', (client) => {
             message: chat_grp
           })
         }
+      }
+    } catch (err) {
+      console.log(err);
+      client.emit('ERROR_MESSAGE', {
+        messageType: 'SOCKET_SERVER_ERROR',
+        message: err
+      })
+    }
+  })
+
+  client.on('LEAVE_GROUP', async (data) => {
+    try {
+
+      console.log('LEAVE_GROUP', data);
+      await Account.findByIdAndUpdate(data.acc_id, { $pullAll: { acc_grps: [data.g_id] } });
+      await ChatGroup.findByIdAndUpdate(data.g_id, { $pullAll: { g_members: [data.acc_id], g_leaders: [data.acc_id] } }, { multi: true }).lean();
+      let chatGroup = await ChatGroup.findById(data.g_id);
+      console.log(chatGroup);
+      // Transfers leadership to another user when no more leaders are in the group.
+      if (chatGroup.g_leaders.length == 0 && chatGroup.g_members.length > 0) {
+        await ChatGroup.findByIdAndUpdate(data.g_id, { $push: { g_leaders: chatGroup.g_members[0] } })
+      }
+      // Delete ChatGroup since nobody is in it anymore.
+      if (chatGroup.g_leaders.length == 0 && chatGroup.g_members.length == 0) {
+        console.log(data.g_id);
+        await ChatGroup.findByIdAndDelete(data.g_id);
       }
     } catch (err) {
       console.log(err);

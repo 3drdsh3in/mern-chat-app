@@ -9,7 +9,8 @@ import emitAccountDetails from "./MainActions";
 
 const mapStateToProps = (state) => ({
   AccountDetails: state.AccountDetails,
-  SideBarDetails: state.SideBarDetails
+  SocketErrorDetails: state.SocketErrorDetails,
+  SideBarDetails: state.SideBarDetails,
 })
 
 const mapDispatchToProps = (dispatch) => ({

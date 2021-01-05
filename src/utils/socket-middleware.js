@@ -125,6 +125,14 @@ const createSocketMiddleware = () => {
                         payload: err_message
                     });
                 });
+
+                // Client connectivity ends:
+                socket.on('disconnect', () => {
+                    console.log('disconnected');
+                })
+                socket.on('reconnect', () => {
+                    console.log('reconnected');
+                })
                 break;
             }
             // Action to Logout:
@@ -136,8 +144,11 @@ const createSocketMiddleware = () => {
             // This endpoint can only be reached once LOGIN action is dispatched
             // to initialise the socket endpoint on the redux client.
             case 'SEND_WEBSOCKET_MESSAGE': {
-                console.log('SEND_WEBSOCKET_MESSAGE:', action)
-                socket.emit(action.eventName, action.payload);
+                let { AccountDetails } = storeAPI.getState();
+                socket.emit('JWT_AUTH', AccountDetails.token_data);
+                socket.on('JWT_AUTH_SUCCESS', () => {
+                    socket.emit(action.eventName, action.payload);
+                })
                 // Do not move onto any further reducer actions.
                 return;
             }

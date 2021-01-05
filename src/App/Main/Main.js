@@ -34,34 +34,48 @@ class Main extends React.Component {
     let grps = this.props.AccountDetails.acc_data.acc_grps;
     let selectedChatGrpIdx = this.props.SideBarDetails.selectedChatItem;
     let viewedGrp = grps[selectedChatGrpIdx - 1];
-    console.log(viewedGrp);
+    let acc_id = this.props.AccountDetails.acc_data._id;
     return (
       this.state.authenticated
         ?
-        <>
-          <div className="main">
-            <div className="main-header">
-              <MainNav />
-            </div>
-            <div className="main-body">
-              <div className="main-body-side">
-                <SideBar />
+        this.props.SocketErrorDetails.errorType !== 'SOCKET_SERVER_ERROR'
+          ?
+          <>
+            <div className="main">
+              <div className="main-header">
+                <MainNav />
               </div>
+              <div className="main-body">
+                <div className="main-body-side">
+                  <SideBar />
+                </div>
 
-              {this.props.SideBarDetails.selectedChatItem == 0
-                ?
-                <div key={uuidv4()} className="main-body-content">
-                  <WelcomeBody />
-                </div>
-                :
-                <div key={uuidv4()} className="main-body-content">
-                  <ChatHeader chatName={viewedGrp.g_title} chatType={viewedGrp.g_type} />
-                  <ChatBody viewedGrp={viewedGrp} />
-                </div>
-              }
+                {this.props.SideBarDetails.selectedChatItem == 0
+                  ?
+                  <div key={uuidv4()} className="main-body-content">
+                    <WelcomeBody />
+                  </div>
+                  :
+                  <div key={uuidv4()} className="main-body-content">
+                    <ChatHeader acc_id={acc_id} viewedGrp={viewedGrp} chatName={viewedGrp.g_title} chatType={viewedGrp.g_type} />
+                    <ChatBody viewedGrp={viewedGrp} />
+                  </div>
+                }
+              </div>
             </div>
-          </div>
-        </>
+          </>
+          :
+          <>
+            <h1>
+              {`Error Name: ${this.props.SocketErrorDetails.errorMessage.name}`}
+            </h1>
+            <p>
+              {`Error Message: ${this.props.SocketErrorDetails.errorMessage.message}`}
+            </p>
+            <p>
+              {`Expired At: ${Date(this.props.SocketErrorDetails.errorMessage.expiredAt)}`}
+            </p>
+          </>
         :
         <>
           <h1>

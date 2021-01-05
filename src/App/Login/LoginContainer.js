@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 import Login from './Login';
 
 // Action
-import LoginActions from './LoginActions';
+import { storeAccountDetails, storeTokenDetails } from './LoginActions';
 
 const mapStateToProps = (state) => ({
   acc_details: state.AccountDetails
 })
 const mapDispatchToProps = (dispatch) => ({
-  storeAccountDetails: (data) => dispatch(LoginActions(data))
+  storeAccountDetails: (data) => dispatch(storeAccountDetails(data)),
+  storeTokenDetails: (data) => dispatch(storeTokenDetails(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

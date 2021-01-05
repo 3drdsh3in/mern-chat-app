@@ -1,5 +1,3 @@
-const { JsonWebTokenError } = require("jsonwebtoken")
-
 const jwt = require('jsonwebtoken');
 
 function authenticateToken(req, res, next) {
@@ -9,7 +7,7 @@ function authenticateToken(req, res, next) {
   jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, (err, user) => {
     if (err) return res.sendStatus(403)
     req.user = user
-    next()
+    next();
   })
 }
 

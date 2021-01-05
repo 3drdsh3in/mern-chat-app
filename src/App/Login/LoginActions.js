@@ -1,8 +1,15 @@
-function LoginActions(data) {
+function storeAccountDetails(data) {
   return {
     type: 'LOGIN',
     payload: data,
   }
 }
 
-export default LoginActions;
+function storeTokenDetails(data) {
+  return {
+    type: 'UPDATE_TOKEN_DATA',
+    payload: data
+  }
+}
+
+export { storeAccountDetails, storeTokenDetails };

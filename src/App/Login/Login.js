@@ -48,7 +48,6 @@ class Login extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(this);
         console.log(data);
         // If Unsuccesfful:
         // Trigger Alert/Feedback
@@ -61,7 +60,10 @@ class Login extends React.Component {
         else {
           // Should be a single account stored onto Redux Store.
           this.props.storeAccountDetails(data['account'][0]);
-          console.log(data['accessToken']);
+          this.props.storeTokenDetails({
+            accessToken: data['accessToken'],
+            refreshToken: data['refreshToken']
+          });
           // Redirect Page To Other Main Page Component.
           this.setState({ redirect: true })
         }
