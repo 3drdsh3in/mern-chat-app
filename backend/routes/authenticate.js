@@ -46,8 +46,8 @@ router.post('/login', (req, res) => {
           process.env.SECRET_ACCESS_TOKEN,
           {
             algorithm: 'HS256',
-            expiresIn: '15s',
-            // expiresIn: '1h'
+            // expiresIn: '15s',
+            expiresIn: '1h'
           });
         // Save Refresh Token Onto DB
         let refreshToken = jwt.sign(
