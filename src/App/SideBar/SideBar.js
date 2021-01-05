@@ -17,7 +17,7 @@ import ChatItem from '../ChatItem/ChatItem';
 import NewGroupForm from '../NewGroup/NewGroupContainer';
 
 // Style Sheets
-import './SideBar.scss';
+// import './SideBar.scss';
 
 class SideBar extends React.Component {
   constructor(props) {
