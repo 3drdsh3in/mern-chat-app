@@ -112,9 +112,10 @@ class Login extends React.Component {
               <input type="submit" className="fadeIn fourth" value="Log In" />
             </form>
 
-            <div id="formFooter">
+            {/* Uncomment when you want to create nodemailer dependency with this app! */}
+            {/* <div id="formFooter">
               <a className="underlineHover" href="#">Forgot Password?</a>
-            </div>
+            </div> */}
             <div id="formFooter">
               <button className="createAccount fadeIn fifth" onClick={this.toggleModal}>Create Account</button>
               {/* newAccount Modal */}

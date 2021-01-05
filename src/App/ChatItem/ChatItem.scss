@@ -4,8 +4,16 @@
   background: #E4E6EB;
   // background: #E9F3FF;
   border-radius: 5px;
-  padding: 10px 50px;
   margin: 5px 0px;
+  padding: 10px 10px;
+  @media screen and (min-width: 480px) {
+  }
+  @media screen and (min-width: 600px) {
+    padding: 10px 10px;
+  }
+  @media screen and (min-width: 760px) {
+    padding: 10px 50px;
+  }
   cursor: pointer;
   h6 {
     // margin: 2px;

@@ -2,17 +2,46 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 25px 25px;
   border-bottom: 0.1rem solid #E4E6EB;
   align-items: center;
   text-align: center;
+  @media screen and (min-width: 300px) {
+    padding: 25px 5px;
+    h5 {
+      font-size: 1rem;
+    }
+    button {
+      font-size: 0.6rem;
+      padding: 0px 10px;
+      height: 25px;
+    }
+  }
+  @media screen and (min-width: 480px) {
+    padding: 25px 10px;
+    h5 {
+      font-size: 1rem;
+    }
+    button {
+      font-size: 0.8rem;
+      height: 30px;
+    }
+  }
+  @media screen and (min-width: 768px) {
+    padding: 25px 25px;
+    h5 {
+      font-size: 1.2rem;
+    }
+    button {
+      padding: 0px 20px;
+      height: 37.5px;
+    }
+  }
   h5 {
     margin: 0;
   }
   button {
     border-radius: 2rem;
-    height: 37.5px;
-    padding: 0px 20px;
+    // padding: 0px 20px;
     border: none;
     box-sizing: border-box;
     transition: all 0.8s 0s;
