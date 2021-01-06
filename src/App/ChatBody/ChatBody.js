@@ -25,11 +25,12 @@ class ChatBody extends React.Component {
 
   submitMessageInput() {
     console.log(this.state.messageInput);
-    //g_id and 
-    this.props.sendNewMessage({
-      g_id: this.props.viewedGrp._id,
-      msg_string: this.state.messageInput
-    });
+    if (this.state.messageInput !== '') {
+      this.props.sendNewMessage({
+        g_id: this.props.viewedGrp._id,
+        msg_string: this.state.messageInput
+      });
+    }
   }
 
   // Scrolls page to bottom (ngl, idk what is really happening here)

@@ -7,7 +7,8 @@ import NewAccount from '../NewAccount/NewAccount';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Redirect } from 'react-router';
-
+import * as crypto from 'crypto';
+// require('crypto').randomBytes(64).toString('hex')
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -15,13 +16,14 @@ class Login extends React.Component {
       // Login
       userName: "",
       password: "",
-
       // Modal
       modal: false,
       redirect: false
     };
     // SetOnChange (State Managing Callback)
     this.setOnChange = this.setOnChange.bind(this);
+    // Guest Login Handler
+    this.guestLoginHandler = this.guestLoginHandler.bind(this);
     // Login Request Handler
     this.handleLogin = this.handleLogin.bind(this);
     // Modal Trigger
@@ -90,6 +92,66 @@ class Login extends React.Component {
     this.setState({ modal: !this.state.modal })
   }
 
+  //
+  async guestLoginHandler(event) {
+    let randStr = crypto.randomBytes(12).toString('hex');
+    await fetch(`${window.location.protocol}//${window.location.host}/api/authenticate/newaccount`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        nafname: 'Guest',
+        nalname: randStr,
+        nausername: `Guest_${randStr}`,
+        naemailaddr: `Guest_${randStr}`,
+        napassword1: '',
+        napassword2: '',
+        nadobday: 30,
+        nadobmonth: 12,
+        nadobyear: 2020,
+        nagender: 'N'
+      })
+    })
+
+    // 1. Verify the account username exists (/w the corresponding password).
+    event.preventDefault();
+    await fetch(`${window.location.protocol}//${window.location.host}/api/authenticate/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        username: `Guest_${randStr}`,
+        password: ''
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        // If Unsuccesfful:
+        // Trigger Alert/Feedback
+        if ('code' in data) {
+          // Control FeedBack.
+        }
+        // If Succesful:
+        // Save account details to redux state.
+        // Redirect to Messaging Page.
+        else {
+          // Should be a single account stored onto Redux Store.
+          this.props.storeAccountDetails(data['account'][0]);
+          this.props.storeTokenDetails({
+            accessToken: data['accessToken'],
+            refreshToken: data['refreshToken']
+          });
+          // Redirect Page To Other Main Page Component.
+          this.setState({ redirect: true })
+        }
+      })
+  }
+
   render() {
     return (
       <>
@@ -113,9 +175,10 @@ class Login extends React.Component {
             </form>
 
             {/* Uncomment when you want to create nodemailer dependency with this app! */}
-            {/* <div id="formFooter">
-              <a className="underlineHover" href="#">Forgot Password?</a>
-            </div> */}
+            <div className="formContent-guest-login">
+              <button className="guest-login" onClick={this.guestLoginHandler}>Log In As Guest</button>
+            </div>
+
             <div id="formFooter">
               <button className="createAccount fadeIn fifth" onClick={this.toggleModal}>Create Account</button>
               {/* newAccount Modal */}

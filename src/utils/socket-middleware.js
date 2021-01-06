@@ -98,7 +98,6 @@ const createSocketMiddleware = () => {
                 })
 
                 socket.on("NEW_MESSAGE", (message) => {
-                    console.log(message, message.g_id);
                     let { AccountDetails } = storeAPI.getState();
                     let acc_grps = AccountDetails.acc_data.acc_grps;
                     acc_grps.map((grp, idx) => {
@@ -146,6 +145,7 @@ const createSocketMiddleware = () => {
             case 'SEND_WEBSOCKET_MESSAGE': {
                 let { AccountDetails } = storeAPI.getState();
                 socket.emit('JWT_AUTH', AccountDetails.token_data);
+                socket.off('JWT_AUTH_SUCCESS');
                 socket.on('JWT_AUTH_SUCCESS', () => {
                     socket.emit(action.eventName, action.payload);
                 })
