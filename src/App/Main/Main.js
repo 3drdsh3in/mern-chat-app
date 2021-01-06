@@ -33,6 +33,13 @@ class Main extends React.Component {
   render() {
     let grps = this.props.AccountDetails.acc_data.acc_grps;
     let selectedChatGrpIdx = this.props.SideBarDetails.selectedChatItem;
+    if (grps == undefined || selectedChatGrpIdx == undefined) {
+      return (
+        <h1>
+          Not authenticated Please Login Again
+        </h1>
+      )
+    }
     let viewedGrp = grps[selectedChatGrpIdx - 1];
     let acc_id = this.props.AccountDetails.acc_data._id;
     return (
