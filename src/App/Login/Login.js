@@ -94,7 +94,7 @@ class Login extends React.Component {
 
   //
   async guestLoginHandler(event) {
-    let randStr = crypto.randomBytes(12).toString('hex');
+    let randStr = crypto.randomBytes(16).toString('hex');
     await fetch(`${window.location.protocol}//${window.location.host}/api/authenticate/newaccount`, {
       method: "POST",
       headers: {
@@ -176,7 +176,7 @@ class Login extends React.Component {
 
             {/* Uncomment when you want to create nodemailer dependency with this app! */}
             <div className="formContent-guest-login">
-              <button className="guest-login" onClick={this.guestLoginHandler}>Log In As Guest</button>
+              <button className="guest-login fadeIn fourth" onClick={this.guestLoginHandler}>Log In As Guest</button>
             </div>
 
             <div id="formFooter">
