@@ -66,7 +66,7 @@ class SideBar extends React.Component {
               {0 == this.props.SideBarDetails.selectedChatItem
                 ?
                 <ChatItem
-                  userId={`Welcome ${this.props.AccountDetails.acc_data.acc_usrname}`}
+                  userId={`Welcome ${this.props.AccountDetails.acc_data.acc_usrname}!`}
                   userMsg={`Click here for more details.`}
                   key={uuidv4()}
                   isSelected={true}

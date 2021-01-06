@@ -4,10 +4,7 @@ import React from 'react';
 import {
   ModalBody,
   ModalFooter,
-  Button,
   FormGroup,
-  Input,
-  Label
 } from 'reactstrap';
 
 import './NewGroup.scss';
@@ -77,8 +74,8 @@ class NewGroupForm extends React.Component {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.submitNewGroup}>Create Group</Button>{' '}
-          <Button color="secondary" onClick={this.props.toggleModalHandler}>Cancel</Button>
+          <button className="createGroup" onClick={this.submitNewGroup}>Create Group</button>{' '}
+          <button className="cancel" onClick={this.props.toggleModalHandler}>Cancel</button>
         </ModalFooter>
       </>
     )

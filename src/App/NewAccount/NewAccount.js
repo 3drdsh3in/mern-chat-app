@@ -1,6 +1,8 @@
 import React from 'react';
 import { ModalHeader, ModalBody, ModalFooter, Label, Input, Form, FormGroup, FormFeedback } from 'reactstrap';
 
+import './NewAccount.scss';
+
 class NewAccount extends React.Component {
   constructor(props) {
     super(props);
@@ -106,7 +108,7 @@ class NewAccount extends React.Component {
         }
       })
   }
-  
+
   // Handles Modal Triggering
   toggleModal() {
     console.log(!this.state.modal);
@@ -205,7 +207,7 @@ class NewAccount extends React.Component {
             </FormGroup>
           </Form>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter className="createAccount-footer">
           <button className="signUp" onClick={this.handleNewAccount}>Create Account</button>
           {/* Adds Space: {' '} */}
         </ModalFooter>

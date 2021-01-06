@@ -75,8 +75,19 @@ class MainNav extends React.Component {
               <ModalHeader toggle={this.toggleNewFriend}>Add Friend</ModalHeader>
               <FriendSearch />
             </Modal>
-            {/* Notifications Feature */}
-            <NavLink onClick={this.toggleNotifications} href="#"><i id="notifications" className="fas fa-bell"></i></NavLink>
+            {/* Notifications Feature Trigger */}
+            {acc_freqs.length > 0
+              ?
+              <NavLink onClick={this.toggleNotifications} href="#">
+                <i id="notifications" className="fas fa-bell"></i>
+                <span class="badge">{acc_freqs.length}</span>
+              </NavLink>
+              :
+              <NavLink onClick={this.toggleNotifications} href="#">
+                <i id="notifications" className="fas fa-bell"></i>
+              </NavLink>
+            }
+            {/* Notifications Feature Body */}
             <Modal isOpen={this.state.notificationsIsOpen} toggle={this.toggleNotifications} className="">
               <ModalHeader toggle={this.toggleNotifications}>Notifications</ModalHeader>
               {acc_freqs.map((acc_freq) => {
@@ -102,9 +113,6 @@ class MainNav extends React.Component {
               <DropdownMenu right>
                 <DropdownItem>
                   <span><i className="fas fa-user"></i>{" "}Profile</span>
-                </DropdownItem>
-                <DropdownItem>
-                  <span><i className="fas fa-cog"></i>{" "}Settings</span>
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem onClick={this.logoutHandler}>

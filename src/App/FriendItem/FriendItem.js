@@ -60,14 +60,14 @@ function FriendItem(props) {
                 interactionState == 'SENT'
                   ?
                   <button key={props.AccountDetails.acc_data._id + '_2'} onClick={deleteFriendReq} className="frienditem-icon">
-                    <i className="fas fa-check"></i>
+                    <i class="fas fa-user-minus"></i>
                   </button>
                   :
                   (
                     interactionState == 'FRIENDS'
                       ?
                       <button key={props.AccountDetails.acc_data._id + '_3'} onClick={removeFriend} className="frienditem-icon">
-                        <i class="fas fa-user-minus"></i>
+                        <i className="fas fa-check"></i>
                       </button>
                       :
                       null

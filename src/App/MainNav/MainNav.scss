@@ -2,6 +2,7 @@
   z-index: 5;
 }
 .nav-link {
+  position: relative;
   margin: 0px 5px;
   // padding: 7px 10px 6px 11px;
   padding: 7px 10px;
@@ -20,15 +21,17 @@
     color: #000000;
   }
 }
+.badge {
+  position: absolute;
+  bottom: -2px;
+  padding: 2.5px 5px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
 .nav-link:hover {
   transition: all 0.8s 0s;
   background: #dcdee6;
-  // svg[id=notifications] {
-  //   color: #39ace7;
-  // }
-  // svg[id=new-user] {
-  //   color: #39ace7;
-  // }
 }
 .dropdown {
   .nav-link{
@@ -37,9 +40,6 @@
     }
   }
   .nav-link:hover {
-    // svg {
-    //   color: #39ace7;
-    // }
   }
   .dropdown-item {
     padding-left: 0.8rem;

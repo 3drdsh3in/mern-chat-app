@@ -38,7 +38,7 @@ class Main extends React.Component {
     return (
       this.state.authenticated
         ?
-        this.props.SocketErrorDetails.errorType !== 'SOCKET_SERVER_ERROR'
+        this.props.SocketErrorDetails.errorMessage.name !== 'TokenExpiredError'
           ?
           <>
             <div className="main">
@@ -53,7 +53,7 @@ class Main extends React.Component {
                 {this.props.SideBarDetails.selectedChatItem == 0
                   ?
                   <div key={uuidv4()} className="main-body-content">
-                    <WelcomeBody />
+                    <WelcomeBody accountDetails={this.props.AccountDetails} />
                   </div>
                   :
                   <div key={uuidv4()} className="main-body-content">

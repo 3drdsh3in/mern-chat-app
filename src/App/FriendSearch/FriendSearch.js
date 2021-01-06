@@ -3,8 +3,6 @@ import React from 'react';
 import {
   ModalBody,
   ModalFooter,
-  Button,
-  Input
 } from 'reactstrap';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -53,16 +51,6 @@ class FriendSearch extends React.Component {
     }, 3000)
   }
 
-  // getNfcItemTitle() {
-  //   this.props.AccountDetails.acc_freqs.map((freq, idx) => {
-  //     if (freq.fr_sender_id._id)
-  //   })
-  // }
-
-  // getNfcItemLbl() {
-
-  // }
-
 
 
   render() {
@@ -96,7 +84,7 @@ class FriendSearch extends React.Component {
 
         </ModalBody>
         <ModalFooter>
-          <Input onChange={this.handleSearchAccount} type="text" placeholder="Search Users..." />
+          <input onChange={this.handleSearchAccount} type="text" placeholder="Search Users..." />
         </ModalFooter>
       </>
     )
