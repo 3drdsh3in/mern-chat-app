@@ -22,7 +22,6 @@ import './SideBar.scss';
 class SideBar extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
     this.state = {
       selectedIndex: 0,
       openModal: false,

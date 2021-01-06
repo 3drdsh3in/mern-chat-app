@@ -45,15 +45,12 @@ class NewAccount extends React.Component {
 
   // Feedbback Togglers
   invalidateEmailFeedback() {
-    console.log(!this.state.emailinvalid);
     this.setState({ emailinvalid: true })
   }
   invalidateUserFeedback() {
-    console.log(!this.state.usrinvalid);
     this.setState({ usrinvalid: true })
   }
   invalidatePasswordFeedback() {
-    console.log(!this.state.pwinvalid);
     this.setState({ pwinvalid: true })
   }
 
@@ -82,7 +79,6 @@ class NewAccount extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         // If 'data' is an array, then it has errors
         if (Array.isArray(data)) {
           // Handles error messages
@@ -111,7 +107,6 @@ class NewAccount extends React.Component {
 
   // Handles Modal Triggering
   toggleModal() {
-    console.log(!this.state.modal);
     this.setState({ modal: !this.state.modal })
   }
 

@@ -32,7 +32,6 @@ class FriendSearch extends React.Component {
     this.setState({ searchString: event.target.value });
     clearTimeout(this.searchTimeout);
     this.searchTimeout = setTimeout(() => {
-      console.log(this.props);
       fetch(`${window.location.protocol}//${window.location.host}/api/search/getFriends/${this.props.AccountDetails.acc_data._id}`, {
         method: "POST",
         headers: {

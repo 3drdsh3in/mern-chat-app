@@ -50,7 +50,6 @@ class Login extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         // If Unsuccesfful:
         // Trigger Alert/Feedback
         if ('code' in data) {
@@ -74,7 +73,6 @@ class Login extends React.Component {
 
   // Create Account Handlers
   setOnChange(event) {
-    console.log(event.target.id);
     let fieldID = event.target.id;
     let obj = {};
     obj[`${fieldID}`] = event.target.value;
@@ -88,7 +86,6 @@ class Login extends React.Component {
 
   // Handles Modal Triggering
   toggleModal() {
-    console.log(!this.state.modal);
     this.setState({ modal: !this.state.modal })
   }
 
@@ -130,7 +127,6 @@ class Login extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         // If Unsuccesfful:
         // Trigger Alert/Feedback
         if ('code' in data) {

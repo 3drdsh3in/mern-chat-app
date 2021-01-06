@@ -4,7 +4,7 @@ import './FriendItem.scss';
 function FriendItem(props) {
 
   const [interactionState, setInteractionState] = useState(props.friendStatus);
-  // 28 DEC 12:06 AM:
+  // 5 JAN 12:06 AM:
   // FOR SOME REASON THE SEARCH ICON DOES NOT 
   // RERENDER UPON CHANGE THE SEARCH BAR'S REGEX SEARCH EXPRESSION
 

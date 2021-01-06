@@ -111,10 +111,10 @@ class MainNav extends React.Component {
                 <i className="fas fa-caret-down"></i>
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem>
+                {/* <DropdownItem>
                   <span><i className="fas fa-user"></i>{" "}Profile</span>
-                </DropdownItem>
-                <DropdownItem divider />
+                </DropdownItem> */}
+                {/* <DropdownItem divider /> */}
                 <DropdownItem onClick={this.logoutHandler}>
                   <span><i className="fas fa-power-off"></i>{" "}Logout</span>
                   {
