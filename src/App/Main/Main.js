@@ -31,6 +31,7 @@ class Main extends React.Component {
   }
 
   render() {
+    console.log(this.props.match);
     let grps = this.props.AccountDetails.acc_data.acc_grps;
     let selectedChatGrpIdx = this.props.SideBarDetails.selectedChatItem;
     if (grps == undefined || selectedChatGrpIdx == undefined) {

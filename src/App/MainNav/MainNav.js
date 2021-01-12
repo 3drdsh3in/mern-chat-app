@@ -3,6 +3,9 @@ import React from 'react';
 // Sass:
 import './MainNav.scss';
 
+// React Router:
+import { Link } from 'react-router-dom';
+
 // ReactStrap Dependencies:
 import {
   Navbar,
@@ -111,10 +114,12 @@ class MainNav extends React.Component {
                 <i className="fas fa-caret-down"></i>
               </DropdownToggle>
               <DropdownMenu right>
-                {/* <DropdownItem>
-                  <span><i className="fas fa-user"></i>{" "}Profile</span>
-                </DropdownItem> */}
-                {/* <DropdownItem divider /> */}
+                <Link to={`/profile/${this.props.AccountDetails.acc_data._id}`}>
+                  <DropdownItem>
+                    <span><i className="fas fa-user"></i>{" "}Profile</span>
+                  </DropdownItem>
+                </Link>
+                <DropdownItem divider />
                 <DropdownItem onClick={this.logoutHandler}>
                   <span><i className="fas fa-power-off"></i>{" "}Logout</span>
                   {

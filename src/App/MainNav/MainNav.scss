@@ -41,12 +41,23 @@
   }
   .nav-link:hover {
   }
-  .dropdown-item {
-    padding-left: 0.8rem;
-    span {
-      svg {
-        width: 0.9rem !important;
+  a {
+    width: 100%;
+    .dropdown-item {
+      padding-left: 0.8rem;
+      span {
+        svg {
+          width: 0.9rem !important;
+        }
       }
     }
   }
+  .dropdown-item {
+      padding-left: 0.8rem;
+      span {
+        svg {
+          width: 0.9rem !important;
+        }
+      }
+    }
 }

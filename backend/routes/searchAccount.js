@@ -6,10 +6,8 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const Account = require('../models/Account');
 
 const FriendRequest = require('../models/FriendRequest');
-
+// Params: id - THe logged on user's Id.
 router.post('/getFriends/:id', async (req, res) => {
-  // console.log(req.params);
-  // console.log(req.body);
   let acc_id = new ObjectId(req.params.id);
 
   try {
@@ -22,21 +20,6 @@ router.post('/getFriends/:id', async (req, res) => {
     let userFriends = userAccount.acc_friends;
     let userFriendRequests = userAccount.acc_freqs;
 
-
-    /*
-    Algorithm:
-    function(userAccount) {
-      for each account in Account:
-        if length(account.acc_friend) == 0 && length(account.friend_requests) == 0
-          return 'UNSENT'
-        for each friend in account.acc_friend:
-          if friend.id = account.id
-            return 'FRIENDS'
-        for each friend_request in account.acc_freqs:
-          if friend_request.sender_id == userAccount.id
-            return 'SENT'
-    }
-    */
     for (i = 0; i < accountDocs.length; i++) {
       if (userFriends.length == 0 && accountDocs[i].acc_freqs.length == 0) {
         accountDocs[i]['frStatus'] = 'UNSENT';
@@ -71,7 +54,6 @@ router.post('/getFriends/:id', async (req, res) => {
         continue;
       }
       for (j = 0; j < userFriendRequests.length; j++) {
-        console.log('MATCHING', userFriendRequests[j].fr_sender_id, accountDocs[i]._id, userFriendRequests[j].fr_sender_id.equals(accountDocs[i]._id))
         if (userFriendRequests[j].fr_sender_id.equals(accountDocs[i]._id)) {
           accountDocs[i]['frStatus'] = 'R_SENT';
           isUnsent = false;
@@ -82,17 +64,66 @@ router.post('/getFriends/:id', async (req, res) => {
       if (isUnsent) {
         accountDocs[i]['frStatus'] = 'UNSENT';
       }
-      // IF account in accountDoc[i] does not have a friendRequest sent to it by the userAccount in req.body.id
+      // IF account in accountDoc[i] does not have a friendRequest sent to it by the userAccount in request body's id
       // - Mark accountDocs[i].frStatus = 'UNSENT';
       console.log(accountDocs[i].frStatus);
     }
-    // console.log('Account Docs:', accountDocs.length);
-    // console.log(accountDocs);
-    // console.log(userFriends.length == 0 && userFriendReqs == 0);
     res.json(accountDocs);
   } catch (err) {
     res.json(err);
   }
 })
+
+router.post('/getAccountData/:id', async (req, res) => {
+  console.log(req.body);
+  let acc_id = new ObjectId(req.body.userId);
+
+  try {
+    // Get sender's account data
+    let viewedUserAccount = await Account.findById(acc_id).populate('acc_freqs').populate('acc_friends').populate('acc_grps').lean();
+    let viewedUserFriends = viewedUserAccount.acc_friends;
+    let viewedUserFriendRequests = viewedUserAccount.acc_freqs;
+    // Get account data of the account we are looking for.
+    let clientAccount = await Account.findById(req.params.id);
+
+    if (clientAccount._id.equals(viewedUserAccount._id)) {
+      for (i = 0; i < viewedUserFriends.length; i++) {
+        viewedUserFriends[i]['frStatus'] = 'FRIENDS'
+      }
+    } else {
+      for (i = 0; i < viewedUserFriends.length; i++) {
+        console.log(viewedUserFriends[i], clientAccount._id, viewedUserFriends[i]._id.equals(clientAccount._id));
+        if (viewedUserFriends[i]._id.equals(clientAccount._id)) {
+          viewedUserFriends[i]['frStatus'] = 'FRIENDS';
+          break;
+        } else if (!viewedUserFriends[i].hasOwnProperty('frStatus')) {
+          viewedUserFriends[i]['frStatus'] = 'UNSENT';
+        }
+      }
+      for (i = 0; i < viewedUserFriendRequests.length; i++) {
+        if (viewedUserFriendRequests[i].fr_reciever_id.equals(clientAccount._id)) {
+          viewedUserFriends[i]['frStatus'] = 'SENT';
+          break;
+        } else if (!viewedUserFriends[i].hasOwnProperty('frStatus')) {
+          viewedUserFriends[i]['frStatus'] = 'UNSENT';
+        }
+      }
+      for (i = 0; i < viewedUserFriendRequests.length; i++) {
+        if (viewedUserFriendRequests[i].fr_sender_id.equals(clientAccount._id)) {
+          viewedUserFriends[i]['frStatus'] = 'R_SENT';
+          break;
+        } else if (!viewedUserFriends[i].hasOwnProperty('frStatus')) {
+          viewedUserFriends[i]['frStatus'] = 'UNSENT';
+        }
+      }
+    }
+
+    res.json(viewedUserAccount);
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
+})
+
 
 module.exports = router;
