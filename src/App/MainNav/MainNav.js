@@ -92,7 +92,7 @@ class MainNav extends React.Component {
             }
             {/* Notifications Feature Body */}
             <Modal isOpen={this.state.notificationsIsOpen} toggle={this.toggleNotifications} className="">
-              <ModalHeader toggle={this.toggleNotifications}>Notifications</ModalHeader>
+              <ModalHeader toggle={this.toggleNotifications}>Friend Requests</ModalHeader>
               {acc_freqs.map((acc_freq) => {
                 return (
                   <>

@@ -30,6 +30,14 @@ class Login extends React.Component {
     this.toggleModal = this.toggleModal.bind(this);
   }
 
+  componentWillMount() {
+    if (this.props.AccountDetails) {
+      if (this.props.AccountDetails.acc_data !== {}) {
+        this.setState({ redirect: true });
+      }
+    }
+  }
+
   /*
   Future Refactors: handleLogin(event) should be done through TCP socket conenction
   as opposed to a HTTP Post handler to reduce incoming server traffic.

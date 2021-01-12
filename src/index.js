@@ -4,14 +4,17 @@ import './index.scss';
 import App from './App/App';
 
 // Provider used to initiate redux store.
-import store from './store';
+import { store, persistor } from './store';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode >,
   document.getElementById('root')
 );

@@ -1,0 +1,30 @@
+.groupitem {
+  // border-top: 2px solid black;
+  word-wrap: break-word;
+  background: #E4E6EB;
+  // background: #E9F3FF;
+  border-radius: 5px;
+  margin: 5px 0px;
+  padding: 10px 10px;
+  @media screen and (min-width: 480px) {
+  }
+  @media screen and (min-width: 600px) {
+    padding: 10px 10px;
+  }
+  @media screen and (min-width: 760px) {
+    padding: 10px 50px;
+  }
+  // cursor: pointer;
+  h6 {
+    // margin: 2px;
+  }
+  p {
+    margin: 0px;
+  }
+}
+.groupitem:hover {
+  background: #dcdee6;
+}
+// .groupitem.selected {
+//   background: #E9F3FF;
+// }

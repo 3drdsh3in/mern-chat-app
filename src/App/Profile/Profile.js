@@ -8,6 +8,7 @@ import './Profile.scss';
 import MainNav from '../MainNav/MainNavContainer';
 import FriendItem from '../FriendItem/FriendItemContainer';
 import NotificationItem from '../NotificationItem/NotificationItemContainer';
+import GroupItem from '../GroupItem/GroupItem';
 
 
 class Profile extends React.Component {
@@ -39,8 +40,9 @@ class Profile extends React.Component {
 
   render() {
     return (
-      <>
+      <div className="wrapper_profile">
         <MainNav />
+
         <div className="profile">
           <div className="profile-header">
             <div className="profile-header-img">
@@ -58,6 +60,7 @@ class Profile extends React.Component {
               <p>{this.state.displayData.acc_gender} | {new Date().getFullYear() - new Date(this.state.displayData.acc_dob).getFullYear()}</p>
             </div>
           </div>
+          <hr />
           <div className="profile-body">
             <div className="profile-body-bio">
               <h3>
@@ -67,6 +70,7 @@ class Profile extends React.Component {
                 {this.state.displayData.acc_bio}
               </p>
             </div>
+            <hr />
             <div className="profile-body-relations">
               <div className="profile-body-relations_friends">
                 <h3>Friends</h3>
@@ -108,12 +112,22 @@ class Profile extends React.Component {
                 <h3>Groups</h3>
                 <div className="profile-body-relations_groups_section">
                   {/*  */}
+                  {
+                    this.state.displayData.acc_grps
+                      ?
+                      this.state.displayData.acc_grps.map((grp) => (
+                        <GroupItem g_title={grp.g_title} g_type={grp.g_type} g_size={grp.g_members.length} />
+                      ))
+                      :
+                      null
+                  }
+
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </>
+      </div>
     )
   }
 }
