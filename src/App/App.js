@@ -10,7 +10,7 @@ import './App.scss';
 function App() {
   return (
     <div className="App">
-      <Router>
+      <Router basename="/">
         <Route path="/" exact component={Login}>
           <Login />
         </Route>

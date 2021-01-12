@@ -1,7 +1,10 @@
 function storeAccountDetails(data) {
-  return {
-    type: 'LOGIN',
-    payload: data,
+  return (dispatch, getState) => {
+
+    dispatch({
+      type: 'LOGIN',
+      payload: data,
+    })
   }
 }
 

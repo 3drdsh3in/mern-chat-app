@@ -12,7 +12,7 @@ const middleware = [thunk, createSocketMiddleware()];
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

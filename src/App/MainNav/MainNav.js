@@ -6,6 +6,7 @@ import './MainNav.scss';
 // React Router:
 import { Link } from 'react-router-dom';
 
+
 // ReactStrap Dependencies:
 import {
   Navbar,
@@ -59,7 +60,8 @@ class MainNav extends React.Component {
     this.setState({ newFriendModalState: !this.state.newFriendModalState });
   }
 
-  async logoutHandler() {
+  async logoutHandler(e) {
+    await this.props.updateLogState(false);
     await this.setState({ redirectToLogin: true });
     await this.props.reInitializeStore();
   }

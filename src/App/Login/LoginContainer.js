@@ -7,7 +7,7 @@ import Login from './Login';
 import { storeAccountDetails, storeTokenDetails } from './LoginActions';
 
 const mapStateToProps = (state) => ({
-  acc_details: state.AccountDetails
+  AccountDetails: state.AccountDetails
 })
 const mapDispatchToProps = (dispatch) => ({
   storeAccountDetails: (data) => dispatch(storeAccountDetails(data)),

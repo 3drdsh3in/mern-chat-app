@@ -3,15 +3,35 @@ import io from 'socket.io-client';
 // Invoke this function to return the corresponding socket-middleware.
 const createSocketMiddleware = () => {
     let socket;
-    // Socket Middleware
+    console.log(socket);    // Socket Middleware
     // storeAPI has 'getState' and 'dispatch' as it's fields here.
     // (Could also use ({dispatch, getState}) in place of 'storeAPI' here)
     return storeAPI => next => action => {
         switch (action.type) {
             // Must dispatch 'LOGIN' action to instantiate socket endpoint.
-            case "LOGIN": {
+            case "INITIALIZE_CLIENT": {
                 // Connect with server.
                 socket = io();
+                // Save socket id to redux store (to be persisted across different tabs for checking).
+                socket.on("connect", () => {
+                    storeAPI.dispatch({
+                        type: 'ADD_CLIENT',
+                        payload: socket.id
+                    })
+                })
+                // Client connectivity ends:
+                socket.on('disconnect', () => {
+                    storeAPI.dispatch({
+                        type: 'REMOVE_CLIENT',
+                        payload: socket.id
+                    })
+                })
+                socket.on('reconnect', () => {
+                    storeAPI.dispatch({
+                        type: 'ADD_CLIENT',
+                        payload: socket.id
+                    })
+                })
                 /*
                 START: Server => Client Endpoints:
                 */
@@ -22,11 +42,6 @@ const createSocketMiddleware = () => {
                     acc_data.acc_freqs.push(message.message);
                     // Dispatch to update Redux Store.
                     storeAPI.dispatch({
-                        // May need to check whether it is a new:
-                        // 1. Message
-                        // 2. Group
-                        // 3. Friend
-                        // (So I'm suspecting an extra field may be required)
                         type: message.messageType,
                         payload: acc_data
                     });
@@ -39,11 +54,6 @@ const createSocketMiddleware = () => {
                     acc_data.acc_freqs.splice(acc_data.acc_freqs.indexOf(message.message), 1);
                     // Dispatch to update Redux Store.
                     storeAPI.dispatch({
-                        // May need to check whether it is a new:
-                        // 1. Message
-                        // 2. Group
-                        // 3. Friend
-                        // (So I'm suspecting an extra field may be required)
                         type: message.messageType,
                         payload: acc_data
                     });
@@ -124,14 +134,6 @@ const createSocketMiddleware = () => {
                         payload: err_message
                     });
                 });
-
-                // Client connectivity ends:
-                socket.on('disconnect', () => {
-                    console.log('disconnected');
-                })
-                socket.on('reconnect', () => {
-                    console.log('reconnected');
-                })
                 break;
             }
             // Action to Logout:

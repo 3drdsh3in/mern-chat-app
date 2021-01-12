@@ -1,4 +1,5 @@
 import React from 'react';
+import * as crypto from 'crypto';
 
 // Containers:
 import MainNav from '../MainNav/MainNavContainer';
@@ -22,16 +23,16 @@ class Main extends React.Component {
   componentWillMount() {
     // Ideally change this to a check whether sesh_id hasn't expired.
     if (Object.keys(this.props.AccountDetails.acc_data).length === 0) {
-      // COMMENT OUT FOR UI DEVELOPMENT:
       this.setState({ authenticated: false });
     } else {
-      // Emit AccountDetails to emit in the socket middleware client.
+      // Must Initialize Client Before Any Kinda of emissions or the client's socket endpoints
+      // will not be created!
+      this.props.initializeClient();
       this.props.emitAccountDetails(this.props.AccountDetails);
     }
   }
 
   render() {
-    console.log(this.props.match);
     let grps = this.props.AccountDetails.acc_data.acc_grps;
     let selectedChatGrpIdx = this.props.SideBarDetails.selectedChatItem;
     if (grps == undefined || selectedChatGrpIdx == undefined) {

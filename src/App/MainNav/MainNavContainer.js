@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import MainNav from './MainNav';
 
 // Actions:
-import {reInitializeStore} from './MainNavActions';
+import { updateLogState } from '../_shared/actions/UpdateLogStateAction';
+import { reInitializeStore } from './MainNavActions';
 
 const mapStateToProps = (state) => ({
   AccountDetails: state.AccountDetails
@@ -12,7 +13,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   // No data paramter/argument is needed for this
-  reInitializeStore: () => dispatch(reInitializeStore())
+  reInitializeStore: () => dispatch(reInitializeStore()),
+  updateLogState: (data) => dispatch(updateLogState(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainNav);

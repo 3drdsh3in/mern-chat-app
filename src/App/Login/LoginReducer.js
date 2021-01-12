@@ -1,7 +1,8 @@
 // Reducer may also need to store ALL SideBar data for friends & groups into redux store.
 const initialState = {
   acc_data: {},
-  token_data: {}
+  token_data: {},
+  loggedOn: false
 }
 
 function LoginReducer(state = initialState, action) {
@@ -17,6 +18,8 @@ function LoginReducer(state = initialState, action) {
       return { ...state, acc_data: {} }
     case 'UPDATE_TOKEN_DATA':
       return { ...state, token_data: action.payload }
+    case 'UPDATE_LOG_STATE':
+      return { ...state, loggedOn: action.payload }
     default:
       return state
   }
