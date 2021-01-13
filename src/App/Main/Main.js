@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 // Containers:
 import MainNav from '../MainNav/MainNavContainer';
 import SideBar from '../SideBar/SideBarContainer';
@@ -17,6 +19,7 @@ class Main extends React.Component {
     this.state = {
       authenticated: true
     }
+    this.handleExpiredToken = this.handleExpiredToken.bind(this);
   }
 
   componentWillMount() {
@@ -32,6 +35,10 @@ class Main extends React.Component {
         this.props.addClientToStore(this.props.clientId);
       }
     }
+  }
+
+  handleExpiredToken() {
+    this.props.reInitializeStore();
   }
 
   render() {
@@ -86,6 +93,7 @@ class Main extends React.Component {
             <p>
               {`Expired At: ${Date(this.props.SocketErrorDetails.errorMessage.expiredAt)}`}
             </p>
+            <Link onClick={this.handleExpiredToken} to="/">Back To Login</Link>
           </>
         :
         <>

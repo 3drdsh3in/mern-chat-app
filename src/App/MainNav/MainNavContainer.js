@@ -5,7 +5,7 @@ import MainNav from './MainNav';
 
 // Actions:
 import { updateLogState } from '../_shared/actions/UpdateLogStateAction';
-import { reInitializeStore } from './MainNavActions';
+import { reInitializeStore } from '../_shared/actions/ReInitializeStoreAction';
 
 const mapStateToProps = (state) => ({
   AccountDetails: state.AccountDetails
