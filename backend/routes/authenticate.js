@@ -99,7 +99,8 @@ router.post('/newaccount', accountValidation, (req, res) => {
     acc_lname: req.body.nalname,
     acc_bio: "Hello!",
     acc_friends: [],
-    acc_grps: []
+    acc_grps: [],
+    acc_theme: Math.floor(Math.random() * 16777215).toString(16)
   });
   newAcc.save((err) => {
     if (err) {

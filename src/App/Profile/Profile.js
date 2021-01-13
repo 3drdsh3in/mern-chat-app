@@ -41,11 +41,17 @@ class Profile extends React.Component {
   render() {
     return (
       <div className="wrapper_profile">
-        <MainNav />
+        <MainNav
+          clientId={this.props.clientId}
+          setClientIdWrapper={this.props.setClientIdWrapper}
+        />
 
         <div className="profile">
           <div className="profile-header">
-            <div className="profile-header-img">
+            <div
+              className="profile-header-img"
+              style={{ background: `#${this.state.displayData.acc_theme}` }}
+            >
               <h1>
                 {this.state.displayData.acc_usrname ?
                   this.state.displayData.acc_usrname.charAt(0)

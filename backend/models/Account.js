@@ -46,7 +46,13 @@ const accountSchema = new mongoose.Schema({
   acc_grps: [{
     type: mongoose.Types.ObjectId,
     ref: 'ChatGroup'
-  }]
+  }],
+  acc_theme: {
+    type: String,
+    required: true,
+    min: 6,
+    max: 6
+  }
 });
 
 module.exports = mongoose.model('Account', accountSchema);

@@ -66,7 +66,10 @@ class App extends React.Component {
             />
           </Route>
           <Route path="/profile/:id" exact component={Profile}>
-            <Profile />
+            <Profile 
+              clientId={this.state.clientId}
+              setClientIdWrapper={this.setClientIdWrapper}
+            />
           </Route>
 
         </Router>
