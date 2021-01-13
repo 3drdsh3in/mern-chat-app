@@ -66,6 +66,7 @@ class Login extends React.Component {
             refreshToken: data['refreshToken']
           });
           // Redirect Page To Other Main Page Component.
+          this.props.updateLogState(true);
           this.setState({ redirect: true })
         }
       })
@@ -143,6 +144,7 @@ class Login extends React.Component {
             refreshToken: data['refreshToken']
           });
           // Redirect Page To Other Main Page Component.
+          this.props.updateLogState(true);
           this.setState({ redirect: true })
         }
       })

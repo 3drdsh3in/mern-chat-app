@@ -48,7 +48,6 @@ io.on('connection', (client) => {
   console.log('Connection Established On', client.id);
 
   client.on('JWT_AUTH', async (data) => {
-    console.log(data);
     try {
       // async await forces the verification to complete before allowing success handler to run its natural course.
       let decoded = await jwt.verify(data.accessToken, process.env.SECRET_ACCESS_TOKEN);
@@ -68,7 +67,7 @@ io.on('connection', (client) => {
     if (!(`${hashString}` in clientStore)) {
       clientStore[`${hashString}`] = [client];
     }
-    else if (clientStore[`${hashString}`].length == 0) {
+    else if (Array.isArray(clientStore[`${hashString}`])) {
       clientStore[`${hashString}`].push(client);
     }
     displayConnectedClients();
@@ -319,8 +318,6 @@ io.on('connection', (client) => {
   })
 
   client.on('NEW_MESSAGE', async (data) => {
-    // clientStore displaying nothing?
-    // displayConnectedClients();
     // 1. Create New Message & .save() onto db.
     let new_msg_id = new ObjectId();
     let msg_chat_grp, new_msg;
@@ -393,9 +390,5 @@ io.on('connection', (client) => {
   })
 
 })
-
-// setInterval(() => {
-//   displayConnectedClients();
-// }, 10000)
 
 module.exports = io;

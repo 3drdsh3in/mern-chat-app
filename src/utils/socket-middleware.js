@@ -13,25 +13,25 @@ const createSocketMiddleware = () => {
                 // Connect with server.
                 socket = io();
                 // Save socket id to redux store (to be persisted across different tabs for checking).
-                socket.on("connect", () => {
-                    storeAPI.dispatch({
-                        type: 'ADD_CLIENT',
-                        payload: socket.id
-                    })
-                })
-                // Client connectivity ends:
-                socket.on('disconnect', () => {
-                    storeAPI.dispatch({
-                        type: 'REMOVE_CLIENT',
-                        payload: socket.id
-                    })
-                })
-                socket.on('reconnect', () => {
-                    storeAPI.dispatch({
-                        type: 'ADD_CLIENT',
-                        payload: socket.id
-                    })
-                })
+                // socket.on("connect", () => {
+                //     storeAPI.dispatch({
+                //         type: 'ADD_CLIENT',
+                //         payload: socket.id
+                //     })
+                // })
+                // // Client connectivity ends:
+                // socket.on('disconnect', () => {
+                //     storeAPI.dispatch({
+                //         type: 'REMOVE_CLIENT',
+                //         payload: socket.id
+                //     })
+                // })
+                // socket.on('reconnect', () => {
+                //     storeAPI.dispatch({
+                //         type: 'ADD_CLIENT',
+                //         payload: socket.id
+                //     })
+                // })
                 /*
                 START: Server => Client Endpoints:
                 */

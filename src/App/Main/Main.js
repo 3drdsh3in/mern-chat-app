@@ -1,5 +1,4 @@
 import React from 'react';
-import * as crypto from 'crypto';
 
 // Containers:
 import MainNav from '../MainNav/MainNavContainer';
@@ -25,10 +24,13 @@ class Main extends React.Component {
     if (Object.keys(this.props.AccountDetails.acc_data).length === 0) {
       this.setState({ authenticated: false });
     } else {
-      // Must Initialize Client Before Any Kinda of emissions or the client's socket endpoints
+      // Must Initialize Client Before Any Kind of emissions or the client's socket endpoints
       // will not be created!
-      this.props.initializeClient();
-      this.props.emitAccountDetails(this.props.AccountDetails);
+      if (!this.props.ClientDetails.clients.includes(this.props.clientId)) {
+        this.props.initializeClient();
+        this.props.emitAccountDetails(this.props.AccountDetails);
+        this.props.addClientToStore(this.props.clientId);
+      }
     }
   }
 

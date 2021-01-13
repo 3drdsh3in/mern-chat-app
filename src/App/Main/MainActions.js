@@ -15,11 +15,9 @@ function initializeClient() {
   }
 }
 function addClientToStore(data) {
-  return (dispatch, getState) => {
-    dispatch({
-      type: 'ADD_CLIENT',
-      payload: data
-    })
+  return {
+    type: 'ADD_CLIENT',
+    payload: data
   }
 }
 
