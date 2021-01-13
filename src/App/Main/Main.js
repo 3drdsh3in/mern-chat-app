@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { Link } from 'react-router-dom';
+import * as crypto from 'crypto';
 
 // Containers:
 import MainNav from '../MainNav/MainNavContainer';
@@ -29,10 +29,18 @@ class Main extends React.Component {
     } else {
       // Must Initialize Client Before Any Kind of emissions or the client's socket endpoints
       // will not be created!
+      console.log(this.props.ClientDetails.clients, this.props.clientId, this.props.ClientDetails.clients.includes(this.props.clientId))
       if (!this.props.ClientDetails.clients.includes(this.props.clientId)) {
         this.props.initializeClient();
         this.props.emitAccountDetails(this.props.AccountDetails);
-        this.props.addClientToStore(this.props.clientId);
+        console.log(this.props.clientId);
+        if (this.props.clientId == '') {
+          let newClientId = crypto.randomBytes(32).toString('hex');
+          this.props.setClientIdWrapper(newClientId);
+          this.props.addClientToStore(newClientId);
+        } else {
+          this.props.addClientToStore(this.props.clientId);
+        }
       }
     }
   }
@@ -61,7 +69,10 @@ class Main extends React.Component {
           <>
             <div className="main">
               <div className="main-header">
-                <MainNav />
+                <MainNav
+                  clientId={this.props.clientId}
+                  setClientIdWrapper={this.props.setClientIdWrapper}
+                />
               </div>
               <div className="main-body">
                 <div className="main-body-side">

@@ -1,13 +1,12 @@
 import React from 'react';
-import './Login.scss';
 import { Modal } from 'reactstrap';
 
 // Child Components:
 import NewAccount from '../NewAccount/NewAccount';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Redirect } from 'react-router';
 import * as crypto from 'crypto';
+import './Login.scss';
 // require('crypto').randomBytes(64).toString('hex')
 class Login extends React.Component {
   constructor(props) {
@@ -17,8 +16,7 @@ class Login extends React.Component {
       userName: "",
       password: "",
       // Modal
-      modal: false,
-      redirect: false
+      modal: false
     };
     // SetOnChange (State Managing Callback)
     this.setOnChange = this.setOnChange.bind(this);
@@ -34,10 +32,10 @@ class Login extends React.Component {
   Future Refactors: handleLogin(event) should be done through TCP socket conenction
   as opposed to a HTTP Post handler to reduce incoming server traffic.
   */
-  handleLogin(event) {
+  async handleLogin(event) {
     // 1. Verify the account username exists (/w the corresponding password).
     event.preventDefault();
-    fetch(`${window.location.protocol}//${window.location.host}/api/authenticate/login`, {
+    await fetch(`${window.location.protocol}//${window.location.host}/api/authenticate/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +65,7 @@ class Login extends React.Component {
           });
           // Redirect Page To Other Main Page Component.
           this.props.updateLogState(true);
-          this.setState({ redirect: true })
+          this.props.setClientIdWrapper(crypto.randomBytes(32).toString('hex'));
         }
       })
   }
@@ -145,27 +143,16 @@ class Login extends React.Component {
           });
           // Redirect Page To Other Main Page Component.
           this.props.updateLogState(true);
-          this.setState({ redirect: true })
+          // setClientIdWrapper prompts the redirect to /main indirectly with the
+          // componentDidUpdate() lifecycle in App.js
+          this.props.setClientIdWrapper(crypto.randomBytes(32).toString('hex'));
         }
       })
   }
 
   render() {
-    console.log(this.props.AccountDetails);
-    if (this.props.AccountDetails) {
-      if (Object.keys(this.props.AccountDetails.acc_data).length > 0 && this.props.AccountDetails.loggedOn == true) {
-        this.setState({ redirect: true });
-      }
-    }
     return (
       <>
-        {/* Redirect Initiative */}
-        {this.state.redirect == true
-          ?
-          <Redirect to="/main" />
-          :
-          null
-        }
         <div className="wrapper fadeInDown" onSubmit={this.handleLogin}>
           <div id="formContent">
             <div className="wrapper-img fadeIn first">

@@ -21,5 +21,4 @@ function addClientToStore(data) {
   }
 }
 
-
 export { emitAccountDetails, initializeClient, addClientToStore };

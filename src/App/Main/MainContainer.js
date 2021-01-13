@@ -5,7 +5,7 @@ import { reInitializeStore } from "../_shared/actions/ReInitializeStoreAction";
 import Main from './Main';
 
 // Actions
-import { addClientToStore, emitAccountDetails, initializeClient } from "./MainActions";
+import { addClientToStore, emitAccountDetails, initializeClient, removeClientFromStore } from "./MainActions";
 
 
 
@@ -20,7 +20,7 @@ const mapDispatchToProps = (dispatch) => ({
   emitAccountDetails: (data) => dispatch(emitAccountDetails(data)),
   initializeClient: () => dispatch(initializeClient()),
   addClientToStore: (data) => dispatch(addClientToStore(data)),
-  reInitializeStore: () => dispatch(reInitializeStore())
+  reInitializeStore: () => dispatch(reInitializeStore()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

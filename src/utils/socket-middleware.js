@@ -20,12 +20,12 @@ const createSocketMiddleware = () => {
                 //     })
                 // })
                 // // Client connectivity ends:
-                // socket.on('disconnect', () => {
-                //     storeAPI.dispatch({
-                //         type: 'REMOVE_CLIENT',
-                //         payload: socket.id
-                //     })
-                // })
+                socket.on('disconnect', (data) => {
+                    console.log('disconnect', data);
+                    storeAPI.dispatch({
+                        type: 'REMOVE_CLIENT',
+                    })
+                })
                 // socket.on('reconnect', () => {
                 //     storeAPI.dispatch({
                 //         type: 'ADD_CLIENT',

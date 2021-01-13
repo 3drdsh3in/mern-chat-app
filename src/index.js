@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import App from './App/App';
+import App from './App/AppContainer';
 
 // Provider used to initiate redux store.
 import { store, persistor } from './store';
