@@ -1,5 +1,11 @@
 import React from 'react';
-import { Modal } from 'reactstrap';
+import {
+  Modal,
+  Form,
+  FormGroup,
+  Input,
+  FormFeedback
+} from 'reactstrap';
 
 // Child Components:
 import NewAccount from '../NewAccount/NewAccount';
@@ -16,7 +22,8 @@ class Login extends React.Component {
       userName: "",
       password: "",
       // Modal
-      modal: false
+      modal: false,
+      loginInvalid: false
     };
     // SetOnChange (State Managing Callback)
     this.setOnChange = this.setOnChange.bind(this);
@@ -52,6 +59,7 @@ class Login extends React.Component {
         // Trigger Alert/Feedback
         if ('code' in data) {
           // Control FeedBack.
+          this.setState({ loginInvalid: true })
         }
         // If Succesful:
         // Save account details to redux state.
@@ -72,6 +80,9 @@ class Login extends React.Component {
 
   // Create Account Handlers
   setOnChange(event) {
+    if (this.state.loginInvalid) {
+      this.setState({ loginInvalid: false });
+    }
     let fieldID = event.target.id;
     let obj = {};
     obj[`${fieldID}`] = event.target.value;
@@ -130,6 +141,7 @@ class Login extends React.Component {
         // Trigger Alert/Feedback
         if ('code' in data) {
           // Control FeedBack.
+          this.setState({ loginInvalid: true })
         }
         // If Succesful:
         // Save account details to redux state.
@@ -158,12 +170,26 @@ class Login extends React.Component {
             <div className="wrapper-img fadeIn first">
               <img src="https://img.icons8.com/cute-clipart/256/000000/chat.png" id="icon" />
             </div>
-
-            <form>
-              <input type="text" id="userName" className="fadeIn second" name="userName" placeholder="Username" onChange={this.setOnChange} />
-              <input type="password" id="password" className="fadeIn third" name="password" placeholder="Password" onChange={this.setOnChange} />
-              <input type="submit" className="fadeIn fourth" value="Log In" />
-            </form>
+            <Form>
+              <FormGroup>
+                {this.state.loginInvalid
+                  ?
+                  <>
+                    <Input type="text" id="userName" className="fadeIn second" name="userName" placeholder="Username" onChange={this.setOnChange} invalid />
+                    <Input type="password" id="password" className="fadeIn third" name="password" placeholder="Password" onChange={this.setOnChange} invalid />
+                  </>
+                  :
+                  <>
+                    <Input type="text" id="userName" className="fadeIn second" name="userName" placeholder="Username" onChange={this.setOnChange} />
+                    <Input type="password" id="password" className="fadeIn third" name="password" placeholder="Password" onChange={this.setOnChange} />
+                  </>
+                }
+                <FormFeedback invalid>Username or Password not found</FormFeedback>
+              </FormGroup>
+              <FormGroup>
+                <Input type="submit" className="fadeIn fourth" value="Log In" />
+              </FormGroup>
+            </Form>
 
             {/* Uncomment when you want to create nodemailer dependency with this app! */}
             <div className="formContent-guest-login">

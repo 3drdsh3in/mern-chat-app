@@ -63,9 +63,9 @@ class MainNav extends React.Component {
 
   async logoutHandler(e) {
     console.log(this.state.redirectToLogin);
-    await this.props.updateLogState(false);
     await this.props.setClientIdWrapper('');
     await this.setState({ redirectToLogin: true });
+    await this.props.updateLogState(false);
     await this.props.reInitializeStore();
     this.props.resetClientStore();
   }

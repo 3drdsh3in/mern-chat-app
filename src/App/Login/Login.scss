@@ -319,6 +319,8 @@ select.dob-day, select.dob-month, select.dob-year {
 
 input[type=text]:focus, input[type=password]:focus {
   background-color: #fff;
+  box-shadow: none;
+  border-color: #fff;
   border-bottom: 2px solid #5fbae9;
 }
 
@@ -439,6 +441,22 @@ input[type=text]:placeholder, input[type=password]:placeholder  {
 
 
 /* OTHERS */
+.form-group {
+  margin: 0px;
+}
+.form-control {
+  width: auto;
+  height: auto;
+}
+input[type=submit]:focus {
+  color: white;
+  background-color: #56baed;
+  border-color:#fff;
+  outline: auto;
+  box-shadow: none;
+  outline: 1px dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+}
 
 *:focus {
     outline: none;
