@@ -99,16 +99,17 @@ router.post('/getAccountData/:id', async (req, res) => {
         viewedUserFriends[i]['frStatus'] = 'FRIENDS'
       }
     } else {
-
+      console.log(clientFriendRequests);
       for (i = 0; i < viewedUserFriends.length; i++) {
         if (viewedUserFriends[i]._id.equals(clientAccount._id)) {
           viewedUserFriends[i]['frStatus'] = 'FRIENDS';
-          break;
+          continue;
         } else if (!viewedUserFriends[i].hasOwnProperty('frStatus')) {
           viewedUserFriends[i]['frStatus'] = 'UNSENT';
         }
         for (j = 0; j < clientFriendRequests.length; j++) {
-          if (clientFriendRequests[j].fr_reciever_id.equals(viewedUserFriends[i]._id)) {
+          console.log(clientFriendRequests[j].fr_sender_id, viewedUserFriends[i]._id);
+          if (clientFriendRequests[j].fr_sender_id.equals(viewedUserFriends[i]._id)) {
             viewedUserFriends[i]['frStatus'] = 'R_SENT';
             break;
           }
