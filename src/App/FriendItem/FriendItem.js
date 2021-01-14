@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
 import './FriendItem.scss';
 
 function FriendItem(props) {
@@ -42,12 +44,15 @@ function FriendItem(props) {
   return (
     <>
       <div className="frienditem">
-        <div className="frienditem-header">
-          <h6>{props.userName}</h6>
-          <p>{props.fname}{" "}{props.lname}</p>
-        </div>
+        <Link to={`/profile/${props.acc_id}`} style={{ color: 'black' }}>
+          <div className="frienditem-header">
+            <h6>{props.userName}</h6>
+            <p>{props.fname}{" "}{props.lname}</p>
+          </div>
+        </Link>
 
-        {
+        {props.acc_id !== props.AccountDetails.acc_data._id
+          ?
           <>
             {interactionState == 'UNSENT'
               ?
@@ -75,6 +80,8 @@ function FriendItem(props) {
               )
             }
           </>
+          :
+          null
         }
       </div>
     </>

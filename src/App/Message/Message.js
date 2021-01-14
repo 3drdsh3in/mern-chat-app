@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import './Message.scss';
 
-function Message({ senderName, msgString, isSender, marginBottom, messageSpan }) {
+function Message({ senderName, msgString, isSender, marginBottom, messageSpan, senderId }) {
 
   return (
     isSender
@@ -24,14 +26,22 @@ function Message({ senderName, msgString, isSender, marginBottom, messageSpan })
         marginBottom
           ?
           <>
-            <span className="message-span">{senderName}</span>
+            <span className="message-span">
+              <Link to={`/profile/${senderId}`}>
+                {senderName}
+              </Link>
+            </span>
             <div className="message reciever margin-bottom">
               <p>{msgString}</p>
             </div>
           </>
           :
           <>
-            <span className="message-span">{senderName}</span>
+            <span className="message-span">
+              <Link to={`/profile/${senderId}`}>
+                {senderName}
+              </Link>
+            </span>
             <div className="message reciever">
               <p>{msgString}</p>
             </div>

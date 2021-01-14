@@ -46,6 +46,7 @@ class MainNav extends React.Component {
     this.toggleNotifications = this.toggleNotifications.bind(this);
     this.toggleNewFriend = this.toggleNewFriend.bind(this);
     this.logoutHandler = this.logoutHandler.bind(this);
+    console.log('CONSTRUCT MainNav')
   }
 
   toggleOptions() {
@@ -61,6 +62,7 @@ class MainNav extends React.Component {
   }
 
   async logoutHandler(e) {
+    console.log(this.state.redirectToLogin);
     await this.props.updateLogState(false);
     await this.props.setClientIdWrapper('');
     await this.setState({ redirectToLogin: true });
@@ -69,7 +71,15 @@ class MainNav extends React.Component {
   }
 
   render() {
+    console.log(this.state.redirectToLogin);
     let acc_freqs = this.props.AccountDetails.acc_data.acc_freqs
+    if (!acc_freqs) {
+      return (
+        <>
+          No Friend Requests Found.
+        </>
+      )
+    }
     return (
       <>
         <div>
@@ -87,7 +97,7 @@ class MainNav extends React.Component {
               ?
               <NavLink onClick={this.toggleNotifications} href="#">
                 <i id="notifications" className="fas fa-bell"></i>
-                <span class="badge">{acc_freqs.length}</span>
+                <span className="badge">{acc_freqs.length}</span>
               </NavLink>
               :
               <NavLink onClick={this.toggleNotifications} href="#">
@@ -140,6 +150,7 @@ class MainNav extends React.Component {
         </div>
       </>
     )
+
   }
 }
 

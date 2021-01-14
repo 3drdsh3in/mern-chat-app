@@ -66,7 +66,6 @@ router.post('/getFriends/:id', async (req, res) => {
       }
       // IF account in accountDoc[i] does not have a friendRequest sent to it by the userAccount in request body's id
       // - Mark accountDocs[i].frStatus = 'UNSENT';
-      console.log(accountDocs[i].frStatus);
     }
     res.json(accountDocs);
   } catch (err) {
@@ -75,45 +74,50 @@ router.post('/getFriends/:id', async (req, res) => {
 })
 
 router.post('/getAccountData/:id', async (req, res) => {
-  console.log(req.body);
-  let acc_id = new ObjectId(req.body.userId);
+  let acc_id = new ObjectId(req.params.id);
 
   try {
     // Get sender's account data
-    let viewedUserAccount = await Account.findById(acc_id).populate('acc_freqs').populate('acc_friends').populate('acc_grps').lean();
+    let viewedUserAccount = await Account.findById(acc_id)
+      .populate('acc_freqs')
+      .populate('acc_grps')
+      .populate({
+        path: 'acc_friends',
+        populate: {
+          path: 'acc_freqs',
+          model: 'FriendRequest'
+        }
+      })
+      .lean();
     let viewedUserFriends = viewedUserAccount.acc_friends;
-    let viewedUserFriendRequests = viewedUserAccount.acc_freqs;
     // Get account data of the account we are looking for.
-    let clientAccount = await Account.findById(req.params.id);
+    let clientAccount = await Account.findById(req.body.userId).populate('acc_freqs');
+    let clientFriendRequests = clientAccount.acc_freqs;
 
     if (clientAccount._id.equals(viewedUserAccount._id)) {
       for (i = 0; i < viewedUserFriends.length; i++) {
         viewedUserFriends[i]['frStatus'] = 'FRIENDS'
       }
     } else {
+
       for (i = 0; i < viewedUserFriends.length; i++) {
-        console.log(viewedUserFriends[i], clientAccount._id, viewedUserFriends[i]._id.equals(clientAccount._id));
         if (viewedUserFriends[i]._id.equals(clientAccount._id)) {
           viewedUserFriends[i]['frStatus'] = 'FRIENDS';
           break;
         } else if (!viewedUserFriends[i].hasOwnProperty('frStatus')) {
           viewedUserFriends[i]['frStatus'] = 'UNSENT';
         }
-      }
-      for (i = 0; i < viewedUserFriendRequests.length; i++) {
-        if (viewedUserFriendRequests[i].fr_reciever_id.equals(clientAccount._id)) {
-          viewedUserFriends[i]['frStatus'] = 'SENT';
-          break;
-        } else if (!viewedUserFriends[i].hasOwnProperty('frStatus')) {
-          viewedUserFriends[i]['frStatus'] = 'UNSENT';
+        for (j = 0; j < clientFriendRequests.length; j++) {
+          if (clientFriendRequests[j].fr_reciever_id.equals(viewedUserFriends[i]._id)) {
+            viewedUserFriends[i]['frStatus'] = 'R_SENT';
+            break;
+          }
         }
-      }
-      for (i = 0; i < viewedUserFriendRequests.length; i++) {
-        if (viewedUserFriendRequests[i].fr_sender_id.equals(clientAccount._id)) {
-          viewedUserFriends[i]['frStatus'] = 'R_SENT';
-          break;
-        } else if (!viewedUserFriends[i].hasOwnProperty('frStatus')) {
-          viewedUserFriends[i]['frStatus'] = 'UNSENT';
+        for (j = 0; j < viewedUserFriends[i].acc_freqs.length; j++) {
+          if (viewedUserFriends[i].acc_freqs[j].fr_sender_id.equals(clientAccount._id)) {
+            viewedUserFriends[i]['frStatus'] = 'SENT';
+            break;
+          }
         }
       }
     }

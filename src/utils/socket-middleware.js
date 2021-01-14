@@ -22,9 +22,9 @@ const createSocketMiddleware = () => {
                 // // Client connectivity ends:
                 socket.on('disconnect', (data) => {
                     console.log('disconnect', data);
-                    storeAPI.dispatch({
-                        type: 'REMOVE_CLIENT',
-                    })
+                    // storeAPI.dispatch({
+                    //     type: 'REMOVE_CLIENT',
+                    // })
                 })
                 // socket.on('reconnect', () => {
                 //     storeAPI.dispatch({

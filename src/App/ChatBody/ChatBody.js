@@ -63,6 +63,7 @@ class ChatBody extends React.Component {
                       msgString={msg.msg_string}
                       isSender={clientId == msg.m_sender._id}
                       marginBottom={true}
+                      senderId={msg.m_sender._id}
                     />
                     :
                     <Message
@@ -70,6 +71,7 @@ class ChatBody extends React.Component {
                       msgString={msg.msg_string}
                       isSender={clientId == msg.m_sender._id}
                       marginBottom={false}
+                      senderId={msg.m_sender._id}
                     />)
                   :
                   <Message
@@ -77,6 +79,7 @@ class ChatBody extends React.Component {
                     msgString={msg.msg_string}
                     isSender={clientId == msg.m_sender._id}
                     marginBottom={false}
+                    senderId={msg.m_sender._id}
                   />
               )
             })

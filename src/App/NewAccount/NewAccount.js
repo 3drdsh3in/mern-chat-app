@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModalHeader, ModalBody, ModalFooter, Label, Input, Form, FormGroup, FormFeedback } from 'reactstrap';
+import { v4 as uuidv4 } from 'uuid';
 
 import './NewAccount.scss';
 
@@ -172,19 +173,19 @@ class NewAccount extends React.Component {
               {/* Date Of Birth Selectors: */}
               <select onChange={this.setOnChange} name="nadobday" id="nadobday" className="dob-day" value={this.state.nadobday}>
                 {days.map((val, idx) => (
-                  <option value={val}>{val}</option>
+                  <option key={uuidv4()} value={val}>{val}</option>
                 ))
                 }
               </select>
               <select onChange={this.setOnChange} name="nadobmonth" id="nadobmonth" className="dob-month" value={this.state.nadobmonth}>
                 {months.map((val, idx) => (
-                  <option value={val}>{val}</option>
+                  <option key={uuidv4()} value={val}>{val}</option>
                 ))
                 }
               </select>
               <select onChange={this.setOnChange} name="nadobyear" id="nadobyear" className="dob-year" value={this.state.nadobyear}>
                 {years.map((val, idx) => (
-                  <option value={val}>{val}</option>
+                  <option key={uuidv4()} value={val}>{val}</option>
                 ))
                 }
               </select>
@@ -195,9 +196,9 @@ class NewAccount extends React.Component {
                 <h6>Gender:</h6>
               </div>
               <select onChange={this.setOnChange} name="nagender" id="nagender" className="createAccount-form-gender">
-                <option value="N">---Choose A Gender Option---</option>
-                <option value="M">Male</option>
-                <option value="F">Female</option>
+                <option key={uuidv4()} value="N">---Choose A Gender Option---</option>
+                <option key={uuidv4()} value="M">Male</option>
+                <option key={uuidv4()} value="F">Female</option>
               </select>
             </FormGroup>
           </Form>

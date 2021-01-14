@@ -39,6 +39,7 @@ class Profile extends React.Component {
   }
 
   render() {
+    console.log('PROFILE RENDER');
     return (
       <div className="wrapper_profile">
         <MainNav
@@ -46,7 +47,7 @@ class Profile extends React.Component {
           setClientIdWrapper={this.props.setClientIdWrapper}
         />
 
-        <div className="profile">
+        <div key={uuidv4()} className="profile">
           <div className="profile-header">
             <div
               className="profile-header-img"
