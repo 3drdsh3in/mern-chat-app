@@ -38,6 +38,25 @@ class Profile extends React.Component {
       })
   }
 
+  componentDidUpdate() {
+    console.log(this.props);
+    fetch(`${window.location.protocol}//${window.location.host}/api/search/getAccountData/${this.props.match.params.id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        userId: this.props.AccountDetails.acc_data._id
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        this.setState({ displayData: data });
+      })
+  }
+
   render() {
     console.log('PROFILE RENDER');
     return (

@@ -15,6 +15,6 @@ ReactDOM.render(
         <App />
       </PersistGate>
     </Provider>
-  </React.StrictMode >,
+  </React.StrictMode>,
   document.getElementById('root')
 );

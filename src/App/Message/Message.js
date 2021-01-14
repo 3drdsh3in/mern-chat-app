@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 import './Message.scss';
 
@@ -27,7 +27,15 @@ function Message({ senderName, msgString, isSender, marginBottom, messageSpan, s
           ?
           <>
             <span className="message-span">
-              <Link to={`/profile/${senderId}`}>
+              <Link to={
+                {
+                  pathname: `/profile/${senderId}`,
+                  key: uuidv4(), // we could use Math.random, but that's not guaranteed unique.
+                  state: {
+                    applied: true
+                  }
+                }
+              }>
                 {senderName}
               </Link>
             </span>

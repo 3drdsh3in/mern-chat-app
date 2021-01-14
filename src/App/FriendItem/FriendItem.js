@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 import './FriendItem.scss';
 
@@ -44,7 +45,17 @@ function FriendItem(props) {
   return (
     <>
       <div className="frienditem">
-        <Link to={`/profile/${props.acc_id}`} style={{ color: 'black' }}>
+        <Link
+          to={
+            {
+              pathname: `/profile/${props.acc_id}`,
+              key: uuidv4(), // we could use Math.random, but that's not guaranteed unique.
+              state: {
+                applied: true
+              }
+            }
+          }
+          style={{ color: 'black' }}>
           <div className="frienditem-header">
             <h6>{props.userName}</h6>
             <p>{props.fname}{" "}{props.lname}</p>
