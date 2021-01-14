@@ -53,12 +53,21 @@ class Profile extends React.Component {
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        this.setState({ displayData: data });
+        if (this.state.displayData._id !== data._id) {
+          this.setState({ displayData: data });
+        }
       })
   }
 
   render() {
     console.log('PROFILE RENDER');
+    if (!this.props.AccountDetails.loggedOn) {
+      return (
+        <h1>
+          Not authenticated Please Login Again
+        </h1>
+      )
+    }
     return (
       <div className="wrapper_profile">
         <MainNav

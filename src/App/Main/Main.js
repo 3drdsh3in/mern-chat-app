@@ -52,7 +52,7 @@ class Main extends React.Component {
   render() {
     let grps = this.props.AccountDetails.acc_data.acc_grps;
     let selectedChatGrpIdx = this.props.SideBarDetails.selectedChatItem;
-    if (grps == undefined || selectedChatGrpIdx == undefined) {
+    if (grps == undefined || selectedChatGrpIdx == undefined || !this.props.AccountDetails.loggedOn) {
       return (
         <h1>
           Not authenticated Please Login Again

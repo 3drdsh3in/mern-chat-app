@@ -22,11 +22,11 @@ function ChatHeader({ chatName, chatType, viewedGrp, leaveGroup, leaveGroupStore
           // 'FRIENDS IS NOT IMPLEMENTED YET, SO FORGET ABOUT IT!'
           chatType == 'FRIENDS'
             ?
-            <button>Friends <i className="fas fa-check"></i></button>
+            <button>Remove Friend</button>
             :
             (chatType == 'GROUP'
               ?
-              <button onClick={handleLeaveGroup}>In Group <i className="fas fa-check"></i></button>
+              <button onClick={handleLeaveGroup}>Leave Group</button>
               :
               null)
         }
