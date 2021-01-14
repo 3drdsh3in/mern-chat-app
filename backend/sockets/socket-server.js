@@ -317,6 +317,10 @@ io.on('connection', (client) => {
     }
   })
 
+  client.on('ADD_TYPING_USER', (data) => {
+    // Needed Data: group's _id and typing user's name.
+  })
+
   client.on('NEW_MESSAGE', async (data) => {
     // 1. Create New Message & .save() onto db.
     let new_msg_id = new ObjectId();
