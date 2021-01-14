@@ -17,11 +17,12 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
+const extendedMiddleware = process.env.NODE_ENV === 'production' ? applyMiddleware(...middleware) : composeWithDevTools(applyMiddleware(...middleware))
+
 const store = createStore(
   persistedReducer,
-  composeWithDevTools(applyMiddleware(...middleware))
+  extendedMiddleware
 )
-
 const persistor = persistStore(store);
 
 export { store, persistor };
