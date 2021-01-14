@@ -4,6 +4,7 @@ import './ChatBody.scss';
 
 // Containers:
 import Message from '../Message/MessageContainer';
+import TypingPopup from '../TypingPopup/TypingPopupContainer';
 
 class ChatBody extends React.Component {
   constructor(props) {
@@ -94,6 +95,9 @@ class ChatBody extends React.Component {
               <i className="fas fa-caret-right fa-3x"></i>
             </button>
           </div>
+          <TypingPopup
+            users={['Alex Shen', 'John Schneider', 'Al Stein', 'Bill Williamson', 'Dean Shawn']}
+          />
         </div>
       </div>
     )
