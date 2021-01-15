@@ -2,7 +2,6 @@ const socket = require('socket.io');
 const io = socket();
 const jwt = require('jsonwebtoken');
 const ObjectId = require('mongoose').Types.ObjectId;
-
 /*
 TODO: (If you average comeback)
 1. Modularize socker-server.js into functions like at 1:55
@@ -56,6 +55,7 @@ io.on('connection', (client) => {
   console.log('Connection Established On', client.id);
 
   client.on('JWT_AUTH', async (data) => {
+    console.log('JWT_AUTH', data);
     try {
       // async await forces the verification to complete before allowing success handler to run its natural course.
       let decoded = await jwt.verify(data.accessToken, process.env.SECRET_ACCESS_TOKEN);

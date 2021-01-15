@@ -12,6 +12,7 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = (dispatch) => ({
   sendNewMessage: (data) => dispatch(sendNewMessage(data)),
+  // sendNewMessage: (data) => sendNewMessage(data),
   emitTyping: (data) => dispatch(emitTyping(data)),
   emitNotTyping: (data) => dispatch(emitNotTyping(data))
 })

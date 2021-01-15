@@ -160,11 +160,12 @@ const createSocketMiddleware = () => {
             // This endpoint can only be reached once LOGIN action is dispatched
             // to initialise the socket endpoint on the redux client.
             case 'SEND_WEBSOCKET_MESSAGE': {
+                console.log('SEND NEW MESSAGE:', action.eventName);
+                console.log(socket._callbacks);
                 let { AccountDetails } = storeAPI.getState();
                 socket.emit('JWT_AUTH', AccountDetails.token_data);
                 socket.off('JWT_AUTH_SUCCESS');
                 socket.on('JWT_AUTH_SUCCESS', () => {
-                    console.log('SEND NEW MESSAGE:', action.eventName);
                     socket.emit(action.eventName, action.payload);
                 })
                 // Do not move onto any further reducer actions.

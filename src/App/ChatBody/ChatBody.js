@@ -15,7 +15,7 @@ class ChatBody extends React.Component {
     this.messagesEndRef = React.createRef();
     this.submitMessageInput = this.submitMessageInput.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
+    // this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   componentDidMount() {
@@ -43,9 +43,9 @@ class ChatBody extends React.Component {
         g_id: this.props.viewedGrp._id,
         msg_string: this.state.messageInput
       });
-      console.log(this.state.messageInput);
-      this.setState({ messageInput: '' })
-      console.log(this.state.messageInput);
+      // console.log(this.state.messageInput);
+      // this.setState({ messageInput: '' })
+      // console.log(this.state.messageInput);
     }
   }
 
@@ -61,31 +61,36 @@ class ChatBody extends React.Component {
     }
   }
 
-  async handleKeyDown(event) {
-    console.log('KEYDOWN:', event.key);
-    if (this.state.messageInput !== '') {
-      // Emit action that sends:
-      // group _id and this.props.AccountDetails.acc_usrname
-      // to the server.
-      await this.props.emitTyping({
-        acc_id: this.props.AccountDetails.acc_data._id,
-        g_id: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1]._id,
-        g_members: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1].g_members,
-        emitter: this.props.AccountDetails.acc_data.acc_usrname
-      })
-    }
-    if (this.state.messageInput === '') {
-      // Emit action that sends:
-      // group _id and this.props.AccountDetails.acc_usrname
-      // to the server.
-      await this.props.emitNotTyping({
-        acc_id: this.props.AccountDetails.acc_data._id,
-        g_id: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1]._id,
-        g_members: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1].g_members,
-        emitter: this.props.AccountDetails.acc_data.acc_usrname
-      })
-    }
-  }
+  /*
+  This handler is so fucking weird, it's causing
+  socket-middleware events to emit twice despite actions
+  only being called once! (WTH)
+  */
+  // async handleKeyDown(event) {
+  //   console.log('KEYDOWN:', event.key)
+  //   if (this.state.messageInput !== '') {
+  //     // Emit action that sends:
+  //     // group _id and this.props.AccountDetails.acc_usrname
+  //     // to the server.
+  //     await this.props.emitTyping({
+  //       acc_id: this.props.AccountDetails.acc_data._id,
+  //       g_id: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1]._id,
+  //       g_members: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1].g_members,
+  //       emitter: this.props.AccountDetails.acc_data.acc_usrname
+  //     })
+  //   }
+  //   if (this.state.messageInput === '') {
+  //     // Emit action that sends:
+  //     // group _id and this.props.AccountDetails.acc_usrname
+  //     // to the server.
+  //     await this.props.emitNotTyping({
+  //       acc_id: this.props.AccountDetails.acc_data._id,
+  //       g_id: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1]._id,
+  //       g_members: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1].g_members,
+  //       emitter: this.props.AccountDetails.acc_data.acc_usrname
+  //     })
+  //   }
+  // }
 
 
   render() {
@@ -136,7 +141,7 @@ class ChatBody extends React.Component {
             <input
               onChange={async (e) => { await this.setState({ messageInput: e.target.value }) }}
               onKeyPress={this.handleKeyPress}
-              onKeyUp={this.handleKeyDown}
+              onKeyDown={this.handleKeyDown}
               type="text"
               placeholder="Say something..."
             />
