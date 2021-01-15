@@ -15,22 +15,37 @@ class ChatBody extends React.Component {
     this.messagesEndRef = React.createRef();
     this.submitMessageInput = this.submitMessageInput.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   componentDidMount() {
     this.scrollToBottom()
   }
   componentDidUpdate() {
+    console.log('UPDATE');
     this.scrollToBottom()
+    // if (this.state.messageInput === '') {
+    //   // Emit action that sends:
+    //   // group _id and this.props.AccountDetails.acc_usrname
+    //   // to the server.
+    //   this.props.emitNotTyping({
+    //     acc_id: this.props.AccountDetails.acc_data._id,
+    //     g_id: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1]._id,
+    //     g_members: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1].g_members,
+    //     emitter: this.props.AccountDetails.acc_data.acc_usrname
+    //   })
+    // }
   }
 
-  submitMessageInput() {
-    console.log(this.state.messageInput);
+  async submitMessageInput() {
     if (this.state.messageInput !== '') {
-      this.props.sendNewMessage({
+      await this.props.sendNewMessage({
         g_id: this.props.viewedGrp._id,
         msg_string: this.state.messageInput
       });
+      console.log(this.state.messageInput);
+      this.setState({ messageInput: '' })
+      console.log(this.state.messageInput);
     }
   }
 
@@ -40,10 +55,38 @@ class ChatBody extends React.Component {
   }
 
   handleKeyPress(event) {
+    console.log('KEYPRESS:', event.key);
     if (event.key == 'Enter') {
       this.submitMessageInput();
     }
   }
+
+  async handleKeyDown(event) {
+    console.log('KEYDOWN:', event.key);
+    if (this.state.messageInput !== '') {
+      // Emit action that sends:
+      // group _id and this.props.AccountDetails.acc_usrname
+      // to the server.
+      await this.props.emitTyping({
+        acc_id: this.props.AccountDetails.acc_data._id,
+        g_id: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1]._id,
+        g_members: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1].g_members,
+        emitter: this.props.AccountDetails.acc_data.acc_usrname
+      })
+    }
+    if (this.state.messageInput === '') {
+      // Emit action that sends:
+      // group _id and this.props.AccountDetails.acc_usrname
+      // to the server.
+      await this.props.emitNotTyping({
+        acc_id: this.props.AccountDetails.acc_data._id,
+        g_id: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1]._id,
+        g_members: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1].g_members,
+        emitter: this.props.AccountDetails.acc_data.acc_usrname
+      })
+    }
+  }
+
 
   render() {
     let clientId = this.props.AccountDetails.acc_data._id;
@@ -90,14 +133,18 @@ class ChatBody extends React.Component {
         <div className="chatbody-form">
           <hr />
           <div className="chatbody-form-textbox">
-            <input onKeyPress={this.handleKeyPress} onChange={(e) => { this.setState({ messageInput: e.target.value }) }} type="text" placeholder="Say something..." />
+            <input
+              onChange={async (e) => { await this.setState({ messageInput: e.target.value }) }}
+              onKeyPress={this.handleKeyPress}
+              onKeyUp={this.handleKeyDown}
+              type="text"
+              placeholder="Say something..."
+            />
             <button onClick={this.submitMessageInput}>
               <i className="fas fa-caret-right fa-3x"></i>
             </button>
           </div>
-          <TypingPopup
-            users={['Alex Shen', 'John Schneider', 'Al Stein', 'Bill Williamson', 'Dean Shawn']}
-          />
+          <TypingPopup />
         </div>
       </div>
     )

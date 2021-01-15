@@ -4,6 +4,14 @@ const jwt = require('jsonwebtoken');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 /*
+TODO: (If you average comeback)
+1. Modularize socker-server.js into functions like at 1:55
+of the YT video https://www.youtube.com/watch?v=-Y_3FUmK33A 
+(for maintainability).
+2. Modularize server emissions with websockets into relayMessage(target, message) function.
+*/
+
+/*
 Models:
 */
 const Account = require('../models/Account');
@@ -318,10 +326,44 @@ io.on('connection', (client) => {
   })
 
   client.on('ADD_TYPING_USER', (data) => {
-    // Needed Data: group's _id and typing user's name.
+    // console.log('ADD', data);
+    // Needed Data: group's _id and typing user's name (emitter).
+    for (i = 0; i < data.g_members.length; i++) {
+      if (clientStore[`${data.g_members[i]}`] !== undefined && Array.isArray(clientStore[`${data.g_members[i]}`]) && clientStore[`${data.g_members[i]}`].length > 0) {
+        for (j = 0; j < clientStore[`${data.g_members[i]}`].length; j++) {
+          clientStore[`${data.g_members[i]}`][j].emit('ADD_TYPING_USER', {
+            messageType: 'ADD_TYPING_USER',
+            message: {
+              acc_id: data.acc_id,
+              emitter: data.emitter,
+              g_id: data.g_id
+            }
+          })
+        }
+      }
+    }
+  })
+  client.on('REMOVE_TYPING_USER', (data) => {
+    // console.log('REMOVE', data);
+    // Needed Data: group's _id and typing user's name emitter.
+    for (i = 0; i < data.g_members.length; i++) {
+      if (clientStore[`${data.g_members[i]}`] !== undefined && Array.isArray(clientStore[`${data.g_members[i]}`]) && clientStore[`${data.g_members[i]}`].length > 0) {
+        for (j = 0; j < clientStore[`${data.g_members[i]}`].length; j++) {
+          clientStore[`${data.g_members[i]}`][j].emit('REMOVE_TYPING_USER', {
+            messageType: 'REMOVE_TYPING_USER',
+            message: {
+              acc_id: data.acc_id,
+              emitter: data.emitter,
+              g_id: data.g_id
+            }
+          })
+        }
+      }
+    }
   })
 
   client.on('NEW_MESSAGE', async (data) => {
+    console.log('NEW_MESSAGE', data);
     // 1. Create New Message & .save() onto db.
     let new_msg_id = new ObjectId();
     let msg_chat_grp, new_msg;

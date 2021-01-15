@@ -2,14 +2,29 @@ import { useState } from 'react';
 
 import './TypingPopup.scss';
 
-function TypingPopup({ users }) {
+function TypingPopup({ AccountDetails, SideBarDetails, TypingPopupDetails }) {
 
-  const mapUsersToView = (users) => {
+  let client_grps = AccountDetails.acc_data.acc_grps;
+  let selectedGroupIdx = SideBarDetails.selectedChatItem - 1;
+  let selectedGrpId = client_grps[selectedGroupIdx]._id;
+
+  let typingClients = TypingPopupDetails.typingClients;
+  let viewedTypingClients = []
+  typingClients.map((typingClient) => {
+    console.log(typingClient.acc_id);
+    console.log(AccountDetails.acc_data._id);
+    if (typingClient.g_id == selectedGrpId && typingClient.acc_id !== AccountDetails.acc_data._id) {
+      viewedTypingClients.push(typingClient);
+    }
+  })
+
+
+  const mapUsersToView = (typingClients) => {
     let dispStr = '', maxIdx = 0;
-    users.map((user, idx) => {
+    typingClients.map((user, idx) => {
       if (idx <= 2) {
-        if (idx < users.length - 1) { dispStr += `${user}, `; }
-        else { dispStr += `${user} `; }
+        if (idx < typingClients.length - 1) { dispStr += `${user.emitter}, `; }
+        else { dispStr += `${user.emitter} `; }
       }
       maxIdx = idx;
     })
@@ -26,11 +41,15 @@ function TypingPopup({ users }) {
   }
 
   return (
-    users.length > 0
+    viewedTypingClients
       ?
-      <div className="t_popup" >
-        <span>{mapUsersToView(users)}</span>
-      </div>
+      (viewedTypingClients.length > 0
+        ?
+        <div className="t_popup" >
+          <span>{mapUsersToView(viewedTypingClients)}</span>
+        </div>
+        :
+        null)
       :
       null
   )

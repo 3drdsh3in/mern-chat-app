@@ -107,6 +107,21 @@ const createSocketMiddleware = () => {
                     })
                 })
 
+                socket.on("ADD_TYPING_USER", (message) => {
+                    console.log('ADD MIDDLEWARE SOCKET')
+                    storeAPI.dispatch({
+                        type: message.messageType,
+                        payload: message.message
+                    })
+
+                })
+                socket.on("REMOVE_TYPING_USER", (message) => {
+                    storeAPI.dispatch({
+                        type: message.messageType,
+                        payload: message.message
+                    })
+                })
+
                 socket.on("NEW_MESSAGE", (message) => {
                     let { AccountDetails } = storeAPI.getState();
                     let acc_grps = AccountDetails.acc_data.acc_grps;
@@ -149,6 +164,7 @@ const createSocketMiddleware = () => {
                 socket.emit('JWT_AUTH', AccountDetails.token_data);
                 socket.off('JWT_AUTH_SUCCESS');
                 socket.on('JWT_AUTH_SUCCESS', () => {
+                    console.log('SEND NEW MESSAGE:', action.eventName);
                     socket.emit(action.eventName, action.payload);
                 })
                 // Do not move onto any further reducer actions.

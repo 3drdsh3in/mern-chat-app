@@ -19,7 +19,23 @@ function sendNewMessage(data) {
         msg_string: msg_string
       }
     })
+    console.log("SEND NEW MESSAGE");
   }
 }
 
-export { sendNewMessage }
+function emitTyping(data) {
+  return {
+    type: 'SEND_WEBSOCKET_MESSAGE',
+    eventName: 'ADD_TYPING_USER',
+    payload: data
+  }
+}
+function emitNotTyping(data) {
+  return {
+    type: 'SEND_WEBSOCKET_MESSAGE',
+    eventName: 'REMOVE_TYPING_USER',
+    payload: data
+  }
+}
+
+export { sendNewMessage, emitTyping, emitNotTyping }
