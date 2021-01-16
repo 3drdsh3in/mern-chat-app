@@ -15,14 +15,13 @@ class ChatBody extends React.Component {
     this.messagesEndRef = React.createRef();
     this.submitMessageInput = this.submitMessageInput.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    // this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
   }
 
   componentDidMount() {
     this.scrollToBottom()
   }
   componentDidUpdate() {
-    console.log('UPDATE');
     this.scrollToBottom()
     // if (this.state.messageInput === '') {
     //   // Emit action that sends:
@@ -43,9 +42,6 @@ class ChatBody extends React.Component {
         g_id: this.props.viewedGrp._id,
         msg_string: this.state.messageInput
       });
-      // console.log(this.state.messageInput);
-      // this.setState({ messageInput: '' })
-      // console.log(this.state.messageInput);
     }
   }
 
@@ -54,10 +50,9 @@ class ChatBody extends React.Component {
     this.messagesEndRef.current.scrollIntoView({ behavior: 'auto' })
   }
 
-  handleKeyPress(event) {
-    console.log('KEYPRESS:', event.key);
+  async handleKeyPress(event) {
     if (event.key == 'Enter') {
-      this.submitMessageInput();
+      await this.submitMessageInput();
     }
   }
 
@@ -65,32 +60,39 @@ class ChatBody extends React.Component {
   This handler is so fucking weird, it's causing
   socket-middleware events to emit twice despite actions
   only being called once! (WTH)
+  -- Problem: NEW_MESSAGE event may be emitted to the other client, ergo emitNotTyping below will
+  not work?
+  -- Solution: 
   */
-  // async handleKeyDown(event) {
-  //   console.log('KEYDOWN:', event.key)
-  //   if (this.state.messageInput !== '') {
-  //     // Emit action that sends:
-  //     // group _id and this.props.AccountDetails.acc_usrname
-  //     // to the server.
-  //     await this.props.emitTyping({
-  //       acc_id: this.props.AccountDetails.acc_data._id,
-  //       g_id: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1]._id,
-  //       g_members: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1].g_members,
-  //       emitter: this.props.AccountDetails.acc_data.acc_usrname
-  //     })
-  //   }
-  //   if (this.state.messageInput === '') {
-  //     // Emit action that sends:
-  //     // group _id and this.props.AccountDetails.acc_usrname
-  //     // to the server.
-  //     await this.props.emitNotTyping({
-  //       acc_id: this.props.AccountDetails.acc_data._id,
-  //       g_id: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1]._id,
-  //       g_members: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1].g_members,
-  //       emitter: this.props.AccountDetails.acc_data.acc_usrname
-  //     })
-  //   }
-  // }
+  async handleKeyUp(event) {
+    console.log('KEYUP:', event.key)
+    console.log(event.target.value);
+    // if (event.key !== 'Enter') {
+    if (event.target.value === '' || event.key === 'Enter') {
+      console.log('NOT TYPING CALLS');
+      // Emit action that sends:
+      // group _id and this.props.AccountDetails.acc_usrname
+      // to the server.
+      await this.props.emitNotTyping({
+        acc_id: this.props.AccountDetails.acc_data._id,
+        g_id: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1]._id,
+        g_members: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1].g_members,
+        emitter: this.props.AccountDetails.acc_data.acc_usrname
+      })
+    }
+    else if (event.target.value !== '') {
+      // Emit action that sends:
+      // group _id and this.props.AccountDetails.acc_usrname
+      // to the server.
+      await this.props.emitTyping({
+        acc_id: this.props.AccountDetails.acc_data._id,
+        g_id: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1]._id,
+        g_members: this.props.AccountDetails.acc_data.acc_grps[this.props.SideBarDetails.selectedChatItem - 1].g_members,
+        emitter: this.props.AccountDetails.acc_data.acc_usrname
+      })
+    }
+    // }
+  }
 
 
   render() {
@@ -141,7 +143,7 @@ class ChatBody extends React.Component {
             <input
               onChange={async (e) => { await this.setState({ messageInput: e.target.value }) }}
               onKeyPress={this.handleKeyPress}
-              onKeyDown={this.handleKeyDown}
+              onKeyUp={this.handleKeyUp}
               type="text"
               placeholder="Say something..."
             />

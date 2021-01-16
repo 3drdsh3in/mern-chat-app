@@ -30,7 +30,6 @@ class App extends React.Component {
   // }
   componentDidUpdate() {
     if (!this.state.redirect) {
-      console.log(this.state.redirect);
       this.setState({ redirect: true });
     }
   }
@@ -40,9 +39,6 @@ class App extends React.Component {
         this.setState({ clientId: crypto.randomBytes(32).toString('hex') });
       }
     }
-    console.log(this.state.clientId);
-    console.log(this.state.redirect);
-    console.log(this.state.clientId !== '' && this.state.redirect === true)
     return (
       <div className="App">
         <Router basename="/">

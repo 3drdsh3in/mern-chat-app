@@ -55,7 +55,7 @@ io.on('connection', (client) => {
   console.log('Connection Established On', client.id);
 
   client.on('JWT_AUTH', async (data) => {
-    console.log('JWT_AUTH', data);
+    console.log('JWT_AUTH');
     try {
       // async await forces the verification to complete before allowing success handler to run its natural course.
       let decoded = await jwt.verify(data.accessToken, process.env.SECRET_ACCESS_TOKEN);
@@ -331,39 +331,44 @@ io.on('connection', (client) => {
     for (i = 0; i < data.g_members.length; i++) {
       if (clientStore[`${data.g_members[i]}`] !== undefined && Array.isArray(clientStore[`${data.g_members[i]}`]) && clientStore[`${data.g_members[i]}`].length > 0) {
         for (j = 0; j < clientStore[`${data.g_members[i]}`].length; j++) {
-          clientStore[`${data.g_members[i]}`][j].emit('ADD_TYPING_USER', {
-            messageType: 'ADD_TYPING_USER',
-            message: {
-              acc_id: data.acc_id,
-              emitter: data.emitter,
-              g_id: data.g_id
-            }
-          })
+          if (`${data.g_members[i]}` !== data.acc_id) {
+            clientStore[`${data.g_members[i]}`][j].emit('ADD_TYPING_USER', {
+              messageType: 'ADD_TYPING_USER',
+              message: {
+                acc_id: data.acc_id,
+                emitter: data.emitter,
+                g_id: data.g_id
+              }
+            })
+          }
         }
       }
     }
   })
   client.on('REMOVE_TYPING_USER', (data) => {
+    console.log('REMOVE_TYPING_USER');
     // console.log('REMOVE', data);
     // Needed Data: group's _id and typing user's name emitter.
     for (i = 0; i < data.g_members.length; i++) {
       if (clientStore[`${data.g_members[i]}`] !== undefined && Array.isArray(clientStore[`${data.g_members[i]}`]) && clientStore[`${data.g_members[i]}`].length > 0) {
         for (j = 0; j < clientStore[`${data.g_members[i]}`].length; j++) {
-          clientStore[`${data.g_members[i]}`][j].emit('REMOVE_TYPING_USER', {
-            messageType: 'REMOVE_TYPING_USER',
-            message: {
-              acc_id: data.acc_id,
-              emitter: data.emitter,
-              g_id: data.g_id
-            }
-          })
+          if (`${data.g_members[i]}` !== data.acc_id) {
+            clientStore[`${data.g_members[i]}`][j].emit('REMOVE_TYPING_USER', {
+              messageType: 'REMOVE_TYPING_USER',
+              message: {
+                acc_id: data.acc_id,
+                emitter: data.emitter,
+                g_id: data.g_id
+              }
+            })
+          }
         }
       }
     }
   })
 
   client.on('NEW_MESSAGE', async (data) => {
-    console.log('NEW_MESSAGE', data);
+    // console.log('NEW_MESSAGE', data);
     // 1. Create New Message & .save() onto db.
     let new_msg_id = new ObjectId();
     let msg_chat_grp, new_msg;
@@ -396,7 +401,6 @@ io.on('connection', (client) => {
     // 3. Fetch all g_members id's from the corresponding ChatGroup entity & emit the New Message
     // entity to each of them (If they exist).
     try {
-      console.log(new_msg._id);
       let returnMsg = await Message.findById(new_msg._id.toString()).populate('m_sender');
       let endpointMembers = msg_chat_grp.g_members;
       for (i = 0; i < endpointMembers.length; i++) {

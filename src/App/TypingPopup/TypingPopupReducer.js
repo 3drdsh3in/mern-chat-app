@@ -16,7 +16,8 @@ function TypingPopupReducer(state = initialState, action) {
       }
       if (!isFound) {
         return {
-          ...state, typingClients: [...state.typingClients, action.payload]
+          ...state,
+          typingClients: [...state.typingClients, action.payload]
         }
       } else {
         return { ...state };

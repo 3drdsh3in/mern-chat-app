@@ -29,7 +29,6 @@ class Main extends React.Component {
     } else {
       // Must Initialize Client Before Any Kind of emissions or the client's socket endpoints
       // will not be created!
-      console.log(this.props.ClientDetails.clients, this.props.clientId, this.props.ClientDetails.clients.includes(this.props.clientId))
       if (!this.props.ClientDetails.clients.includes(this.props.clientId)) {
         this.props.initializeClient();
         this.props.emitAccountDetails(this.props.AccountDetails);

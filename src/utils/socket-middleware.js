@@ -3,7 +3,6 @@ import io from 'socket.io-client';
 // Invoke this function to return the corresponding socket-middleware.
 const createSocketMiddleware = () => {
     let socket;
-    console.log(socket);    // Socket Middleware
     // storeAPI has 'getState' and 'dispatch' as it's fields here.
     // (Could also use ({dispatch, getState}) in place of 'storeAPI' here)
     return storeAPI => next => action => {
@@ -63,8 +62,7 @@ const createSocketMiddleware = () => {
                     let state = storeAPI.getState();
                     let acc_data = state.AccountDetails.acc_data;
                     acc_data.acc_friends.push(message.message.fr_reciever_id);
-                    console.log(message);
-                    console.log(acc_data);
+
 
                     storeAPI.dispatch({
                         type: message.messageType,
@@ -96,7 +94,6 @@ const createSocketMiddleware = () => {
                 // Chat Groups:
 
                 socket.on("NEW_GROUP", (message) => {
-                    console.log('NEW GROUP:', message);
                     let { AccountDetails } = storeAPI.getState();
                     let acc_grps = AccountDetails.acc_data.acc_grps;
                     acc_grps.push(message.message);
@@ -108,7 +105,6 @@ const createSocketMiddleware = () => {
                 })
 
                 socket.on("ADD_TYPING_USER", (message) => {
-                    console.log('ADD MIDDLEWARE SOCKET')
                     storeAPI.dispatch({
                         type: message.messageType,
                         payload: message.message
@@ -160,12 +156,13 @@ const createSocketMiddleware = () => {
             // This endpoint can only be reached once LOGIN action is dispatched
             // to initialise the socket endpoint on the redux client.
             case 'SEND_WEBSOCKET_MESSAGE': {
-                console.log('SEND NEW MESSAGE:', action.eventName);
-                console.log(socket._callbacks);
+                // console.log(socket._callbacks);
                 let { AccountDetails } = storeAPI.getState();
+                // console.log('EVENT:', action.eventName);
                 socket.emit('JWT_AUTH', AccountDetails.token_data);
                 socket.off('JWT_AUTH_SUCCESS');
                 socket.on('JWT_AUTH_SUCCESS', () => {
+                    // console.log('SEND NEW MESSAGE:', action.eventName);
                     socket.emit(action.eventName, action.payload);
                 })
                 // Do not move onto any further reducer actions.

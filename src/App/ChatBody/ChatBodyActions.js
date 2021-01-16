@@ -19,7 +19,6 @@ function sendNewMessage(data) {
         msg_string: msg_string
       }
     })
-    console.log("SEND NEW MESSAGE");
   }
 }
 

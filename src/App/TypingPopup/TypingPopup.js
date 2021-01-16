@@ -11,8 +11,6 @@ function TypingPopup({ AccountDetails, SideBarDetails, TypingPopupDetails }) {
   let typingClients = TypingPopupDetails.typingClients;
   let viewedTypingClients = []
   typingClients.map((typingClient) => {
-    console.log(typingClient.acc_id);
-    console.log(AccountDetails.acc_data._id);
     if (typingClient.g_id == selectedGrpId && typingClient.acc_id !== AccountDetails.acc_data._id) {
       viewedTypingClients.push(typingClient);
     }
