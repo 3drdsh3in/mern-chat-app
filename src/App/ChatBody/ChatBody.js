@@ -143,7 +143,8 @@ class ChatBody extends React.Component {
             <input
               onChange={async (e) => { await this.setState({ messageInput: e.target.value }) }}
               onKeyPress={this.handleKeyPress}
-              onKeyUp={this.handleKeyUp}
+              // onKeyUp={this.handleKeyUp}
+              onKeyUp={(e) => { console.log(e.key) }}
               type="text"
               placeholder="Say something..."
             />
