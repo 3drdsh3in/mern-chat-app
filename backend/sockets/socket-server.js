@@ -47,7 +47,7 @@ function relayMessage(target, message) {
 }
 
 /*
-Socket Endpoints!
+Socket Endpoints
 */
 
 // Connect Event:
